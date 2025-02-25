@@ -66,7 +66,7 @@ const LoginPage = () => {
             <input type="password" class="mb-4 block h-11 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl" placeholder="" required="" />
           </div>
 
-          <a href="#" class="flex items-center justify-center bg-[#f18c27] hover:bg-amber-600 px-8 py-4 text-center font-semibold text-white transition rounded-xl">
+          <a href="#" class="flex items-center justify-center bg-[#f18c27] [box-shadow:rgb(251,191,36)_-8px_8px] hover:bg-amber-600 px-8 py-4 text-center font-semibold text-white transition rounded-xl">
             <p class="w-5xl mr-6 font-bold">Login</p>
             <svg class="h-4 w-4 flex-none" fill="currentColor" viewBox="0 0 20 21" xmlns="http://www.w3.org/2000/svg">
               <title>Arrow Right</title>
