@@ -13,20 +13,59 @@ const LoginPage = () => {
         </div>
     </div>
     </div>
+
     <div class="flex flex-col items-center justify-center rounded-l-lg bg-[#FFE167]">
     <div class="max-w-xl px-5 py-16 md:px-10 md:py-24 lg:py-32">
     <h1 class="mb-8 text-2xl font-bold md:mb-7 md:text-5xl text-white">Login</h1>
     <form class="mx-auto mb-4 w-auto pb-4" name="wf-form-password" method="get">
     <h2 class="text-2xl font-bold md:mb-3 md:text-white">Username</h2>
     <div class="relative">
-          <img alt="" src="https://assets.website-files.com/6357722e2a5f19121d37f84d/6357722e2a5f190b7e37f878_EnvelopeSimple.svg" class="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block" />
+    <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="25" 
+            height="25" 
+            viewBox="1 0 25 25"
+            fill="none" 
+            stroke="#000000" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+            class="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block">
+            <circle 
+            cx="12" cy="12" r="10">
+            </circle>
+            <circle 
+            cx="12" cy="10" r="3">
+            </circle>
+            <path 
+            d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662">
+            </path>
+      </svg>
+
           <input type="email" class="mb-4 block h-9 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl" maxlength="256" name="name" placeholder="" required="" />
       </div>
+      
       <h3 class="text-2xl font-bold md:mb-3 md:text-white">Password</h3>
       <div class="relative mb-4">
-            <img alt="" src="https://assets.website-files.com/6357722e2a5f19121d37f84d/6357722e2a5f19601037f879_Lock-2.svg" class="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block" />
+      <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="25" 
+            height="25" 
+            viewBox="1 0 25 25" 
+            fill="none" 
+            stroke="#000000" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+            class="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block">
+            <circle cx="12" cy="16" r="1"></circle><rect x="3" y="10" width="18" height="12" rx="2"></rect>
+            <path d="M7 10V7a5 5 0 0 1 10 0v3">
+            </path>
+            </svg>
+
             <input type="password" class="mb-4 block h-11 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl" placeholder="" required="" />
           </div>
+
           <a href="#" class="flex items-center justify-center bg-[#f18c27] hover:bg-amber-600 px-8 py-4 text-center font-semibold text-white transition rounded-xl">
             <p class="w-5xl mr-6 font-bold">Login</p>
             <svg class="h-4 w-4 flex-none" fill="currentColor" viewBox="0 0 20 21" xmlns="http://www.w3.org/2000/svg">
