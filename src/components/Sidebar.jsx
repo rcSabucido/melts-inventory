@@ -4,9 +4,9 @@ import { HomeIcon, ListBulletIcon, UserIcon, BanknotesIcon, ArchiveBoxIcon, Truc
 
 const Sidebar = () => {
   return (
-    <aside className="h-screen sticky top-0 bg-orange-400/70 min-w-xs h-screen overflow-y-auto overflow-x-hidden">
+    <aside className="h-screen sticky top-0 bg-orange-400/70 min-w-3xs h-screen overflow-y-auto overflow-x-hidden">
       <div className="flex flex-col h-full justify-between items-center w-full p-3" >
-        <img src={Logo} alt="MELTS Logo" className="w-50 place-self-center p-2" />
+        <img src={Logo} alt="MELTS Logo" className="w-40 place-self-center p-2" />
         <ol className="flex flex-col text-white float-start px-2 py-2 h-full">
           <li className="py-2 sidebar-link-shadow">
             <a href="/home">
