@@ -5,6 +5,7 @@ const LoginPage = () => {
     <>
     <section>
     <div class="grid md:h-screen md:grid-cols-2">
+    <div class="absolute inset-y-0 right-0 h-full w-10 bg-[#FFB64F]" ></div>
     <div class="flex items-center justify-center bg-[#FFFFB8]">
     <div class="max-w-lg px-5 py-16 md:px-10 md:py-24 lg:py-32">
         <div class="mb-6 ml-2 flex h-auto w-auto items-center justify-center">
@@ -37,7 +38,6 @@ const LoginPage = () => {
     </div>
     </div>
     </div>
-    
     </section>
     </>
   );
