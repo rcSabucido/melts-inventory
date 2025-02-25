@@ -3,6 +3,11 @@ import Chart from "react-apexcharts";
 const BarChart = () => {
   let state = {
     options: {
+      plotOptions: {
+        bar: {
+          columnWidth: '50%'
+        }
+      },
       chart: {
         id: "basic-bar"
       },
@@ -26,13 +31,17 @@ const BarChart = () => {
     ]
   }
   return (
-    <Chart
-      options={state.options}
-      series={state.series}
-      type="bar"
-      height="400"
-      className="w-auto"
-    />
+    <div class="p-8 pt-0">
+      <div class="border border-solid border-orange-400/40 border-2 rounded-md">
+        <Chart
+          options={state.options}
+          series={state.series}
+          type="bar"
+          height="240"
+          className="w-auto"
+        />
+      </div>
+    </div>
   );
 }
 
