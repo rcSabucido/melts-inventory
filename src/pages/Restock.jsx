@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import RestockTable from '../components/RestockTable.jsx';
+import AddStockModal from '../components/AddStockModal.jsx';
 import { FunnelIcon, PlusIcon } from '@heroicons/react/24/solid';
 
 
 const RestockPage = () => {
+    const [showModal, setShowModal] = useState(false);
     const columns = ['Product', 'Category', 'Added Items', 'Supplier', 'Expiry Date'];
     const tableData = [
         {
@@ -38,7 +41,7 @@ const RestockPage = () => {
             <Button>
               <FunnelIcon className='h-6 w-6' />
               </Button>
-            <Button>
+            <Button onClick={() => setShowModal(true)}>
               <PlusIcon className='h-6 w-6'/>
               Add Stock
               </Button>
@@ -49,6 +52,7 @@ const RestockPage = () => {
           </div>
         </main>
       </div>
+      {showModal && <AddStockModal onClose={() => setShowModal(false)} />}
     </>
   );
 }
