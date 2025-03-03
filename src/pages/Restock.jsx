@@ -3,11 +3,13 @@ import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import RestockTable from '../components/RestockTable.jsx';
 import AddStockModal from '../components/AddStockModal.jsx';
+import FilterStock from '../components/FilterStock.jsx';
 import { FunnelIcon, PlusIcon } from '@heroicons/react/24/solid';
 
 
 const RestockPage = () => {
     const [showModal, setShowModal] = useState(false);
+    const [showFilter, setShowFilter] = useState(false);
     const columns = ['Product', 'Category', 'Added Items', 'Supplier', 'Expiry Date'];
     const tableData = [
         {
@@ -37,10 +39,15 @@ const RestockPage = () => {
       <div className="flex">
         <Sidebar />
         <main className="flex-col p-4 bg-amber-100 w-full">
-          <div className='mx-5 my-3 flex justify-end gap-2'>
-            <Button>
+          <div className='relative mx-5 my-3 flex justify-end gap-2'>
+            <Button onClick={() => setShowFilter(!showFilter)}>
               <FunnelIcon className='h-6 w-6' />
               </Button>
+              {showFilter && (
+              <div className="absolute right-60 mt-10">
+                <FilterStock />
+              </div>
+            )}
             <Button onClick={() => setShowModal(true)}>
               <PlusIcon className='h-6 w-6'/>
               Add Stock
