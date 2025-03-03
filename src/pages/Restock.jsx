@@ -44,7 +44,7 @@ const RestockPage = () => {
               <FunnelIcon className='h-6 w-6' />
               </Button>
               {showFilter && (
-              <div className="absolute right-60 mt-10">
+              <div className="absolute right-60 mt-5 z-50">
                 <FilterStock />
               </div>
             )}
@@ -59,7 +59,7 @@ const RestockPage = () => {
           </div>
         </main>
       </div>
-      {showModal && <AddStockModal onClose={() => setShowModal(false)} />}
+      {showModal && <AddStockModal onClose={() => setShowModal(false)} />}  
     </>
   );
 }
