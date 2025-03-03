@@ -23,7 +23,7 @@ const FilterStock = () => {
         setExpiryDate('');
     }
     return (
-        <div className="bg-white shadow-lg rounded-lg p-4 w-64">
+        <div className="bg-[#FFF2BF] shadow-lg rounded-lg p-4 w-64">
             <Accordion title='Columns'>
                 <div className="space-y-2">
                     <label className="flex items-center gap-2">
@@ -44,10 +44,10 @@ const FilterStock = () => {
                 </div>
             </Accordion>
             <Accordion title='Added Date'>
-                <input type='date' className="w-full border border-gray-300 rounded p-2" value={addedDate} onChange={(e) => setAddedDate(e.target.value)}/>
+                <input type='date' className="w-full border border-black rounded p-2" value={addedDate} onChange={(e) => setAddedDate(e.target.value)}/>
             </Accordion>
             <Accordion title='Expiry Date'>
-                <input type='date' className="w-full border-gray-300 rounded p-2" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} />
+                <input type='date' className="w-full border border-black rounded p-2" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} />
             </Accordion>
             <div className="flex-col justify-center mt-6 space-y-2 w-full">
                         <button type="submit" className="bg-orange-400/70 hover:bg-orange-400/90 text-white p-2 w-full font-bold rounded">Apply</button>

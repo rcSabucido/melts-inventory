@@ -7,7 +7,7 @@ const Accordion = ({ title, children }) => {
                 <h3 className='font-semibold'>{title}</h3>
                 <span>{isOpen ? '-' : '+'}</span>
             </div>
-            {isOpen && <div className=''>{children}</div>}
+            {isOpen && <div className='mb-3'>{children}</div>}
         </div>
     );
 }
