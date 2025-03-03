@@ -32,7 +32,7 @@ const InventoryPage = () => {
          <div className="m-8 p-4 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
             <nav className="flex flex-row">
               <div className="p-4 text-2xl font-bold text-gray-800">
-                <a href="#">Neary Expiry</a>
+                <a href="#">Near Expiry</a>
               </div>
             </nav>
            <NearExpiryTable/>
