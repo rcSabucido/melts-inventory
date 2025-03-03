@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import RestockTable from '../components/RestockTable.jsx';
@@ -10,6 +10,7 @@ import { FunnelIcon, PlusIcon } from '@heroicons/react/24/solid';
 const RestockPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
+    const filterRef = useRef(null);
     const columns = ['Product', 'Category', 'Added Items', 'Supplier', 'Expiry Date'];
     const tableData = [
         {
@@ -33,7 +34,20 @@ const RestockPage = () => {
             'Supplier': 'Melts Inc.',
             'Expiry Date': '2026-02-19'
         }
-    ]
+    ];
+
+    useEffect(() => {
+      const handleClickOutside = (e) => {
+        if (filterRef.current && !filterRef.current.contains(e.target)) {
+          setShowFilter(false);
+        }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [filterRef]);
   return (
     <>
       <div className="flex">
@@ -44,7 +58,7 @@ const RestockPage = () => {
               <FunnelIcon className='h-6 w-6' />
               </Button>
               {showFilter && (
-              <div className="absolute right-60 mt-5 z-50">
+              <div ref={filterRef} className="absolute right-60 mt-5 z-50">
                 <FilterStock />
               </div>
             )}
