@@ -1,6 +1,6 @@
 import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
-import SupplierTable from '../components/SupplierTable.jsx';
+import ModifiableTable from '../components/ModifiableTable.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
 const SupplierPage = () => {
@@ -32,7 +32,7 @@ const SupplierPage = () => {
           </div>
           <div>
             <p className='px-4 pt-4 text-xl font-bold'>Suppliers</p>
-            <SupplierTable columns={columns} data={tableData} />
+            <ModifiableTable columns={columns} data={tableData} />
           </div>
         </main>
       </div>

@@ -1,6 +1,6 @@
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 
-const SupplierTable = ({ columns, data }) => {
+const ModifiableTable = ({ columns, data }) => {
     return (
       <div className="relative overflow-x-auto rounded-xl m-5 shadow-[-4px_4px_4px_#888888]">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -31,4 +31,4 @@ const SupplierTable = ({ columns, data }) => {
     );
   };
   
-  export default SupplierTable;
+  export default ModifiableTable;
