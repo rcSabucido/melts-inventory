@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar.jsx';
 import RestockTable from '../components/RestockTable.jsx';
 import AddStockModal from '../components/AddStockModal.jsx';
 import FilterStock from '../components/FilterStock.jsx';
-import { FunnelIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { FunnelIcon, PlusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/solid';
 
 
 const RestockPage = () => {
@@ -68,7 +68,10 @@ const RestockPage = () => {
               </Button>
           </div>
           <div className='mx-7 w-auto h-70 bg-amber-200/30 rounded-xl'>
+            <div className='flex justify-between'>
             <p className='px-4 pt-4 text-xl font-bold'>February 20, 2025</p>
+            <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4'/>
+            </div> 
             <RestockTable columns={columns} data={tableData} />
           </div>
         </main>
