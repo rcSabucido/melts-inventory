@@ -55,6 +55,9 @@ const RestockPage = () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [filterRef]);
+
+    const limitedTableData = tableData.slice(0, 4);
+
   return (
     <>
       <div className="flex">
