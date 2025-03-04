@@ -7,10 +7,28 @@ const EmployeePage = () => {
   const columns = ['Name', 'Gender', 'Email', 'Age'];
   const tableData = [
       {
-          'Name': 'Eimma H',
+          'Name': 'Yerin Arelius',
           'Gender': 'Female',
-          'Email': 'eimma@gmail.com',
+          'Email': 'yerin@gmail.com',
           'Age': 21
+      },
+      {
+          'Name': 'Wei Shi Lindon',
+          'Gender': 'Male',
+          'Email': 'lindon@gmail.com',
+          'Age': 22
+      },
+      {
+          'Name': 'Eithan Arelius',
+          'Gender': 'Male',
+          'Email': 'ozriel@gmail.com',
+          'Age': 31
+      },
+      {
+        'Name': 'Akura Mercy',
+        'Gender': 'Female',
+        'Email': 'aMercy@gmail.com',
+        'Age': 20
       }
   ];
   return (
