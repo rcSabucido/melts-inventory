@@ -7,7 +7,7 @@ const SearchBar = () => {
         placeholder="Search a product" 
         />
         <button
-        class="h-9 absolute top-1 right-1 flex items-center rounded bg-orange-400 py-1 px-2.5 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:shadow focus:bg-slate-700 focus:shadow-none active:hover:bg-orange-400/90 hover:hover:bg-orange-400/90 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+        class="h-9 absolute top-1 right-1 flex items-center rounded bg-orange-400 py-1 px-2.5 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:shadow focus:bg-orange-400  focus:shadow-none active:hover:bg-orange-400/90 hover:hover:bg-orange-400/90 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
         type="button"
         >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2">
