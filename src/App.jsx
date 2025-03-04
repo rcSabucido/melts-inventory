@@ -7,6 +7,7 @@ import Supplier from "./pages/Supplier"
 import Restock from "./pages/Restock"
 import Login from "./pages/Login"
 import Home from "./pages/Home"
+import AddSupplier from "./pages/AddSupplier"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="transaction" element={<Transaction />} />
         <Route path="supplier" element={<Supplier />} />
         <Route path="restock" element={<Restock />} />
+        <Route path="add_supplier" element={<AddSupplier />} />
       </Routes>
     </BrowserRouter>
   )
