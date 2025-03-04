@@ -9,7 +9,7 @@ const TransactionPage = () => {
         <Sidebar />
         <main className="p-15 bg-amber-100 w-full">
         <div className="p-1   text-2xl font-bold text-gray-800">
-        <a href="#">Transactions</a>
+        <a>Transactions</a>
         </div>
           <Transactiontable />
         </main>
