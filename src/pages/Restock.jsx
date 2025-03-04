@@ -33,6 +33,13 @@ const RestockPage = () => {
             'Added Items': 19,
             'Supplier': 'Melts Inc.',
             'Expiry Date': '2026-02-19'
+        },
+        {
+          'Product': 'Panam Palmer',
+          'Category': 'Drinks',
+          'Added Items': 15,
+          'Supplier': 'Melts Inc.',
+          'Expiry Date': '2026-02-19'
         }
     ];
 
@@ -67,7 +74,7 @@ const RestockPage = () => {
               Add Stock
               </Button>
           </div>
-          <div className='mx-7 w-auto h-70 bg-amber-200/30 rounded-xl'>
+          <div className='mx-7 w-auto pb-0.5 bg-amber-200/30 rounded-xl'>
             <div className='flex justify-between'>
             <p className='px-4 pt-4 text-xl font-bold'>February 20, 2025</p>
             <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4'/>
