@@ -83,7 +83,7 @@ const RestockPage = () => {
             <div className='flex justify-between'>
             <p className='px-4 pt-4 text-xl font-bold'>February 20, 2025</p>
             {tableData.length >= 4 && (
-              <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4' onClick={() => setShowFullTable(true)}/>
+              <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => setShowFullTable(true)}/>
             )} 
             </div> 
             <RestockTable columns={columns} data={limitedTableData} />
