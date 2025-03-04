@@ -4,12 +4,14 @@ import Sidebar from '../components/Sidebar.jsx';
 import RestockTable from '../components/RestockTable.jsx';
 import AddStockModal from '../components/AddStockModal.jsx';
 import FilterStock from '../components/FilterStock.jsx';
+import FullTableModal from '../components/FullTableModal.jsx';
 import { FunnelIcon, PlusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/solid';
 
 
 const RestockPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
+    const [showFullTable, setShowFullTable] = useState(false);
     const filterRef = useRef(null);
     const columns = ['Product', 'Category', 'Added Items', 'Supplier', 'Expiry Date'];
     const tableData = [
@@ -80,13 +82,16 @@ const RestockPage = () => {
           <div className='mx-7 w-auto pb-0.5 bg-amber-200/30 rounded-xl'>
             <div className='flex justify-between'>
             <p className='px-4 pt-4 text-xl font-bold'>February 20, 2025</p>
-            <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4'/>
+            {tableData.length >= 4 && (
+              <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4' onClick={() => setShowFullTable(true)}/>
+            )} 
             </div> 
-            <RestockTable columns={columns} data={tableData} />
+            <RestockTable columns={columns} data={limitedTableData} />
           </div>
         </main>
       </div>
-      {showModal && <AddStockModal onClose={() => setShowModal(false)} />}  
+      {showModal && <AddStockModal onClose={() => setShowModal(false)} />}
+      {showFullTable && <FullTableModal columns={columns} data={tableData} onClose={() => setShowFullTable(false)} />}  
     </>
   );
 }
