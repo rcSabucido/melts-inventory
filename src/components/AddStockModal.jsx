@@ -85,8 +85,8 @@ const AddStockModal = ({ onClose }) => {
                         />
                     </div>
                     <div className="flex justify-center mt-6 gap-2 w-full">
-                        <button type="button" onClick={onClose} className="bg-[#CB3F3F] text-white p-2 w-full rounded">Cancel</button>
-                        <button type="submit" className="bg-orange-400/70 text-white p-2 w-full rounded">Save</button>
+                        <button type="button" onClick={onClose} className="bg-[#CB3F3F] hover:bg-[#BA3030] text-white p-2 w-full rounded">Cancel</button>
+                        <button type="submit" className="bg-orange-400/70 hover:bg-orange-400/90 text-white p-2 w-full rounded">Save</button>
                     </div>
                 </form>
             </div>
