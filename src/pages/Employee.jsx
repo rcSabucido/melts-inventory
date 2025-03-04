@@ -1,20 +1,31 @@
 import Sidebar from '../components/Sidebar.jsx';
 import Button from '../components/Button.jsx';
+import ModifiableTable from '../components/ModifiableTable.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
 const EmployeePage = () => {
+  const columns = ['Name', 'Gender', 'Email', 'Age'];
+  const tableData = [
+      {
+          'Name': 'Eimma H',
+          'Gender': 'Female',
+          'Email': 'eimma@gmail.com',
+          'Age': 21
+      }
+  ];
   return (
     <>
       <div className="flex">
         <Sidebar />
-        <main className="p-4 flex-col bg-amber-100 w-full">
+        <main className="p-4 flex-col bg-[#ffffdb] w-full">
           <div className='flex justify-end mx-5 my-3'>
             <Button>
               <PlusIcon className="h-6 w-6" />
               Add Employee
             </Button>
           </div>
-          <h2 className=''>Employees</h2>
+          <p className='px-4 pt-4 text-xl font-bold'>Employees</p>
+          <ModifiableTable columns={columns} data={tableData} />
         </main>
       </div>
     </>
