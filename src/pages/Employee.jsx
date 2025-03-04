@@ -14,7 +14,7 @@ const EmployeePage = () => {
               Add Employee
             </Button>
           </div>
-          
+          <h2 className=''>Employees</h2>
         </main>
       </div>
     </>
