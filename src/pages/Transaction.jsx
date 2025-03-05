@@ -8,8 +8,8 @@ const TransactionPage = () => {
       <div className="flex">
         <Sidebar />
         <main className="p-15 bg-amber-100 w-full">
-        <div className="p-1   text-2xl font-bold text-gray-800">
-        <a>Transactions</a>
+        <div className="p-1 text-2xl font-bold text-gray-800">
+        <p>Transactions</p>
         </div>
           <Transactiontable />
         </main>
