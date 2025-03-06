@@ -39,7 +39,7 @@ const AddSupplierPage = () => {
     <div className="flex">
     <Sidebar />
     <form className="flex-col p-4 bg-amber-100 w-full" onSubmit={handleSubmit}>
-      <button className="p-4 text-2xl font-bold text-gray-800 flex items-center" onClick={() => setLeaveModal(true)}>
+      <button type="button" className="p-4 text-2xl font-bold text-gray-800 flex items-center" onClick={() => setLeaveModal(true)}>
           <ArrowLongLeftIcon className='h-6 w-6 mx-4'/>
           Add Supplier
       </button>
