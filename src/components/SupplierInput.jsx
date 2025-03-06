@@ -13,7 +13,7 @@ const SupplierInput = ( {className} ) => {
               required
           />
       </div>
-      <div className="flex flex-row flex-wrap justify-between">
+      <div className="flex-row flex-wrap justify-between">
         <div className="m-4 grow">
             <label className="text-sm font-medium text-gray-700">Contact Number</label>
             <input
@@ -33,7 +33,7 @@ const SupplierInput = ( {className} ) => {
             />
         </div>
       </div>
-      <div className="flex flex-row flex-wrap justify-between">
+      <div className="flex-row flex-wrap justify-between">
         <div className="m-4 grow">
             <label className="text-sm font-medium text-gray-700">Province</label>
             <input
@@ -53,7 +53,7 @@ const SupplierInput = ( {className} ) => {
             />
         </div>
       </div>
-      <div className="flex flex-row flex-wrap justify-between">
+      <div className="flex-row flex-wrap justify-between">
         <div className="m-4">
             <label className="text-sm font-medium text-gray-700">District</label>
             <input
@@ -83,7 +83,7 @@ const SupplierInput = ( {className} ) => {
         </div>
       </div>
 
-      <div className="flex flex-row justify-end">
+      <div className="flex-row justify-end">
         <Button>
             Clear
         </Button>
