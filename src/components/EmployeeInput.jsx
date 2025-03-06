@@ -101,6 +101,14 @@ const EmployeeInput = () => {
                         />
                     </div>
                 </div>
+                <div className="flex items-center gap-2 m-4 grow">
+                    <input
+                        type="checkbox"
+                        name='isAdmin' 
+                        className="h-4 w-4 border-gray-300 rounded"
+                    />
+                    <label className="block text-sm font-medium text-gray-700">Administrator</label>
+                </div>
             </div>
         </>
         
