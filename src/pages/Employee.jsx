@@ -56,4 +56,10 @@ const EmployeePage = () => {
   );
 }
 
+// const navigate = useNavigate();
+
+// const handleEditClick = (row) => {
+//   navigate('/add_employee', { state: { employeeData: row }});
+// }
+
 export default EmployeePage;
