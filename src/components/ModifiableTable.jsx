@@ -1,6 +1,12 @@
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { useNavigate } from 'react-router-dom';
 
 const ModifiableTable = ({ columns, data, className }) => {
+  const navigate = useNavigate();
+
+  const handleEditClick = (row) => {
+    navigate('/add_employee', { state: { employeeData: row }});
+  }
     let addClassName = className;
     return (
       <div className={`relative overflow-x-auto rounded-xl m-5 ${addClassName}`}>
@@ -18,8 +24,8 @@ const ModifiableTable = ({ columns, data, className }) => {
               <tr key={rowIndex} className="bg-[#fff2bf] border-b border-gray-200 text-gray-900">
                 <td key="0" className="w-25 px-5">
                   <div className='flex gap-8 justify-center items-center'>
-                    <PencilIcon className='h-5 w-5'/>
-                    <TrashIcon className='h-5 w-5'/>
+                    <PencilIcon className='h-5 w-5 cursor-pointer' onClick={() => handleEditClick(row)}/>
+                    <TrashIcon className='h-5 w-5 cursor-pointer'/>
                   </div>
                 </td>
                 {columns.map((column, colIndex) => (
