@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
@@ -7,12 +8,24 @@ import ConfirmationModal from '../components/ConfirmationModal.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
 const SupplierPage = () => {
-  const columns = ['Name', 'Email', 'Contact Number', 'Street', 'Barangay', 'District', 'City', 'Province'];
+  let navigate = useNavigate();
+
+  const columns = ['Company Name', 'Email', 'Contact Number', 'Street', 'Barangay', 'District', 'City', 'Province'];
   const tableData = [
       {
-          'Name': 'Eimma H. Acker',
+          'Company Name': 'Eimma H. Acker Confectionary Company',
           'Email': 'eimma.acker@example.com',
           'Contact Number': '099132384782',
+          'Street': '###',
+          'Barangay': '###',
+          'District': '###',
+          'City': '###',
+          'Province': '###'
+      },
+      {
+          'Company Name': 'Beau Rica Acker Desserts',
+          'Email': 'beau.rica@example.com',
+          'Contact Number': '096925624552',
           'Street': '###',
           'Barangay': '###',
           'District': '###',
@@ -29,6 +42,13 @@ const SupplierPage = () => {
     console.log(deleteRow)
   };
 
+  function camelCase (data, delim = ' ') {
+    const list = Array.isArray(data) ? data : data.toLowerCase().split(delim)
+    return list.reduce((res, cur) => res + cur.charAt(0)
+      .toUpperCase() + cur.slice(1)
+    )
+  }
+
   return (
     <>
       <div className="flex">
@@ -37,7 +57,16 @@ const SupplierPage = () => {
           <div>
             <p className='px-4 pt-4 text-xl font-bold'>Suppliers</p>
             <ModifiableTable
-              onEditClick={() => navigate("/edit_supplier")}
+              onEditClick={(row) => {
+                let editQuery = {};
+                for (const [key, value] of Object.entries(row)) {
+                  editQuery[camelCase(key)] = value;
+                }
+                navigate({
+                  pathname: "/edit_supplier",
+                  search: createSearchParams(editQuery).toString()
+                })
+              }}
               onDeleteClick={(row) => {
                 setDeleteRow(row)
                 setDeleteModal(true)

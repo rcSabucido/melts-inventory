@@ -9,8 +9,6 @@ const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick 
           <thead className="text-xs text-gray-700 uppercase bg-orange-200/70">
             <tr>
               <th className="px-3"></th>
-              <th className="px-6"></th>
-              <th className="px-6"></th>
               {columns.map((column, index) => (
                 <th key={index} scope="col" className="px-6 py-2">{column}</th>
               ))}
