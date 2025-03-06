@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import Button from '../components/Button.jsx';
 import ConfirmationModal from '../components/ConfirmationModal.jsx';
@@ -8,6 +9,7 @@ import { ArrowLongLeftIcon } from '@heroicons/react/24/solid';
 
 const AddSupplierPage = () => {
   const [leaveModal, setLeaveModal] = useState(false);
+  let navigate = useNavigate();
 
   return (
   <>
@@ -30,7 +32,13 @@ const AddSupplierPage = () => {
       </div>
     </main>
     </div>
-    {leaveModal && <ConfirmationModal onClose={() => setLeaveModal(false)} />}
+    {leaveModal && <ConfirmationModal
+      noButton="Cancel"
+      yesButton="Leave"
+      message="You have unsaved changes. Are you sure you want to leave this page?"
+      onYes={() => navigate(-1)}
+      onNo={() => setLeaveModal(false)}
+    />}
   </>
   );
 }
