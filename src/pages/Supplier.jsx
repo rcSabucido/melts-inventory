@@ -32,7 +32,7 @@ const SupplierPage = () => {
           </div>
           <div>
             <p className='px-4 pt-4 text-xl font-bold'>Suppliers</p>
-            <ModifiableTable columns={columns} data={tableData} />
+            <ModifiableTable columns={columns} data={tableData} className="shadow-[-4px_4px_4px_#888888]" />
           </div>
         </main>
       </div>
