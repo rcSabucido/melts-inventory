@@ -13,9 +13,7 @@ const ModifiableTable = ({ columns, data, className }) => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-orange-200/70">
             <tr>
-              <th className="px-3"></th>
-              <th className="px-6"></th>
-              <th className="px-6"></th>
+              <tr></tr>
               {columns.map((column, index) => (
                 <th key={index} scope="col" className="px-6 py-2">{column}</th>
               ))}
