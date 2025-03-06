@@ -2,8 +2,13 @@ import Sidebar from '../components/Sidebar.jsx';
 import Button from '../components/Button.jsx';
 import ModifiableTable from '../components/ModifiableTable.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
+import { useNavigate } from 'react-router-dom';
 
 const EmployeePage = () => {
+  const navigate = useNavigate();
+  const handleAddEmployee = () => {
+    navigate('/add_employee');
+  }
   const columns = ['Name', 'Gender', 'Email', 'Age'];
   const tableData = [
       {
@@ -37,7 +42,7 @@ const EmployeePage = () => {
         <Sidebar />
         <main className="p-4 flex-col bg-[#ffffdb] w-full">
           <div className='flex justify-end mx-5 my-3'>
-            <Button>
+            <Button onClick={handleAddEmployee}>
               <PlusIcon className="h-6 w-6" />
               Add Employee
             </Button>
