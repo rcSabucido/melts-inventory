@@ -36,6 +36,7 @@ const EmployeePage = () => {
         'Age': 20
       }
   ];
+
   return (
     <>
       <div className="flex">
