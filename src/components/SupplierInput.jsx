@@ -1,4 +1,12 @@
-const SupplierInput = ( {className} ) => {
+const SupplierInput = ( {className, formData, setFormData} ) => {
+  const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({
+          ...formData,
+          [name]: value
+      });
+  };
+  
   let addClassName = className
   return (
     <div className={`m-4 p-4 bg-amber-200/30 rounded-xl flex flex-col ${addClassName}`}>
@@ -7,6 +15,8 @@ const SupplierInput = ( {className} ) => {
           <input
               type="text"
               name="companyName"
+              value={formData.companyName}
+              onChange={handleChange}
               className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
               required
           />
@@ -17,6 +27,8 @@ const SupplierInput = ( {className} ) => {
             <input
                 type="text"
                 name="contactNumber"
+                value={formData.contactNumber}
+                onChange={handleChange}
                 className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
                 required
             />
@@ -26,6 +38,8 @@ const SupplierInput = ( {className} ) => {
             <input
                 type="text"
                 name="email"
+                value={formData.email}
+                onChange={handleChange}
                 className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
                 required
             />
@@ -37,6 +51,8 @@ const SupplierInput = ( {className} ) => {
             <input
                 type="text"
                 name="province"
+                value={formData.province}
+                onChange={handleChange}
                 className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
                 required
             />
@@ -46,6 +62,8 @@ const SupplierInput = ( {className} ) => {
             <input
                 type="text"
                 name="city"
+                value={formData.city}
+                onChange={handleChange}
                 className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
                 required
             />
@@ -57,6 +75,8 @@ const SupplierInput = ( {className} ) => {
             <input
                 type="text"
                 name="district"
+                value={formData.district}
+                onChange={handleChange}
                 className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
                 required
             />
@@ -66,6 +86,8 @@ const SupplierInput = ( {className} ) => {
             <input
                 type="text"
                 name="barangay"
+                value={formData.barangay}
+                onChange={handleChange}
                 className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
                 required
             />
@@ -75,6 +97,8 @@ const SupplierInput = ( {className} ) => {
             <input
                 type="text"
                 name="street"
+                value={formData.street}
+                onChange={handleChange}
                 className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
                 required
             />

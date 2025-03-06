@@ -11,32 +11,55 @@ const AddSupplierPage = () => {
   const [leaveModal, setLeaveModal] = useState(false);
   let navigate = useNavigate();
 
+  const [formData, setFormData] = useState({
+      companyName: '',
+      contactNumber: '',
+      email: '',
+      province: '',
+      city: '',
+      district: '',
+      barangay: '',
+      street: ''
+  });
+
+  const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log(formData);
+      navigate("/supplier");
+  };
+
+  const clearForm = () => {
+    document.querySelectorAll('input').forEach(e => {
+      e.value = ""
+    });
+  };
+
   return (
   <>
     <div className="flex">
     <Sidebar />
-    <main className="flex-col p-4 bg-amber-100 w-full">
+    <form className="flex-col p-4 bg-amber-100 w-full" onSubmit={handleSubmit}>
       <button className="p-4 text-2xl font-bold text-gray-800 flex items-center" onClick={() => setLeaveModal(true)}>
           <ArrowLongLeftIcon className='h-6 w-6 mx-4'/>
           Add Supplier
       </button>
-      <SupplierInput className="shadow-[-4px_4px_4px_#888888]" />
+      <SupplierInput className="shadow-[-4px_4px_4px_#888888]" formData={formData} setFormData={setFormData} />
 
       <div className="flex flex-row justify-end">
-        <button onClick={() => { console.log("Clear") } } className="font-bold rounded-lg text-sm text-orange-400/70 mb-2 px-4">
+        <button type="button" onClick={() => clearForm()} className="font-bold rounded-lg text-sm text-orange-400/70 mb-2 px-4">
             Clear
         </button>
-        <Button onClick={() => { console.log("Save") } }>
+        <Button type="submit">
             Save
         </Button>
       </div>
-    </main>
+    </form>
     </div>
     {leaveModal && <ConfirmationModal
       noButton="Cancel"
       yesButton="Leave"
       message="You have unsaved changes. Are you sure you want to leave this page?"
-      onYes={() => navigate(-1)}
+      onYes={() => navigate("/supplier")}
       onNo={() => setLeaveModal(false)}
     />}
   </>
