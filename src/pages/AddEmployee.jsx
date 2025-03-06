@@ -18,7 +18,7 @@ const AddEmployee = () => {
                                     <label>First Name</label>
                                     <input type="text" name="firstName" className="mt-1 block w-full p-2 border-gray-300 bg-white rounded"/>
                                     <label>Last Name</label>
-
+                                    
                                 </div>
                                 
                             </form>
