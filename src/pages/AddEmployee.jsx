@@ -11,6 +11,20 @@ const AddEmployee = () => {
                         <ArrowLeftIcon className="h-6 w-6" />
                         <p className="text-2xl font-bold">Employee Details</p>
                     </div>
+                    <div className="flex justify-center items-center mt-6">
+                        <div className="bg-amber-100 flex flex-col p-5 rounded-lg w-5/6">
+                            <form>
+                                <div className="flex gap-4">
+                                    <label>First Name</label>
+                                    <input type="text" name="firstName" className="mt-1 block w-full p-2 border-gray-300 bg-white rounded"/>
+                                    <label>Last Name</label>
+
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+                    
                 </main>
             </div>
         </>
