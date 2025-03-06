@@ -24,6 +24,7 @@ const InventoryTable = ({ columns, data }) => {
   };
 
     
+  
     return (
       <>
       <div className="border-solid border-orange-400/40 border-2 rounded-md w-full font-bold">
