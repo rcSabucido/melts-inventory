@@ -2,8 +2,8 @@
 const NearExpiry  = () => {
     return (
       <div class="border-solid border-orange-400/40 border-2 rounded-md w-full">
-      <table class="table-auto text-left rtl:text-right w-full">
-        <thead class="text-gray-600 bg-orange-300/30">
+      <table class="w-full text-sm text-left rtl:text-right text-black">
+        <thead class="text-xs text-gray-700 uppercase bg-[#ffe1b7]">
           <tr>
             <th class="px-6 py-3">
               Product
