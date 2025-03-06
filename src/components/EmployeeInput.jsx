@@ -110,6 +110,11 @@ const EmployeeInput = () => {
                     <label className="block text-sm font-medium text-gray-700">Administrator</label>
                 </div>
             </div>
+
+            <div className="flex flex-row justify-end mt-10 mr-4">
+                <button className="font-bold rounded-lg text-medium text-orange-400/70 hover:text-orange-500 mb-2 px-4">Clear</button>
+                <button className="text-white bg-orange-400/70 hover:bg-orange-400/90 font-bold rounded-lg text-medium px-5 py-2.5 me-2 mb-2">Save</button>
+            </div>
         </>
         
     );
