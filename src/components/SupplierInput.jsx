@@ -3,7 +3,7 @@ import Button from '../components/Button.jsx';
 const SupplierInput = ( {className} ) => {
   let addClassName = className
   return (
-    <div className={`m-4 p-4 bg-amber-200/30 rounded-xl flex flex-col ${addClassName}`}>
+    <form className={`m-4 p-4 bg-amber-200/30 rounded-xl flex flex-col ${addClassName}`}>
       <div className="m-4">
           <label className="block text-sm font-medium text-gray-700">Company Name</label>
           <input
@@ -91,7 +91,7 @@ const SupplierInput = ( {className} ) => {
             Save
         </button>
       </div>
-    </div>
+    </form>
   );
 }
 
