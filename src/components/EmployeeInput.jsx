@@ -1,4 +1,4 @@
-const EmployeeInput = () => {
+const EmployeeInput = ({ employeeData }) => {
     return (
         <>
             <div className="m-4 p-4 bg-amber-200/30 rounded-xl flex flex-col shadow-[-4px_4px_4px_#888888]">
@@ -9,6 +9,7 @@ const EmployeeInput = () => {
                             type='text'
                             name='firstName'
                             className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
+                            defaultValue={employeeData?.Name?.split(' ')[0] || ''}
                             required
                         />
                     </div>
@@ -18,6 +19,7 @@ const EmployeeInput = () => {
                             type='text'
                             name='middleName'
                             className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
+                            defaultValue={employeeData?.Name?.split(' ')[1] || ''}
                             required 
                         />
                     </div>
@@ -27,17 +29,19 @@ const EmployeeInput = () => {
                             type='text'
                             name='lastName'
                             className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
+                            defaultValue={employeeData?.Name?.split(' ')[2] || ''}
                             required 
                         />
                     </div>
                 </div>
                 <div className="flex flex-wrap justify-between">
                 <div className="m-4 grow">
-                        <label className="block text-sm font-medium text-gray-700">Username</label>
+                        <label className="block text-sm font-medium text-gray-700">Email</label>
                         <input 
-                            type='text'
-                            name='username'
+                            type='email'
+                            name='email'
                             className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
+                            defaultValue={employeeData?.Email?.split(' ')[0] || ''}
                             required
                         />
                     </div>
@@ -52,7 +56,7 @@ const EmployeeInput = () => {
                     </div>
                     <div className="m-4 grow">
                         <label className="block text-sm font-medium text-gray-700">Gender</label>
-                        <select className="mt-1 block w-full p-2.5 border border-gray-300 bg-white rounded-md">
+                        <select className="mt-1 block w-full p-2.5 border border-gray-300 bg-white rounded-md" defaultValue={employeeData?.Gender || ''}>
                             <option value="male">Male</option>
                             <option value='female'>Female</option>
                             <option value='other'>Other</option>

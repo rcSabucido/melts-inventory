@@ -12,7 +12,7 @@ const EmployeePage = () => {
   const columns = ['Name', 'Gender', 'Email', 'Age'];
   const tableData = [
       {
-          'Name': 'Yerin Arelius',
+          'Name': 'Yerin Wei Arelius',
           'Gender': 'Female',
           'Email': 'yerin@gmail.com',
           'Age': 21
@@ -24,13 +24,13 @@ const EmployeePage = () => {
           'Age': 22
       },
       {
-          'Name': 'Eithan Arelius',
+          'Name': 'Eithan Ozriel Arelius',
           'Gender': 'Male',
           'Email': 'ozriel@gmail.com',
           'Age': 31
       },
       {
-        'Name': 'Akura Mercy',
+        'Name': 'Akura Arelius Mercy',
         'Gender': 'Female',
         'Email': 'aMercy@gmail.com',
         'Age': 20
