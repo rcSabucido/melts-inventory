@@ -32,6 +32,16 @@ const AddSupplierPage = () => {
     document.querySelectorAll('input').forEach(e => {
       e.value = ""
     });
+    setFormData({
+        companyName: '',
+        contactNumber: '',
+        email: '',
+        province: '',
+        city: '',
+        district: '',
+        barangay: '',
+        street: ''
+    });
   };
 
   return (
