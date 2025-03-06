@@ -1,24 +1,23 @@
-import { useState, useRef, useEffect } from 'react';
-
 import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import ModifiableTable from '../components/ModifiableTable.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
 const SupplierPage = () => {
-    const columns = ['Name', 'Email', 'Contact Number', 'Street', 'Barangay', 'District', 'City', 'Province'];
-    const tableData = [
-        {
-            'Name': 'Eimma H. Acker',
-            'Email': 'eimma.acker@example.com',
-            'Contact Number': '099132384782',
-            'Street': '###',
-            'Barangay': '###',
-            'District': '###',
-            'City': '###',
-            'Province': '###'
-        }
-    ];
+  const columns = ['Name', 'Email', 'Contact Number', 'Street', 'Barangay', 'District', 'City', 'Province'];
+  const tableData = [
+      {
+          'Name': 'Eimma H. Acker',
+          'Email': 'eimma.acker@example.com',
+          'Contact Number': '099132384782',
+          'Street': '###',
+          'Barangay': '###',
+          'District': '###',
+          'City': '###',
+          'Province': '###'
+      }
+  ];
+
   return (
     <>
       <div className="flex">

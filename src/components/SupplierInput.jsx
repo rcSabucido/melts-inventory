@@ -1,9 +1,7 @@
-import Button from '../components/Button.jsx';
-
 const SupplierInput = ( {className} ) => {
   let addClassName = className
   return (
-    <form className={`m-4 p-4 bg-amber-200/30 rounded-xl flex flex-col ${addClassName}`}>
+    <div className={`m-4 p-4 bg-amber-200/30 rounded-xl flex flex-col ${addClassName}`}>
       <div className="m-4">
           <label className="block text-sm font-medium text-gray-700">Company Name</label>
           <input
@@ -13,7 +11,7 @@ const SupplierInput = ( {className} ) => {
               required
           />
       </div>
-      <div className="flex-row flex-wrap justify-between">
+      <div className="flex flex-row flex-wrap justify-between">
         <div className="m-4 grow">
             <label className="text-sm font-medium text-gray-700">Contact Number</label>
             <input
@@ -33,7 +31,7 @@ const SupplierInput = ( {className} ) => {
             />
         </div>
       </div>
-      <div className="flex-row flex-wrap justify-between">
+      <div className="flex flex-row flex-wrap justify-between">
         <div className="m-4 grow">
             <label className="text-sm font-medium text-gray-700">Province</label>
             <input
@@ -53,7 +51,7 @@ const SupplierInput = ( {className} ) => {
             />
         </div>
       </div>
-      <div className="flex-row flex-wrap justify-between">
+      <div className="flex flex-row flex-wrap justify-between">
         <div className="m-4">
             <label className="text-sm font-medium text-gray-700">District</label>
             <input
@@ -82,16 +80,7 @@ const SupplierInput = ( {className} ) => {
             />
         </div>
       </div>
-
-      <div className="flex-row justify-end">
-        <Button>
-            Clear
-        </Button>
-        <button className="font-bold rounded-lg text-sm text-orange-400/70 mb-2 px-4">
-            Save
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }
 
