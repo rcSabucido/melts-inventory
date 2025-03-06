@@ -9,13 +9,13 @@ import NearExpiryTable from "../components/NearExpiry.jsx";
 
 
 const InventoryPage = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showAddItemsModal, setShowModal] = useState(false);
 
   return (
     <>
       <div className="flex">
         <Sidebar />
-        <main className="p-4 bg-amber-100 w-full">
+        <main className="p3z-4 bg-amber-100 w-full">
         <div className='mx-5 my-3 flex justify-end gap-2'>
         <SearchBar />
             <Button onClick={() => setShowModal(true)}>
@@ -25,22 +25,21 @@ const InventoryPage = () => {
           </div>
         <div className="m-8 p-4 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
               <div className="p-4 text-2xl font-bold text-gray-800">
-                <a href="#">Inventory</a>
+                <a>Inventory</a>
               </div>
-            <InventoryTable/>
+            <InventoryTable />
          </div>
          <div className="m-8 p-4 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
             <nav className="flex flex-row">
               <div className="p-4 text-2xl font-bold text-gray-800">
-                <a href="#">Near Expiry</a>
+                <a>Near Expiry</a>
               </div>
             </nav>
            <NearExpiryTable/>
             </div>
         </main>
       </div>
-      {showModal && <AddItems onClose={() => setShowModal(false)} />}
-
+      {showAddItemsModal && <AddItems onClose={() => setShowModal(false)} />}
     </>
   );
 }
