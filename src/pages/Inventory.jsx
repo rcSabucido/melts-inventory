@@ -9,13 +9,46 @@ import NearExpiryTable from "../components/NearExpiry.jsx";
 
 
 const InventoryPage = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showAddItemsModal, setShowModal] = useState(false);
+  const columns = ['Products', 'Items', 'Category', 'Price'];
+  const tableData = [
+      {
+          'Products': 'Pat Black',
+          'Items': 25,
+          'Category': 'Pat Black',
+          'Price': '₱450.00'
+      },
+      {
+          'Products': 'Angel Jones',
+          'Items': 66,
+          'Category': 'Pat Black',
+          'Price': '₱325.00'
+      },
+      {
+          'Products': 'Max Edwards',
+          'Items': 3,
+          'Category': 'Pat Black',
+          'Price': '₱25.00'
+      },
+      {
+        'Products': 'Bruce Fox',
+        'Items': 120,
+        'Category': 'Pat Black',
+        'Price': '₱1500.00'
+      },
+      {
+        'Products': 'Devon Fisher',
+        'Items': 15,
+        'Category': 'Pat Black',
+        'Price': '₱999.00'
+      }
+  ];
 
   return (
     <>
       <div className="flex">
         <Sidebar />
-        <main className="p-4 bg-amber-100 w-full">
+        <main className="p3z-4 bg-amber-100 w-full">
         <div className='mx-5 my-3 flex justify-end gap-2'>
         <SearchBar />
             <Button onClick={() => setShowModal(true)}>
@@ -25,22 +58,21 @@ const InventoryPage = () => {
           </div>
         <div className="m-8 p-4 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
               <div className="p-4 text-2xl font-bold text-gray-800">
-                <a href="#">Inventory</a>
+                <a>Inventory</a>
               </div>
-            <InventoryTable/>
+              <InventoryTable columns={columns} data={tableData} />
          </div>
          <div className="m-8 p-4 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
             <nav className="flex flex-row">
               <div className="p-4 text-2xl font-bold text-gray-800">
-                <a href="#">Neary Expiry</a>
+                <a>Near Expiry</a>
               </div>
             </nav>
            <NearExpiryTable/>
             </div>
         </main>
       </div>
-      {showModal && <AddItems onClose={() => setShowModal(false)} />}
-
+      {showAddItemsModal && <AddItems onClose={() => setShowModal(false)} />}
     </>
   );
 }
