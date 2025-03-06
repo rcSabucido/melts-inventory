@@ -10,6 +10,39 @@ import NearExpiryTable from "../components/NearExpiry.jsx";
 
 const InventoryPage = () => {
   const [showAddItemsModal, setShowModal] = useState(false);
+  const columns = ['Products', 'Items', 'Category', 'Price'];
+  const tableData = [
+      {
+          'Products': 'Pat Black',
+          'Items': 25,
+          'Category': 'Pat Black',
+          'Price': '₱450.00'
+      },
+      {
+          'Products': 'Angel Jones',
+          'Items': 66,
+          'Category': 'Pat Black',
+          'Price': '₱325.00'
+      },
+      {
+          'Products': 'Max Edwards',
+          'Items': 3,
+          'Category': 'Pat Black',
+          'Price': '₱25.00'
+      },
+      {
+        'Products': 'Bruce Fox',
+        'Items': 120,
+        'Category': 'Pat Black',
+        'Price': '₱1500.00'
+      },
+      {
+        'Products': 'Devon Fisher',
+        'Items': 15,
+        'Category': 'Pat Black',
+        'Price': '₱999.00'
+      }
+  ];
 
   return (
     <>
@@ -27,7 +60,7 @@ const InventoryPage = () => {
               <div className="p-4 text-2xl font-bold text-gray-800">
                 <a>Inventory</a>
               </div>
-            <InventoryTable />
+              <InventoryTable columns={columns} data={tableData} />
          </div>
          <div className="m-8 p-4 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
             <nav className="flex flex-row">
