@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import SupplierInput from '../components/SupplierInput.jsx';
 import { ArrowLongLeftIcon } from '@heroicons/react/24/solid';
@@ -14,7 +13,7 @@ const AddSupplierPage = () => {
           <ArrowLongLeftIcon className='h-6 w-6 mx-4'/>
           Add Supplier
       </button>
-      <SupplierInput />
+      <SupplierInput className="shadow-[-4px_4px_4px_#888888]" />
     </main>
     </div>
   </>
