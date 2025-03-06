@@ -66,7 +66,7 @@ const AddSupplierPage = () => {
     </form>
     </div>
     {leaveModal && <ConfirmationModal
-      noButton="Stay"
+      noButton="Cancel"
       yesButton="Leave"
       message="You have unsaved changes. Are you sure you want to leave this page?"
       onYes={() => navigate("/supplier")}

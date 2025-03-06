@@ -34,18 +34,10 @@ const SupplierPage = () => {
       <div className="flex">
         <Sidebar />
         <main className="flex-col p-4 bg-amber-100 w-full">
-          <div className='mx-5 my-3 flex justify-end gap-2'>
-            <a href="/add_supplier">
-              <Button>
-                <PlusIcon className='h-6 w-6'/>
-                Add Supplier
-              </Button>
-            </a>
-          </div>
           <div>
             <p className='px-4 pt-4 text-xl font-bold'>Suppliers</p>
             <ModifiableTable
-              onEditClick={() => console.log("Edit Supplier")}
+              onEditClick={() => navigate("/edit_supplier")}
               onDeleteClick={(row) => {
                 setDeleteRow(row)
                 setDeleteModal(true)
@@ -53,6 +45,14 @@ const SupplierPage = () => {
               columns={columns}
               data={tableData}
               className="shadow-[-4px_4px_4px_#888888]" />
+          </div>
+          <div className='mx-5 my-3 flex justify-start gap-2'>
+            <a href="/add_supplier">
+              <Button>
+                <PlusIcon className='h-6 w-6'/>
+                Add Supplier
+              </Button>
+            </a>
           </div>
         </main>
       </div>
@@ -63,6 +63,7 @@ const SupplierPage = () => {
         onYes={() => {
           deleteSupplier()
           setDeleteRow(null)
+          setDeleteModal(false)
         }}
         onNo={() => setDeleteModal(false)}
       />}
