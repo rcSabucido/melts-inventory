@@ -2,7 +2,7 @@ import { DocumentArrowDownIcon } from '@heroicons/react/24/solid';
 
 const transactiontable  = () => {
     return (
-      <div class="border-solid border-orange-400/40 border-2 rounded-md w-full">
+      <div class="m-1 border-solid border-orange-400/40 border-2 rounded-md w-full">
       <table class="table-auto text-left rtl:text-right w-full">
         <thead class="text-gray-600 bg-orange-300/30">
           <tr>
@@ -28,15 +28,15 @@ const transactiontable  = () => {
         </thead>
         {/* insert-y[+16.5] */}
         <DocumentArrowDownIcon
-            class="text-orange-400/70  h-6 absolute inset-y-42 left-0 w-200" />
+            class="text-orange-400/70  h-6 absolute inset-y-42 inset-x-97 right-133" />
         <DocumentArrowDownIcon
-            class="text-orange-400/70 h-6 absolute inset-y-58.5 left-0 w-200" />
+            class="text-orange-400/70 h-6 absolute inset-y-58.5 inset-x-97 right-133" />
         <DocumentArrowDownIcon
-            class="text-orange-400/70 h-6 absolute inset-y-75 left-0 w-200" />
+            class="text-orange-400/70 h-6 absolute inset-y-75 inset-x-97 right-133" />
         <DocumentArrowDownIcon
-            class="text-orange-400/70 h-6 absolute inset-y-91.5 left-0 w-200" />
+            class="text-orange-400/70 h-6 absolute inset-y-91.5 inset-x-97 right-133" />
         <DocumentArrowDownIcon
-            class="text-orange-400/70 h-6 absolute inset-y-108 left-0 w-200" />
+            class="text-orange-400/70 h-6 absolute inset-y-108 inset-x-97 right-133" />
         <tbody>
           <tr>
             <th class="px-6 py-5 border-solid border-gray-400/20 border-t-2">1</th>
