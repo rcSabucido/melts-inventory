@@ -28,15 +28,15 @@ const transactiontable  = () => {
         </thead>
         {/* insert-y[+16.5] */}
         <DocumentArrowDownIcon
-            class="text-orange-400/70  h-6 absolute inset-y-42 inset-x-97 right-133" />
+            class="text-orange-400/70  h-6 absolute inset-y-43 inset-x-97 right-133" />
         <DocumentArrowDownIcon
-            class="text-orange-400/70 h-6 absolute inset-y-58.5 inset-x-97 right-133" />
+            class="text-orange-400/70 h-6 absolute inset-y-59 inset-x-97 right-133" />
         <DocumentArrowDownIcon
-            class="text-orange-400/70 h-6 absolute inset-y-75 inset-x-97 right-133" />
+            class="text-orange-400/70 h-6 absolute inset-y-76 inset-x-97 right-133" />
         <DocumentArrowDownIcon
-            class="text-orange-400/70 h-6 absolute inset-y-91.5 inset-x-97 right-133" />
+            class="text-orange-400/70 h-6 absolute inset-y-92 inset-x-97 right-133" />
         <DocumentArrowDownIcon
-            class="text-orange-400/70 h-6 absolute inset-y-108 inset-x-97 right-133" />
+            class="text-orange-400/70 h-6 absolute inset-y-109 inset-x-97 right-133" />
         <tbody>
           <tr>
             <th class="px-6 py-5 border-solid border-gray-400/20 border-t-2">1</th>
