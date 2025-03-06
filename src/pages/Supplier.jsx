@@ -1,6 +1,9 @@
+import { useState } from 'react';
+
 import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import ModifiableTable from '../components/ModifiableTable.jsx';
+import ConfirmationModal from '../components/ConfirmationModal.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
 const SupplierPage = () => {
@@ -18,6 +21,14 @@ const SupplierPage = () => {
       }
   ];
 
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteRow, setDeleteRow] = useState(null);
+
+  const deleteSupplier = () => {
+    console.log(`Deleting supplier: `)
+    console.log(deleteRow)
+  };
+
   return (
     <>
       <div className="flex">
@@ -33,10 +44,28 @@ const SupplierPage = () => {
           </div>
           <div>
             <p className='px-4 pt-4 text-xl font-bold'>Suppliers</p>
-            <ModifiableTable columns={columns} data={tableData} className="shadow-[-4px_4px_4px_#888888]" />
+            <ModifiableTable
+              onEditClick={() => console.log("Edit Supplier")}
+              onDeleteClick={(row) => {
+                setDeleteRow(row)
+                setDeleteModal(true)
+              }}
+              columns={columns}
+              data={tableData}
+              className="shadow-[-4px_4px_4px_#888888]" />
           </div>
         </main>
       </div>
+      {deleteModal && <ConfirmationModal
+        noButton="Cancel"
+        yesButton="Delete"
+        message="Are you sure you want to delete this supplier's information?"
+        onYes={() => {
+          deleteSupplier()
+          setDeleteRow(null)
+        }}
+        onNo={() => setDeleteModal(false)}
+      />}
     </>
   );
 }
