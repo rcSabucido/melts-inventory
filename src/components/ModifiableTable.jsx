@@ -7,7 +7,7 @@ const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick 
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-orange-200/70">
             <tr>
-              <tr></tr>
+              <th className="px-3"></th>
               {columns.map((column, index) => (
                 <th key={index} scope="col" className="px-6 py-2">{column}</th>
               ))}
