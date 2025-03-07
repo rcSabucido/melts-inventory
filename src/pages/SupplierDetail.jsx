@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Button from '../components/Button.jsx';
 import ConfirmationModal from '../components/ConfirmationModal.jsx';
@@ -7,25 +7,12 @@ import Sidebar from '../components/Sidebar.jsx';
 import SupplierInput from '../components/SupplierInput.jsx';
 import { ArrowLongLeftIcon } from '@heroicons/react/24/solid';
 
-const EditSupplierPage = () => {
+const SupplierDetailPage = () => {
   const [leaveModal, setLeaveModal] = useState(false);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [editParams, setEditParams] = useSearchParams();
-  const editForm = {
-      companyName: '',
-      contactNumber: '',
-      email: '',
-      province: '',
-      city: '',
-      district: '',
-      barangay: '',
-      street: ''
-  }
-  editParams.keys().forEach(key => {
-    editForm[key] = editParams.get(key)
-  })
-  const [formData, setFormData] = useState(editForm);
+  const [formData, setFormData] = useState(location.state?.supplierData || {});
 
   const handleSubmit = (e) => {
       e.preventDefault();
@@ -49,15 +36,22 @@ const EditSupplierPage = () => {
     });
   };
 
+  let headerText;
+  if (location.state?.supplierData !== undefined) {
+    headerText = "Edit Supplier"
+  } else {
+    headerText = "Add Supplier"
+  }
+
   return (
   <>
     <div className="flex">
     <Sidebar />
     <form className="flex-col p-4 bg-amber-100 w-full" onSubmit={handleSubmit}>
-      <button type="button" className="p-4 text-2xl font-bold text-gray-800 flex items-center" onClick={() => setLeaveModal(true)}>
-          <ArrowLongLeftIcon className='h-6 w-6 mx-4'/>
-          Edit Supplier
-      </button>
+      <span className="p-4 text-2xl font-bold text-gray-800 flex items-center">
+          <ArrowLongLeftIcon className='h-6 w-6 mx-4' onClick={() => setLeaveModal(true)}/>
+          {headerText}
+      </span>
       <SupplierInput className="shadow-[-4px_4px_4px_#888888]" formData={formData} setFormData={setFormData} />
 
       <div className="flex flex-row justify-end">
@@ -81,4 +75,4 @@ const EditSupplierPage = () => {
   );
 }
 
-export default EditSupplierPage;
+export default SupplierDetailPage;

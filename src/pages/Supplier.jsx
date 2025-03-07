@@ -62,9 +62,10 @@ const SupplierPage = () => {
                 for (const [key, value] of Object.entries(row)) {
                   editQuery[camelCase(key)] = value;
                 }
-                navigate({
-                  pathname: "/edit_supplier",
-                  search: createSearchParams(editQuery).toString()
+                navigate("/supplier_detail", {
+                  state: {
+                    supplierData: editQuery
+                  }
                 })
               }}
               onDeleteClick={(row) => {
@@ -76,7 +77,7 @@ const SupplierPage = () => {
               className="shadow-[-4px_4px_4px_#888888]" />
           </div>
           <div className='mx-5 my-3 flex justify-start gap-2'>
-            <a href="/add_supplier">
+            <a href="/supplier_detail">
               <Button>
                 <PlusIcon className='h-6 w-6'/>
                 Add Supplier

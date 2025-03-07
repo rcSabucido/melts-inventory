@@ -7,8 +7,7 @@ import Supplier from "./pages/Supplier"
 import Restock from "./pages/Restock"
 import Login from "./pages/Login"
 import Home from "./pages/Home"
-import AddSupplier from "./pages/AddSupplier"
-import EditSupplier from "./pages/EditSupplier"
+import SupplierDetail from "./pages/SupplierDetail"
 import AddEmployee from "./pages/AddEmployee"
 
 function App() {
@@ -22,8 +21,7 @@ function App() {
         <Route path="transaction" element={<Transaction />} />
         <Route path="supplier" element={<Supplier />} />
         <Route path="restock" element={<Restock />} />
-        <Route path="add_supplier" element={<AddSupplier />} />
-        <Route path="edit_supplier" element={<EditSupplier />} />
+        <Route path="supplier_detail" element={<SupplierDetail />} />
         <Route path="add_employee" element={<AddEmployee />} />
       </Routes>
     </BrowserRouter>
