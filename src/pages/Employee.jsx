@@ -9,6 +9,9 @@ const EmployeePage = () => {
   const handleAddEmployee = () => {
     navigate('/add_employee');
   }
+  const handleEditClick = (row) => {
+    navigate('/add_employee', { state: { employeeData: row }});
+  }
   const columns = ['Name', 'Gender', 'Email', 'Age'];
   const tableData = [
       {
@@ -49,17 +52,11 @@ const EmployeePage = () => {
             </Button>
           </div>
           <p className='px-4 pt-4 text-xl font-bold'>Employees</p>
-          <ModifiableTable columns={columns} data={tableData} />
+          <ModifiableTable columns={columns} data={tableData} onEditClick={handleEditClick} />
         </main>
       </div>
     </>
   );
 }
-
-// const navigate = useNavigate();
-
-// const handleEditClick = (row) => {
-//   navigate('/add_employee', { state: { employeeData: row }});
-// }
 
 export default EmployeePage;
