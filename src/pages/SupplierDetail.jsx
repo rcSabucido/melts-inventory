@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Button from '../components/Button.jsx';
 import ConfirmationModal from '../components/ConfirmationModal.jsx';
@@ -7,20 +7,12 @@ import Sidebar from '../components/Sidebar.jsx';
 import SupplierInput from '../components/SupplierInput.jsx';
 import { ArrowLongLeftIcon } from '@heroicons/react/24/solid';
 
-const AddSupplierPage = () => {
+const SupplierDetailPage = () => {
   const [leaveModal, setLeaveModal] = useState(false);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [formData, setFormData] = useState({
-      companyName: '',
-      contactNumber: '',
-      email: '',
-      province: '',
-      city: '',
-      district: '',
-      barangay: '',
-      street: ''
-  });
+  const [formData, setFormData] = useState(location.state?.supplierData || {});
 
   const handleSubmit = (e) => {
       e.preventDefault();
@@ -32,17 +24,34 @@ const AddSupplierPage = () => {
     document.querySelectorAll('input').forEach(e => {
       e.value = ""
     });
+    setFormData({
+        companyName: '',
+        contactNumber: '',
+        email: '',
+        province: '',
+        city: '',
+        district: '',
+        barangay: '',
+        street: ''
+    });
   };
+
+  let headerText;
+  if (location.state?.supplierData !== undefined) {
+    headerText = "Edit Supplier"
+  } else {
+    headerText = "Add Supplier"
+  }
 
   return (
   <>
     <div className="flex">
     <Sidebar />
     <form className="flex-col p-4 bg-amber-100 w-full" onSubmit={handleSubmit}>
-      <button type="button" className="p-4 text-2xl font-bold text-gray-800 flex items-center" onClick={() => setLeaveModal(true)}>
-          <ArrowLongLeftIcon className='h-6 w-6 mx-4'/>
-          Add Supplier
-      </button>
+      <span className="p-4 text-2xl font-bold text-gray-800 flex items-center">
+          <ArrowLongLeftIcon className='h-6 w-6 mx-4' onClick={() => setLeaveModal(true)}/>
+          {headerText}
+      </span>
       <SupplierInput className="shadow-[-4px_4px_4px_#888888]" formData={formData} setFormData={setFormData} />
 
       <div className="flex flex-row justify-end">
@@ -66,4 +75,4 @@ const AddSupplierPage = () => {
   );
 }
 
-export default AddSupplierPage;
+export default SupplierDetailPage;

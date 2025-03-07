@@ -27,7 +27,7 @@ const InventoryTable = ({ columns, data }) => {
   
     return (
       <>
-      <div className="border-solid border-orange-400/40 border-2 rounded-md w-full font-bold">
+      <div className="border-solid border-orange-400/40 border-2 rounded-md w-full">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-[#ffe1b7]">
             <tr>
@@ -47,7 +47,9 @@ const InventoryTable = ({ columns, data }) => {
                   </div>
                 </td>
                 {columns.map((column, colIndex) => (
-                  <td key={colIndex} className="px-6 py-5">{row[column]}</td>
+                  <td key={colIndex} className="px-6 py-5">
+                  {column === 'Price' ? `₱${parseFloat(row[column]).toFixed(2)}` : row[column]}
+                  </td>
                 ))}
               </tr>
             ))}

@@ -18,8 +18,8 @@ const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick 
               <tr key={rowIndex} className="bg-[#fff2bf] border-b border-gray-200 text-gray-900">
                 <td key="0" className="w-25 px-5">
                   <div className='flex gap-8 justify-center items-center'>
-                    <PencilIcon className='h-5 w-5 cursor-pointer' onClick={() => onEditClick(row)}/>
-                    <TrashIcon className='h-5 w-5 cursor-pointer' onClick={() => onDeleteClick(row)}/>
+                    <PencilIcon className='h-5 w-5 cursor-pointer' onClick={() => onEditClick(row)} />
+                    <TrashIcon className='h-5 w-5 cursor-pointer' onClick={() => onDeleteClick(row)} />
                   </div>
                 </td>
                 {columns.map((column, colIndex) => (
