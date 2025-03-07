@@ -3,12 +3,25 @@ import Button from '../components/Button.jsx';
 import ModifiableTable from '../components/ModifiableTable.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router-dom';
+import ConfirmationModal from '../components/ConfirmationModal.jsx';
+import { useState } from 'react';
 
 const EmployeePage = () => {
   const navigate = useNavigate();
   const handleAddEmployee = () => {
     navigate('/add_employee');
   }
+  const handleEditClick = (row) => {
+    navigate('/add_employee', { state: { employeeData: row }});
+  }
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteRow, setDeleteRow] = useState(null);
+  
+  const deleteEmployee = () => {
+    console.log('Deleting employee: ');
+    console.log(deleteRow);
+  }
+
   const columns = ['Name', 'Gender', 'Email', 'Age'];
   const tableData = [
       {
@@ -49,9 +62,18 @@ const EmployeePage = () => {
             </Button>
           </div>
           <p className='px-4 pt-4 text-xl font-bold'>Employees</p>
-          <ModifiableTable columns={columns} data={tableData} />
+          <ModifiableTable columns={columns} data={tableData} onEditClick={handleEditClick} onDeleteClick={(row) => {
+            setDeleteRow(row);
+            setDeleteModal(true);
+          }} />
         </main>
       </div>
+      {deleteModal && <ConfirmationModal noButton='Cancel' yesButton='Delete' message="Are you sure you want to delete this employee's information?"
+        onYes={() => {deleteEmployee()
+          setDeleteModal(false)
+          setDeleteRow(null)}}
+        onNo={() => setDeleteModal(false)}
+       />}
     </>
   );
 }

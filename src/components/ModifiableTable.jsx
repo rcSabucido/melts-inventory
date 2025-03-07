@@ -1,5 +1,4 @@
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { useNavigate } from 'react-router-dom';
 
 const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick }) => {
     let addClassName = className;
