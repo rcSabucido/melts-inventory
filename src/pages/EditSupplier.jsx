@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Button from '../components/Button.jsx';
 import ConfirmationModal from '../components/ConfirmationModal.jsx';
@@ -7,11 +7,12 @@ import Sidebar from '../components/Sidebar.jsx';
 import SupplierInput from '../components/SupplierInput.jsx';
 import { ArrowLongLeftIcon } from '@heroicons/react/24/solid';
 
-const AddSupplierPage = () => {
+const EditSupplierPage = () => {
   const [leaveModal, setLeaveModal] = useState(false);
   let navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
+  const [editParams, setEditParams] = useSearchParams();
+  const editForm = {
       companyName: '',
       contactNumber: '',
       email: '',
@@ -20,7 +21,11 @@ const AddSupplierPage = () => {
       district: '',
       barangay: '',
       street: ''
-  });
+  }
+  editParams.keys().forEach(key => {
+    editForm[key] = editParams.get(key)
+  })
+  const [formData, setFormData] = useState(editForm);
 
   const handleSubmit = (e) => {
       e.preventDefault();
@@ -51,7 +56,7 @@ const AddSupplierPage = () => {
     <form className="flex-col p-4 bg-amber-100 w-full" onSubmit={handleSubmit}>
       <button type="button" className="p-4 text-2xl font-bold text-gray-800 flex items-center" onClick={() => setLeaveModal(true)}>
           <ArrowLongLeftIcon className='h-6 w-6 mx-4'/>
-          Add Supplier
+          Edit Supplier
       </button>
       <SupplierInput className="shadow-[-4px_4px_4px_#888888]" formData={formData} setFormData={setFormData} />
 
@@ -66,7 +71,7 @@ const AddSupplierPage = () => {
     </form>
     </div>
     {leaveModal && <ConfirmationModal
-      noButton="Stay"
+      noButton="Cancel"
       yesButton="Leave"
       message="You have unsaved changes. Are you sure you want to leave this page?"
       onYes={() => navigate("/supplier")}
@@ -76,4 +81,4 @@ const AddSupplierPage = () => {
   );
 }
 
-export default AddSupplierPage;
+export default EditSupplierPage;

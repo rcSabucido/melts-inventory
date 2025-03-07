@@ -8,7 +8,7 @@ const ConfirmationModal = ({ message, noButton, yesButton, onYes, onNo }) => {
         <p className="text-2xl font-bold mb-4 text-center">{message}</p>
 
         <div className="flex flex-row justify-center">        
-          <button onClick={() => { onNo() } } className="font-bold rounded-lg text-2xl text-orange-400/70 p-3 bg-red-600 hover:bg-red-800/90 text-white m-4">
+          <button onClick={() => { onNo() } } className="font-bold rounded-lg text-2xl text-orange-400/70 p-3 bg-red-500 hover:bg-red-600 text-white m-4">
             {noButton}
           </button>
           <button onClick={() => { onYes() } } className="font-bold rounded-lg text-2xl text-orange-400/70 p-3 text-white bg-orange-400/70 hover:bg-orange-400/90 m-4">

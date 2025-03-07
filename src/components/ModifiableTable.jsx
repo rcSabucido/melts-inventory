@@ -9,8 +9,6 @@ const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick 
           <thead className="text-xs text-gray-700 uppercase bg-orange-200/70">
             <tr>
               <th className="px-3"></th>
-              <th className="px-6"></th>
-              <th className="px-6"></th>
               {columns.map((column, index) => (
                 <th key={index} scope="col" className="px-6 py-2">{column}</th>
               ))}
@@ -21,8 +19,8 @@ const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick 
               <tr key={rowIndex} className="bg-[#fff2bf] border-b border-gray-200 text-gray-900">
                 <td key="0" className="w-25 px-5">
                   <div className='flex gap-8 justify-center items-center'>
-                    <PencilIcon className='h-5 w-5' onClick={() => onEditClick(row)} />
-                    <TrashIcon className='h-5 w-5' onClick={() => onDeleteClick(row)} />
+                    <PencilIcon className='h-5 w-5 cursor-pointer' onClick={() => onEditClick(row)} />
+                    <TrashIcon className='h-5 w-5 cursor-pointer' onClick={() => onDeleteClick(row)} />
                   </div>
                 </td>
                 {columns.map((column, colIndex) => (
