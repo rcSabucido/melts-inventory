@@ -16,31 +16,31 @@ const InventoryPage = () => {
           'Products': 'Pat Black',
           'Items': 25,
           'Category': 'Pat Black',
-          'Price': '₱450.00'
+           Price: 450
       },
       {
           'Products': 'Angel Jones',
           'Items': 66,
           'Category': 'Pat Black',
-          'Price': '₱325.00'
+           Price: 325
       },
       {
           'Products': 'Max Edwards',
           'Items': 3,
           'Category': 'Pat Black',
-          'Price': '₱25.00'
+           Price: 25
       },
       {
         'Products': 'Bruce Fox',
         'Items': 120,
         'Category': 'Pat Black',
-        'Price': '₱1500.00'
+         Price: 1500
       },
       {
         'Products': 'Devon Fisher',
         'Items': 15,
         'Category': 'Pat Black',
-        'Price': '₱999.00'
+         Price: 999.00
       }
   ];
 
