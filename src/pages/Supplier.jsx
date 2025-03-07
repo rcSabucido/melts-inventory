@@ -55,7 +55,15 @@ const SupplierPage = () => {
         <Sidebar />
         <main className="flex-col p-4 bg-amber-100 w-full">
           <div>
-            <p className='px-4 pt-4 text-xl font-bold'>Suppliers</p>
+            <div className='w-auto mx-5 my-3 flex gap-2 justify-between'>
+              <p className='px-4 pt-4 text-xl'>Suppliers</p>
+              <a href="/supplier_detail" className="">
+                <Button>
+                  <PlusIcon className='h-6 w-6'/>
+                  Add Supplier
+                </Button>
+              </a>
+            </div>
             <ModifiableTable
               onEditClick={(row) => {
                 let editQuery = {};
@@ -75,15 +83,7 @@ const SupplierPage = () => {
               columns={columns}
               data={tableData}
               className="shadow-[-4px_4px_4px_#888888]" />
-          </div>
-          <div className='mx-5 my-3 flex justify-start gap-2'>
-            <a href="/supplier_detail">
-              <Button>
-                <PlusIcon className='h-6 w-6'/>
-                Add Supplier
-              </Button>
-            </a>
-          </div>
+        </div>
         </main>
       </div>
       {deleteModal && <ConfirmationModal
