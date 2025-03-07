@@ -36,6 +36,13 @@ const SupplierDetailPage = () => {
     });
   };
 
+  let headerText;
+  if (location.state?.supplierData !== undefined) {
+    headerText = "Edit Supplier"
+  } else {
+    headerText = "Add Supplier"
+  }
+
   return (
   <>
     <div className="flex">
@@ -43,7 +50,7 @@ const SupplierDetailPage = () => {
     <form className="flex-col p-4 bg-amber-100 w-full" onSubmit={handleSubmit}>
       <span className="p-4 text-2xl font-bold text-gray-800 flex items-center">
           <ArrowLongLeftIcon className='h-6 w-6 mx-4' onClick={() => setLeaveModal(true)}/>
-          Supplier Detail
+          {headerText}
       </span>
       <SupplierInput className="shadow-[-4px_4px_4px_#888888]" formData={formData} setFormData={setFormData} />
 
