@@ -1,4 +1,4 @@
-const EmployeeInput = ({ employeeData }) => {
+const EmployeeInput = ({ employeeData, formData, setFormData }) => {
     return (
         <>
             <div className="m-4 p-4 bg-amber-200/30 rounded-xl flex flex-col shadow-[-4px_4px_4px_#888888]">
