@@ -1,4 +1,4 @@
-const TransactionItemInput = ({}) => {
+const TransactionItemInput = () => {
     return (
         <div className='flex flex-wrap justify-between'>
                     <div className="m-4 grow-[3]">
