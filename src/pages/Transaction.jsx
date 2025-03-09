@@ -1,9 +1,14 @@
 import Sidebar from '../components/Sidebar.jsx';
 import Button from '../components/Button.jsx';
 import Transactiontable from '../components/TransactionsTable.jsx';
-import { FunnelIcon, PlusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/solid';
+import { useNavigate } from 'react-router-dom';
+import { FunnelIcon, PlusIcon } from '@heroicons/react/24/solid';
 
 const TransactionPage = () => {
+  const navigate = useNavigate();
+  const handleTransactionChoice = () => {
+    navigate('/transaction_choice');
+  }
   const columns = ['Date', 'Products', 'Recorded By', 'Items', 'Total Price'];
   const tableData = [
       {
@@ -57,7 +62,7 @@ const TransactionPage = () => {
             <Button>
               <FunnelIcon className="h-6 w-6" />
             </Button>
-            <Button>
+            <Button onClick={handleTransactionChoice}>
               <PlusIcon className="h-6 w-6" />
               Add Transaction
             </Button>
