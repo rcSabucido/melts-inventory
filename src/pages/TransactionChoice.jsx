@@ -7,6 +7,9 @@ const TransactionChoice = () => {
     const handleQRCode = () => {
         navigate('/qr_transaction');
     }
+    const handleTransactionDetails = () => {
+        navigate('/transaction_details');
+    }
     return (
         <>
             <div class='flex'>
@@ -21,7 +24,7 @@ const TransactionChoice = () => {
                             <p className="text-3xl font-bold">QR Code</p>
                             <QrCodeIcon className="w-full" />
                         </button>
-                        <button className="flex flex-col justify-center align-center p-20 bg-amber-200/30 rounded-2xl shadow-xl hover:bg-amber-200/60">
+                        <button className="flex flex-col justify-center align-center p-20 bg-amber-200/30 rounded-2xl shadow-xl hover:bg-amber-200/60" onClick={handleTransactionDetails}>
                             <p className="text-3xl font-bold">Manual Input</p>
                             <ComputerDesktopIcon className="w-full" />
                         </button>
