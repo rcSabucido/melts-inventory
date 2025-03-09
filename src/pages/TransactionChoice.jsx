@@ -1,7 +1,12 @@
 import Sidebar from "../components/Sidebar";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon, QrCodeIcon, ComputerDesktopIcon } from "@heroicons/react/24/solid";
 
 const TransactionChoice = () => {
+    const navigate = useNavigate();
+    const handleQRCode = () => {
+        navigate('/qr_transaction');
+    }
     return (
         <>
             <div class='flex'>
@@ -12,7 +17,7 @@ const TransactionChoice = () => {
                         <p className="text-2xl font-bold">Transaction Details</p>
                     </div>
                     <div className="flex gap-15 p-5 mt-15 justify-center items-center">
-                        <button className="flex-col justify-center align-center bg-amber-200/30  p-20 rounded-2xl shadow-xl hover:bg-amber-200/60">
+                        <button className="flex-col justify-center align-center bg-amber-200/30  p-20 rounded-2xl shadow-xl hover:bg-amber-200/60" onClick={handleQRCode}>
                             <p className="text-3xl font-bold">QR Code</p>
                             <QrCodeIcon className="w-full" />
                         </button>
