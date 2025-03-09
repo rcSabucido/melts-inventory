@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { PlusIcon } from "@heroicons/react/20/solid";
+import Button from "./Button";
 import TransactionItemInput from "./TransactionItemInput";
 
 const TransactionInput = () => {
@@ -35,6 +36,16 @@ const TransactionInput = () => {
                         <p className="text-3xl font-bold ">Total: $0000</p>
                         </div>
                 </div>
+            </div>
+            <div className="flex justify-end mt-10 mr-4">
+                <button type='button' className="font-bold rounded-lg text-medium text-orange-400/70 hover:text-orange-500 mb-2 px-4">Clear</button>
+                <Button type='button'>
+                    <PlusIcon className="h-6 w-6" />
+                    Add Item
+                </Button>
+                <Button type='submit'>
+                    Save
+                </Button>
             </div>
         </>
     );
