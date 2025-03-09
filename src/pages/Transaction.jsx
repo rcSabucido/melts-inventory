@@ -52,10 +52,18 @@ const TransactionPage = () => {
     <>
       <div className="flex">
         <Sidebar />
-        <main className="p-15 bg-[#ffffdb] w-full">
-          <div></div>
+        <main className="flex-col p-4 bg-[#ffffdb] w-full">
+          <div className='flex justify-end mx-5 my-3 gap-2'>
+            <Button>
+              <FunnelIcon className="h-6 w-6" />
+            </Button>
+            <Button>
+              <PlusIcon className="h-6 w-6" />
+              Add Transaction
+            </Button>
+          </div>
           <div className="p-1 text-2xl font-bold text-gray-800">
-            <p>Transactions</p>
+            <p className='ml-3'>Transactions</p>
           </div>
           <Transactiontable columns={columns} data={tableData} className="shadow-md"/>
         </main>
