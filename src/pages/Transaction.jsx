@@ -1,5 +1,7 @@
 import Sidebar from '../components/Sidebar.jsx';
+import Button from '../components/Button.jsx';
 import Transactiontable from '../components/TransactionsTable.jsx';
+import { FunnelIcon, PlusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/solid';
 
 const TransactionPage = () => {
   const columns = ['Date', 'Products', 'Recorded By', 'Items', 'Total Price'];
@@ -50,11 +52,12 @@ const TransactionPage = () => {
     <>
       <div className="flex">
         <Sidebar />
-        <main className="p-15 bg-amber-100 w-full">
+        <main className="p-15 bg-[#ffffdb] w-full">
+          <div></div>
           <div className="p-1 text-2xl font-bold text-gray-800">
             <p>Transactions</p>
           </div>
-          <Transactiontable columns={columns} data={tableData} className="shadow-[-4px_4px_4px_#888888]"/>
+          <Transactiontable columns={columns} data={tableData} className="shadow-md"/>
         </main>
       </div>
     </>
