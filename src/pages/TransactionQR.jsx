@@ -1,11 +1,12 @@
 import Sidebar from "../components/Sidebar";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Scanner from "../components/Scanner";
 import { useEffect, useState } from "react";
 
 const TransactionQR = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [scanResult, setScanResult] = useState(null);
     const handleBack = () => {
         navigate('/transaction');
@@ -17,6 +18,8 @@ const TransactionQR = () => {
                 state: {
                     isDesktop: false,
                     scannedProduct: scanResult,
+                    existingItems: location.state?.existingItems ?? [],
+                    addingNewItem: location.state?.addItem || false
                 }
             })
         } 
