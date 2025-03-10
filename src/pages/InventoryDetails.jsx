@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from '../components/Button.jsx';
-import { PlusIcon, ArrowLeftIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, ArrowLeftIcon} from '@heroicons/react/24/solid';
 import Sidebar from '../components/Sidebar.jsx';
 import SearchBar from '../components/SearchBar.jsx';
 import InventoryTable from "../components/InventoryTable.jsx";
@@ -10,38 +10,38 @@ import AddItems from '../components/AddItemsModal.jsx';
 const InventoryDetails = () => {
   const [showAddItemsModal, setShowModal] = useState(false);
   const columns = ['Products', 'Items', 'Category', 'Price'];
-  const TableData = [
-      {
-          'Products': 'Pat Black',
-          'Items': 25,
-          'Category': 'Pat Black',
-           Price: 450
-      },
-      {
-          'Products': 'Angel Jones',
-          'Items': 66,
-          'Category': 'Pat Black',
-           Price: 325
-      },
-      {
-          'Products': 'Max Edwards',
-          'Items': 3,
-          'Category': 'Pat Black',
-           Price: 25
-      },
-      {
-          'Products': 'Bruce Fox',
-          'Items': 120,
-          'Category': 'Pat Black',
-           Price: 1500
-      },
-      {
+  const data = [
+    {
+        'Products': 'Pat Black',
+        'Items': 25,
+        'Category': 'Pat Black',
+        Price: 450
+    },
+    {
+        'Products': 'Angel Jones',
+        'Items': 66,
+        'Category': 'Pat Black',
+        Price: 325
+    },
+    {
+        'Products': 'Max Edwards',
+        'Items': 3,
+        'Category': 'Pat Black',
+        Price: 25
+    },
+    {
+        'Products': 'Bruce Fox',
+        'Items': 120,
+        'Category': 'Pat Black',
+        Price: 1500
+    },
+    {
         'Products': 'Devon Fisher',
         'Items': 15,
         'Category': 'Pat Black',
-         Price: 999.00
-      },
-      
+        Price: 999.00
+    },
+    
   ];
 
   return (
@@ -61,7 +61,7 @@ const InventoryDetails = () => {
               <a href='/inventory'><ArrowLeftIcon className="h-6 w-6" /></a>
               <p className="text-2xl font-bold">Inventory Details</p>
          </div>
-         <InventoryTable columns={columns} data={TableData} />
+         <InventoryTable columns={columns} data={data} />
          </div>
         </main>
       </div>
