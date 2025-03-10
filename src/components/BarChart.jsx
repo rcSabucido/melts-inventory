@@ -31,8 +31,8 @@ const BarChart = () => {
     ]
   }
   return (
-    <div class="p-8 pt-0">
-      <div class="border border-solid border-orange-400/40 border-2 rounded-md">
+    <div className="p-8 pt-0">
+      <div className="border border-solid border-orange-400/40 border-2 rounded-md">
         <Chart
           options={state.options}
           series={state.series}
