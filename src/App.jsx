@@ -9,6 +9,9 @@ import Login from "./pages/Login"
 import Home from "./pages/Home"
 import SupplierDetail from "./pages/SupplierDetail"
 import AddEmployee from "./pages/AddEmployee"
+import TransactionChoice from "./pages/TransactionChoice";
+import TransactionQR from "./pages/TransactionQR";
+import TransactionDetail from "./pages/TransactionDetail";
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
         <Route path="restock" element={<Restock />} />
         <Route path="supplier_detail" element={<SupplierDetail />} />
         <Route path="add_employee" element={<AddEmployee />} />
+        <Route path='transaction_choice' element={<TransactionChoice />} />
+        <Route path='qr_transaction' element={<TransactionQR />}/>
+        <Route path="transaction_details" element={<TransactionDetail />} />
       </Routes>
     </BrowserRouter>
   )
