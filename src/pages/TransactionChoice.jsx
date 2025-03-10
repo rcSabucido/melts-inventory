@@ -15,7 +15,7 @@ const TransactionChoice = () => {
     }
     return (
         <>
-            <div class='flex'>
+            <div className='flex'>
                 <Sidebar />
                 <main className="p-4 flex-col bg-[#ffffdb] w-full">
                     <div className="flex gap-4 p-4 items-center">

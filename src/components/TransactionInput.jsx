@@ -1,25 +1,53 @@
 import { PlusIcon, QrCodeIcon, ComputerDesktopIcon } from "@heroicons/react/20/solid";
 import Button from "./Button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, cloneElement } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import TransactionItemInput from "./TransactionItemInput";
 import Switch from "./Switch";
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, scannedProduct }) => {
+const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedProduct }) => {
     const [items, setItems] = useState([]);
-    const location = useLocation();
-    // const [items, setItems] = useState([<TransactionItemInput initialProduct={scannedProduct} key={0} />]);
+    const [displayItems, setDisplayItems] = useState([]);
     const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
 
+    const updateItemData = (index, productName) => {
+        items[index]["product"] = productName;
+        console.log("Item are now: ", items);
+    }
+
+    console.log("I've come from a different page... Current items: ", currentItems);
+    if (items.length === 0 && currentItems) {
+        setDisplayItems(currentItems.map((item, index) => {
+            return (
+                <TransactionItemInput 
+                    key={index} 
+                    index={index} 
+                    initialProduct={item.product} 
+                    updateParent={updateItemData}
+                />
+            )
+        }));
+        setItems(currentItems);
+    }  
+
     useEffect(() => {
         if (scannedProduct) {
-            setItems(prevItems => [...prevItems, 
+            setDisplayItems(prevItems => [...prevItems, 
                 <TransactionItemInput 
                     key={prevItems.length} 
                     initialProduct={scannedProduct} 
+                    index={prevItems.length}
+                    updateParent={updateItemData}
                 />
             ]);
+            items.push(
+                {
+                    product: scannedProduct,
+                    quantity: 0,
+                    price: 0
+                }
+            )
         }
     }, [scannedProduct]);
 
@@ -29,15 +57,17 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, scannedProduct }) => {
 
     const handleAddItem = () => {
         if (isDesktop) {
-            setItems(prevItems => [...prevItems, 
-                <TransactionItemInput key={prevItems.length} />
+            setDisplayItems(prevItems => [...prevItems, 
+                <TransactionItemInput key={prevItems.length} index={prevItems.length} updateParent={updateItemData} />
             ]);
+            items.push(
+                {
+                    product: '',
+                    quantity: 0,
+                    price: 0
+                }
+            )
         } else {
-            // Pass current items length to know where to insert the new item
-            console.log("The items passed are:")
-            for (let i = 0; i < items.length; i++) {
-                console.log(items[i])
-            }
             navigate('/qr_transaction', { 
                 state: { 
                     addItem: true,
@@ -47,24 +77,11 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, scannedProduct }) => {
         }
     };
 
-
-    // useEffect(() => {
-    //     setIsDesktop(initialIsDesktop);
-    // }, [initialIsDesktop]);
-
-    // const handleAddItem = () => {
-    //     if (isDesktop) {
-    //         setItems([...items, <TransactionItemInput key={items.length} />]);
-    //     } else {
-    //         navigate('/qr_transaction', { state: { addItem: true } });
-    //     }
-    // };
-
     return (
         <>
             <div className="m-4 p-4 p-auto bg-amber-200/30 rounded-xl flex flex-col shadow-md h-150">
                 <div className='flex-grow overflow-y-auto'>
-                    {items}
+                    {displayItems}
                 </div>
                 <div className="flex justify-center items-center">
                     <div className="flex mr-auto">

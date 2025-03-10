@@ -23,7 +23,8 @@ const TransactionDetail = () => {
                         <ArrowLeftIcon className="h-6 w-6 cursor-pointer" onClick={() => setLeaveModal(true)} />
                         <p className="text-2xl font-bold">Transaction Details</p>
                     </div>
-                    <TransactionInput 
+                    <TransactionInput
+                    currentItems={location.state?.currentItems}
                     isDesktop={location.state?.isDesktop ?? true}
                     scannedProduct={location.state?.scannedProduct} />
                 </form>

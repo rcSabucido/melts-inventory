@@ -12,19 +12,6 @@ const TransactionQR = () => {
         navigate('/transaction');
     }
 
-    // useEffect(() => {
-    //     if (scanResult) {
-    //         navigate('/transaction_details', {
-    //             state: {
-    //                 isDesktop: false,
-    //                 scannedProduct: scanResult,
-    //             }
-    //         })
-    //     } 
-    // }, [scanResult])
-
-    console.log("The items passed are: ", location.state?.currentItems);
-
     useEffect(() => {
         if (scanResult) {
             navigate('/transaction_details', {
