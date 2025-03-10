@@ -5,7 +5,7 @@ import { useState } from "react";
 const NearExpiryTableModal = ({columns, data, onClose}) => {
 
     const [currentPage, setCurrentPage] = useState(1);
-    const rowsPerPage = 5;
+    const rowsPerPage = 6;
   
     const indexOfLastRow = currentPage * rowsPerPage;
     const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -33,7 +33,7 @@ const NearExpiryTableModal = ({columns, data, onClose}) => {
                 </div>
                 <NearExpiryTable columns={columns} data={currentRows} />
             </div>
-            <div className='flex justify-center gap-4 absolute bottom-40 left-0 right-0'>
+            <div className='flex justify-center gap-4 absolute bottom-27 left-0 right-15'>
             <button className='text-orange-500 hover:text-orange-700 font-medium' onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</button>
             <button className='text-orange-500 hover:text-orange-700 font-medium' onClick={handleNextPage} disabled={currentPage === totalPages}>
               Next {currentPage < totalPages && '→'}
