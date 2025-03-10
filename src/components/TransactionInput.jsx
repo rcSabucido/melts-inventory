@@ -6,7 +6,7 @@ import TransactionItemInput from "./TransactionItemInput";
 import Switch from "./Switch";
 
 const TransactionInput = ({ isDesktop: initialIsDesktop, scannedProduct }) => {
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState([<TransactionItemInput initialProduct={scannedProduct} key={0} />]);
     const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
     const location = useLocation();

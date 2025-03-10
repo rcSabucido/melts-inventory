@@ -2,7 +2,6 @@ import Sidebar from "../components/Sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Scanner from "../components/Scanner";
-import { useEffect, useState } from "react";
 
 const TransactionQR = () => {
     const navigate = useNavigate();
@@ -18,8 +17,6 @@ const TransactionQR = () => {
                 state: {
                     isDesktop: false,
                     scannedProduct: scanResult,
-                    existingItems: location.state?.existingItems ?? [],
-                    addingNewItem: location.state?.addItem || false
                 }
             })
         } 
@@ -34,9 +31,7 @@ const TransactionQR = () => {
                         <ArrowLeftIcon className="h-6 w-6 cursor-pointer" onClick={handleBack} />
                         <p className="text-2xl font-bold">Transaction Details</p>
                     </div>
-                    <div className="flex justify-center mt-20">
-                        <Scanner onScanSuccess={setScanResult} /> 
-                    </div>                
+                    <div className="flex justify-center mt-20"><Scanner /> </div>                
                 </main>
             </div>
         </>
