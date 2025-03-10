@@ -1,15 +1,29 @@
 import Sidebar from "../components/Sidebar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Scanner from "../components/Scanner";
 import { useEffect, useState } from "react";
 
 const TransactionQR = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [scanResult, setScanResult] = useState(null);
     const handleBack = () => {
         navigate('/transaction');
     }
+
+    // useEffect(() => {
+    //     if (scanResult) {
+    //         navigate('/transaction_details', {
+    //             state: {
+    //                 isDesktop: false,
+    //                 scannedProduct: scanResult,
+    //             }
+    //         })
+    //     } 
+    // }, [scanResult])
+
+    console.log("The items passed are: ", location.state?.currentItems);
 
     useEffect(() => {
         if (scanResult) {
@@ -17,6 +31,8 @@ const TransactionQR = () => {
                 state: {
                     isDesktop: false,
                     scannedProduct: scanResult,
+                    returnToTransaction: location.state?.addItem || false,
+                    currentItems: location.state?.currentItems || 0
                 }
             })
         } 

@@ -1,14 +1,27 @@
 import { PlusIcon, QrCodeIcon, ComputerDesktopIcon } from "@heroicons/react/20/solid";
 import Button from "./Button";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import TransactionItemInput from "./TransactionItemInput";
 import Switch from "./Switch";
 
 const TransactionInput = ({ isDesktop: initialIsDesktop, scannedProduct }) => {
-    const [items, setItems] = useState([<TransactionItemInput initialProduct={scannedProduct} key={0} />]);
+    const [items, setItems] = useState([]);
+    const location = useLocation();
+    // const [items, setItems] = useState([<TransactionItemInput initialProduct={scannedProduct} key={0} />]);
     const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (scannedProduct) {
+            setItems(prevItems => [...prevItems, 
+                <TransactionItemInput 
+                    key={prevItems.length} 
+                    initialProduct={scannedProduct} 
+                />
+            ]);
+        }
+    }, [scannedProduct]);
 
     useEffect(() => {
         setIsDesktop(initialIsDesktop);
@@ -16,11 +29,36 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, scannedProduct }) => {
 
     const handleAddItem = () => {
         if (isDesktop) {
-            setItems([...items, <TransactionItemInput key={items.length} />]);
+            setItems(prevItems => [...prevItems, 
+                <TransactionItemInput key={prevItems.length} />
+            ]);
         } else {
-            navigate('/qr_transaction', { state: { addItem: true } });
+            // Pass current items length to know where to insert the new item
+            console.log("The items passed are:")
+            for (let i = 0; i < items.length; i++) {
+                console.log(items[i])
+            }
+            navigate('/qr_transaction', { 
+                state: { 
+                    addItem: true,
+                    currentItems: items
+                } 
+            });
         }
     };
+
+
+    // useEffect(() => {
+    //     setIsDesktop(initialIsDesktop);
+    // }, [initialIsDesktop]);
+
+    // const handleAddItem = () => {
+    //     if (isDesktop) {
+    //         setItems([...items, <TransactionItemInput key={items.length} />]);
+    //     } else {
+    //         navigate('/qr_transaction', { state: { addItem: true } });
+    //     }
+    // };
 
     return (
         <>
