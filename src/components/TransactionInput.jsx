@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import TransactionItemInput from "./TransactionItemInput";
 import Switch from "./Switch";
 
-const TransactionInput = ({ isDesktop: initialIsDesktop }) => {
-    const [items, setItems] = useState([<TransactionItemInput key={0} />]);
+const TransactionInput = ({ isDesktop: initialIsDesktop, scannedProduct }) => {
+    const [items, setItems] = useState([<TransactionItemInput initialProduct={scannedProduct} key={0} />]);
     const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
 
