@@ -2,7 +2,8 @@ import Sidebar from '../components/Sidebar.jsx';
 import Button from '../components/Button.jsx';
 import Transactiontable from '../components/TransactionsTable.jsx';
 import { useNavigate } from 'react-router-dom';
-import { PlusIcon } from '@heroicons/react/24/solid';
+import { ArrowRightIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { useState } from 'react';
 
 const TransactionPage = () => {
   const navigate = useNavigate();
@@ -50,18 +51,34 @@ const TransactionPage = () => {
           'Recorded By': 'John Doe',
           'Items': '15',
           'Total Price': 999
-      },
-      {},
-      {},
-      {},
-      {},
+      }
   ];
-  
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 9;
+
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = tableData.slice(indexOfFirstRow, indexOfLastRow);
+
+  const totalPages = Math.ceil(tableData.length / rowsPerPage);
+  const handleNextPage = () => {
+    if (currentPage  < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    } 
+  };
+
   return (
     <>
       <div className="flex">
         <Sidebar />
-        <main className="flex-col p-4 bg-[#ffffdb] w-full">
+        <main className="flex-col p-4 bg-[#ffffdb] w-full relative">
           <div className='flex justify-end mx-5 my-3 gap-2'>
             <Button onClick={handleTransactionChoice}>
               <PlusIcon className="h-6 w-6" />
@@ -71,7 +88,13 @@ const TransactionPage = () => {
           <div className="p-1 text-2xl font-bold text-gray-800">
             <p className='ml-3'>Transactions</p>
           </div>
-          <Transactiontable columns={columns} data={tableData} className="shadow-md"/>
+          <Transactiontable columns={columns} data={currentRows} className="shadow-md"/>
+          <div className='flex justify-center gap-4 absolute bottom-9 left-0 right-0'>
+            <button className='text-orange-500 hover:text-orange-700 font-medium' onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</button>
+            <button className='text-orange-500 hover:text-orange-700 font-medium' onClick={handleNextPage} disabled={currentPage === totalPages}>
+              Next {currentPage < totalPages && '→'}
+              </button>
+          </div>
         </main>
       </div>
     </>
