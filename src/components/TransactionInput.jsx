@@ -1,30 +1,24 @@
 import { PlusIcon, QrCodeIcon, ComputerDesktopIcon } from "@heroicons/react/20/solid";
 import Button from "./Button";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TransactionItemInput from "./TransactionItemInput";
 import Switch from "./Switch";
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, scanned }) => {
-    const [items, setItems] = useState([<TransactionItemInput key={0} />]);
+const TransactionInput = ({ isDesktop: initialIsDesktop, scannedProduct }) => {
+    const [items, setItems] = useState([<TransactionItemInput initialProduct={scannedProduct} key={0} />]);
     const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
-    const location = useLocation();
 
     useEffect(() => {
-        if (location.state?.existingItems) {
-            setItems(location.state.existingItems);
-        } else {
-            setItems([<TransactionItemInput initialProduct={scannedProduct} key={0} />]);
-        }
-    }, []);
+        setIsDesktop(initialIsDesktop);
+    }, [initialIsDesktop]);
 
-  
     const handleAddItem = () => {
         if (isDesktop) {
             setItems([...items, <TransactionItemInput key={items.length} />]);
         } else {
-            navigate('/qr_transaction', { state: { addItem: true, existingItems: items } });
+            navigate('/qr_transaction', { state: { addItem: true } });
         }
     };
 

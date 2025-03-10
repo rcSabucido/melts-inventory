@@ -1,5 +1,5 @@
 import { ArrowLeftIcon } from '@heroicons/react/20/solid';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ConfirmationModal from '../components/ConfirmationModal';
 import Sidebar from '../components/Sidebar';
@@ -7,6 +7,7 @@ import TransactionInput from '../components/TransactionInput';
 
 const TransactionDetail = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [leaveModal, setLeaveModal] = useState(false);
 
     const handleSubmit = () => {
@@ -22,7 +23,9 @@ const TransactionDetail = () => {
                         <ArrowLeftIcon className="h-6 w-6 cursor-pointer" onClick={() => setLeaveModal(true)} />
                         <p className="text-2xl font-bold">Transaction Details</p>
                     </div>
-                    <TransactionInput isDesktop={location.state?.isDesktop ?? true} />
+                    <TransactionInput 
+                    isDesktop={location.state?.isDesktop ?? true}
+                    scannedProduct={location.state?.scannedProduct} />
                 </form>
             </div>
             {leaveModal && <ConfirmationModal 

@@ -1,4 +1,4 @@
-const TransactionItemInput = () => {
+const TransactionItemInput = ({ initialProduct }) => {
     return (
         <div className='flex flex-wrap justify-between'>
                     <div className="m-4 grow-[3]">
@@ -7,6 +7,7 @@ const TransactionItemInput = () => {
                             type='text'
                             name='product'
                             className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
+                            defaultValue={initialProduct}
                             required
                         />
                     </div>
