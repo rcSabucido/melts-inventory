@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import TransactionItemInput from "./TransactionItemInput";
 import Switch from "./Switch";
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, scannedProduct }) => {
-    const [items, setItems] = useState([<TransactionItemInput initialProduct={scannedProduct} key={0} />]);
+const TransactionInput = ({ isDesktop: initialIsDesktop, scanned }) => {
+    const [items, setItems] = useState([<TransactionItemInput key={0} />]);
     const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
     const location = useLocation();
@@ -19,17 +19,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, scannedProduct }) => {
         }
     }, []);
 
-    useEffect(() => {
-        if (location.state?.addingNewItem && scannedProduct) {
-            setItems(prevItems => [...prevItems,
-                <TransactionItemInput 
-                    key={prevItems.length}
-                    initialProduct={scannedProduct}
-                />
-            ])
-        }
-    })
-
+  
     const handleAddItem = () => {
         if (isDesktop) {
             setItems([...items, <TransactionItemInput key={items.length} />]);

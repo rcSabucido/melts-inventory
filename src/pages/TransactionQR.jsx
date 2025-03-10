@@ -5,22 +5,9 @@ import Scanner from "../components/Scanner";
 
 const TransactionQR = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const [scanResult, setScanResult] = useState(null);
     const handleBack = () => {
         navigate('/transaction');
     }
-
-    useEffect(() => {
-        if (scanResult) {
-            navigate('/transaction_details', {
-                state: {
-                    isDesktop: false,
-                    scannedProduct: scanResult,
-                }
-            })
-        } 
-    }, [scanResult])
 
     return (
         <>
