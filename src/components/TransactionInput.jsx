@@ -1,6 +1,7 @@
-import { PlusIcon } from "@heroicons/react/20/solid";
+import { PlusIcon, QrCodeIcon, ComputerDesktopIcon } from "@heroicons/react/20/solid";
 import Button from "./Button";
 import TransactionItemInput from "./TransactionItemInput";
+import Switch from "./Switch";
 
 const TransactionInput = () => {
     return (
@@ -37,7 +38,11 @@ const TransactionInput = () => {
                         </div>
                 </div>
             </div>
-            <div className="flex justify-end mt-10 mr-4">
+            <div className="flex justify-between mt-10 ml-4 mr-4">
+            <Switch>
+                    {[<QrCodeIcon className="h-6 w-6"/>, <ComputerDesktopIcon className="h-6 w-6" />]}
+            </Switch>
+            <div className="flex">
                 <button type='button' className="font-bold rounded-lg text-medium text-orange-400/70 hover:text-orange-500 mb-2 px-4">Clear</button>
                 <Button type='button'>
                     <PlusIcon className="h-6 w-6" />
@@ -46,6 +51,7 @@ const TransactionInput = () => {
                 <Button type='submit'>
                     Save
                 </Button>
+            </div>   
             </div>
         </>
     );
