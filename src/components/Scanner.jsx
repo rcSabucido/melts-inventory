@@ -11,7 +11,6 @@ const Scanner = () => {
             },
             fps: 5,
         })
-    
         const success = (result) => {
             scanner.clear();
             setScanResult(result);
@@ -29,7 +28,7 @@ const Scanner = () => {
         <>
             {scanResult
                 ? <div>Success: {scanResult}</div>
-                : <div id='reader' className="w-1/2"></div>
+                : <div id='reader' className="w-3/5"></div>
             }
         </>
     );
