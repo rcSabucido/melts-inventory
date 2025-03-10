@@ -15,7 +15,7 @@ const InventoryPage = () => {
   const handleInventoryDetails = () => {
     navigate('/inventory_details');
   }
-  
+
   const [showAddItemsModal, setShowModal] = useState(false);
   const [showNearExpiryTable, setShowNearExpiryTable] = useState(false);
 
@@ -107,9 +107,7 @@ const InventoryPage = () => {
         <div className="m-8 p-4 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
               <div className='flex justify-between'>
               <p className="p-4 text-2xl font-bold text-gray-800">Inventory</p>
-              {tableData.length >= 4 && (
-              <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={handleInventoryDetails}/>
-            )} 
+              <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => handleInventoryDetails(true)}/>
          </div>
          <InventoryTable columns={columns} data={limitedTableData} />
          </div>
