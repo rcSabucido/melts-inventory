@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
 import Button from '../components/Button.jsx';
@@ -7,32 +7,52 @@ import ModifiableTable from '../components/ModifiableTable.jsx';
 import ConfirmationModal from '../components/ConfirmationModal.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
+import { createClient } from '@supabase/supabase-js'
+
+import { getCityOrMunicipalityName, getBarangayName, getProvinceName } from '../helpers/PsgcLocationLookup.js';
+
 const SupplierPage = () => {
   let navigate = useNavigate();
+  const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY)
+  const [data, setData] = useState([]);
 
-  const columns = ['Company Name', 'Email', 'Contact Number', 'Street', 'Barangay', 'District', 'City', 'Province'];
-  const tableData = [
-      {
-          'Company Name': 'Eimma H. Acker Confectionary Company',
-          'Email': 'eimma.acker@example.com',
-          'Contact Number': '099132384782',
-          'Street': '###',
-          'Barangay': '###',
-          'District': '###',
-          'City': '###',
-          'Province': '###'
-      },
-      {
-          'Company Name': 'Beau Rica Acker Desserts',
-          'Email': 'beau.rica@example.com',
-          'Contact Number': '096925624552',
-          'Street': '###',
-          'Barangay': '###',
-          'District': '###',
-          'City': '###',
-          'Province': '###'
+  useEffect(() => {
+      async function fetch() {
+        const { data, error } = await supabase
+        .from('SupplierFull')
+        .select()
+
+        let displayData = []
+        for (let i = 0; i < data.length; i++) {
+          let raw = data[i]
+          console.log(raw)
+          let cityName = await getCityOrMunicipalityName(raw["location_id"])
+          let barangayName = await getBarangayName(raw["location_id"])
+          let provinceName = await getProvinceName(raw["location_id"])
+          let displayObj = {
+            'Company Name': raw["company_name"],
+            'Street': raw["street"],
+            'City/Municipality': cityName,
+            'Barangay': barangayName,
+            'Province': provinceName,
+          }
+          let contacts = raw["contacts"]
+          for (let j = 0; j < contacts.length; j++) {
+            let contact = contacts[j]
+            if (contact.type === "PHONE") {
+              displayObj["Contact Number"] = contact["text"]
+            } else if (contact.type === "EMAIL") {
+              displayObj["Email"] = contact["text"]
+            }
+          }
+          displayData.push(displayObj)
+        }
+
+        setData(displayData)
       }
-  ];
+      fetch();
+    }, [])
+  const columns = ['Company Name', 'Email', 'Contact Number', 'Street', 'Barangay', 'City/Municipality', 'Province'];
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteRow, setDeleteRow] = useState(null);
@@ -64,25 +84,35 @@ const SupplierPage = () => {
                 </Button>
               </a>
             </div>
-            <ModifiableTable
-              onEditClick={(row) => {
-                let editQuery = {};
-                for (const [key, value] of Object.entries(row)) {
-                  editQuery[camelCase(key)] = value;
-                }
-                navigate("/supplier_detail", {
-                  state: {
-                    supplierData: editQuery
-                  }
-                })
-              }}
-              onDeleteClick={(row) => {
-                setDeleteRow(row)
-                setDeleteModal(true)
-              }}
-              columns={columns}
-              data={tableData}
-              className="shadow-[-4px_4px_4px_#888888]" />
+            {
+              (data.length == 0) ?
+              (
+                <div className="justify-center">
+                  <p className="text-xl">Loading table</p>
+                </div>
+              )
+              : (
+                <ModifiableTable
+                  onEditClick={(row) => {
+                    let editQuery = {};
+                    for (const [key, value] of Object.entries(row)) {
+                      editQuery[camelCase(key)] = value;
+                    }
+                    navigate("/supplier_detail", {
+                      state: {
+                        supplierData: editQuery
+                      }
+                    })
+                  }}
+                  onDeleteClick={(row) => {
+                    setDeleteRow(row)
+                    setDeleteModal(true)
+                  }}
+                  columns={columns}
+                  data={data}
+                  className="shadow-[-4px_4px_4px_#888888]" />
+              )
+            }
         </div>
         </main>
       </div>
