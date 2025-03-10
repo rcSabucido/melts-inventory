@@ -1,23 +1,21 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button.jsx';
 import { PlusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/solid';
 import Sidebar from '../components/Sidebar.jsx';
 import SearchBar from '../components/SearchBar.jsx';
 import InventoryTable from "../components/InventoryTable.jsx";
+import InventoryDetailsModal from '../components/InventoryDetailsModal.jsx';
 import NearExpiryTable from "../components/NearExpiry.jsx";
 import NearExpiryTableModal from '../components/NearExpiryTableModal.jsx';
 import AddItems from '../components/AddItemsModal.jsx';
 
 
 const InventoryPage = () => {
-  const navigate = useNavigate();
-  const handleInventoryDetails = () => {
-    navigate('/inventory_details');
-  }
+  
 
   const [showAddItemsModal, setShowModal] = useState(false);
   const [showNearExpiryTable, setShowNearExpiryTable] = useState(false);
+  const [showInventoryDetails, setShowInventoryDetails] = useState(false);
 
   const columns = ['Products', 'Items', 'Category', 'Price'];
   const tableData = [
@@ -44,6 +42,24 @@ const InventoryPage = () => {
           'Items': 120,
           'Category': 'Pat Black',
            Price: 1500
+      },
+      {
+        'Products': 'Devon Fisher',
+        'Items': 15,
+        'Category': 'Pat Black',
+         Price: 999.00
+      },
+      {
+        'Products': 'Devon Fisher',
+        'Items': 15,
+        'Category': 'Pat Black',
+         Price: 999.00
+      },
+      {
+        'Products': 'Devon Fisher',
+        'Items': 15,
+        'Category': 'Pat Black',
+         Price: 999.00
       },
       {
         'Products': 'Devon Fisher',
@@ -86,7 +102,30 @@ const InventoryPage = () => {
           'Category': 'Pat Black',
           'Days Left': 999.00
       },
-      
+      {
+        'Products': 'Devon Fisher',
+        'Items': 15,
+        'Category': 'Pat Black',
+        'Days Left': 999.00
+      },
+      {
+        'Products': 'Devon Fisher',
+        'Items': 15,
+        'Category': 'Pat Black',
+        'Days Left': 999.00
+      },
+      {
+        'Products': 'Devon Fisher',
+        'Items': 15,
+        'Category': 'Pat Black',
+        'Days Left': 999.00
+      },
+      {
+        'Products': 'Devon Fisher',
+        'Items': 15,
+        'Category': 'Pat Black',
+        'Days Left': 999.00
+      },
   ];
   
   const limitedTableData = tableData.slice(0, 4);
@@ -107,7 +146,7 @@ const InventoryPage = () => {
         <div className="m-8 p-4 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
               <div className='flex justify-between'>
               <p className="p-4 text-2xl font-bold text-gray-800">Inventory</p>
-              <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => handleInventoryDetails(true)}/>
+              <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => setShowInventoryDetails(true)}/>
          </div>
          <InventoryTable columns={columns} data={limitedTableData} />
          </div>
@@ -124,6 +163,7 @@ const InventoryPage = () => {
       </div>
       {showAddItemsModal && <AddItems onClose={() => setShowModal(false)} />}
       {showNearExpiryTable && <NearExpiryTableModal columns={products} data={ExpiryData} onClose={() => setShowNearExpiryTable(false)} />}
+      {showInventoryDetails && <InventoryDetailsModal columns={columns} data={tableData} onClose={() => setShowInventoryDetails(false)} />}
     </>
   );
 }
