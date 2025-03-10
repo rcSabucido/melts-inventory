@@ -50,7 +50,11 @@ const TransactionPage = () => {
           'Recorded By': 'John Doe',
           'Items': '15',
           'Total Price': 999
-      }
+      },
+      {},
+      {},
+      {},
+      {},
   ];
   
   return (
