@@ -5,10 +5,10 @@ import { ArrowLeftIcon, QrCodeIcon, ComputerDesktopIcon } from "@heroicons/react
 const TransactionChoice = () => {
     const navigate = useNavigate();
     const handleQRCode = () => {
-        navigate('/qr_transaction');
+        navigate('/qr_transaction', {state: { isDesktop: false }});
     }
     const handleTransactionDetails = () => {
-        navigate('/transaction_details');
+        navigate('/transaction_details', {state: { isDesktop: true }});
     }
     const handleBack = () => {
         navigate('/transaction');

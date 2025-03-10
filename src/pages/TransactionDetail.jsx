@@ -22,7 +22,7 @@ const TransactionDetail = () => {
                         <ArrowLeftIcon className="h-6 w-6 cursor-pointer" onClick={() => setLeaveModal(true)} />
                         <p className="text-2xl font-bold">Transaction Details</p>
                     </div>
-                    <TransactionInput />
+                    <TransactionInput isDesktop={location.state?.isDesktop ?? true} />
                 </form>
             </div>
             {leaveModal && <ConfirmationModal 
