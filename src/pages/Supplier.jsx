@@ -9,7 +9,7 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 
 import { createClient } from '@supabase/supabase-js'
 
-import { getCityOrMunicipalityName, getBarangayName, getProvinceName, getAddressFromId } from '../helpers/PsgcLocationLookup.js';
+import { getAddressFromId } from '../helpers/PsgcLocationLookup.js';
 
 const SupplierPage = () => {
   let navigate = useNavigate();
@@ -26,13 +26,7 @@ const SupplierPage = () => {
         for (let i = 0; i < data.length; i++) {
           let raw = data[i]
           console.log(raw)
-          /*
-          const [cityName, barangayName, provinceName] = await Promise.all([
-            getCityOrMunicipalityName(raw["location_id"]),
-            getBarangayName(raw["location_id"]),
-            getProvinceName(raw["location_id"])
-          ])
-          */
+
           const address = raw["street"] ? raw["street"] + ", " + getAddressFromId(raw["location_id"]) : getAddressFromId(raw["location_id"])
           let displayObj = {
             'Company Name': raw["company_name"],
