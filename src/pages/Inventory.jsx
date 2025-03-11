@@ -40,57 +40,6 @@ const InventoryPage = () => {
   }, [])
 
   const columns = ['Products', 'Items', 'Category', 'Price'];
-  const tableData = [
-      {
-          'Products': 'Pat Black',
-          'Items': 25,
-          'Category': 'Pat Black',
-           Price: 450
-      },
-      {
-          'Products': 'Angel Jones',
-          'Items': 66,
-          'Category': 'Pat Black',
-           Price: 325
-      },
-      {
-          'Products': 'Max Edwards',
-          'Items': 3,
-          'Category': 'Pat Black',
-           Price: 25
-      },
-      {
-          'Products': 'Bruce Fox',
-          'Items': 120,
-          'Category': 'Pat Black',
-           Price: 1500
-      },
-      {
-        'Products': 'Devon Fisher',
-        'Items': 15,
-        'Category': 'Pat Black',
-         Price: 999.00
-      },
-      {
-        'Products': 'Devon Fisher',
-        'Items': 15,
-        'Category': 'Pat Black',
-         Price: 999.00
-      },
-      {
-        'Products': 'Devon Fisher',
-        'Items': 15,
-        'Category': 'Pat Black',
-         Price: 999.00
-      },
-      {
-        'Products': 'Devon Fisher',
-        'Items': 15,
-        'Category': 'Pat Black',
-         Price: 999.00
-      },
-      
-  ];
   
   const products = ['Products', 'Items', 'Category', 'Days Left'];
   const ExpiryData = [
@@ -150,7 +99,6 @@ const InventoryPage = () => {
       },
   ];
   
-  const limitedTableData = tableData.slice(0, 4);
   const limitedExpiryData = ExpiryData.slice(0, 4);
 
   return (
