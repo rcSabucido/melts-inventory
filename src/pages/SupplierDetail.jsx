@@ -37,8 +37,10 @@ const SupplierDetailPage = () => {
   };
 
   let headerText;
+  let isUpdating = false
   if (location.state?.supplierData !== undefined) {
     headerText = "Edit Supplier"
+    isUpdating = true
   } else {
     headerText = "Add Supplier"
   }

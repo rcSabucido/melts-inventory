@@ -9,7 +9,7 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 
 import { createClient } from '@supabase/supabase-js'
 
-import { getCityOrMunicipalityName, getBarangayName, getProvinceName } from '../helpers/PsgcLocationLookup.js';
+import { getAddressFromId } from '../helpers/PsgcLocationLookup.js';
 
 const SupplierPage = () => {
   let navigate = useNavigate();
@@ -26,15 +26,11 @@ const SupplierPage = () => {
         for (let i = 0; i < data.length; i++) {
           let raw = data[i]
           console.log(raw)
-          let cityName = await getCityOrMunicipalityName(raw["location_id"])
-          let barangayName = await getBarangayName(raw["location_id"])
-          let provinceName = await getProvinceName(raw["location_id"])
+
+          const address = raw["street"] ? raw["street"] + ", " + getAddressFromId(raw["location_id"]) : getAddressFromId(raw["location_id"])
           let displayObj = {
             'Company Name': raw["company_name"],
-            'Street': raw["street"],
-            'City/Municipality': cityName,
-            'Barangay': barangayName,
-            'Province': provinceName,
+            'Address': address,
           }
           let contacts = raw["contacts"]
           for (let j = 0; j < contacts.length; j++) {
@@ -52,7 +48,7 @@ const SupplierPage = () => {
       }
       fetch();
     }, [])
-  const columns = ['Company Name', 'Email', 'Contact Number', 'Street', 'Barangay', 'City/Municipality', 'Province'];
+  const columns = ['Company Name', 'Email', 'Contact Number', 'Address'];
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteRow, setDeleteRow] = useState(null);
