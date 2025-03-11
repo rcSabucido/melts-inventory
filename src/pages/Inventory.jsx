@@ -14,11 +14,12 @@ const InventoryPage = () => {
   const [showAddItemsModal, setShowModal] = useState(false);
   const [showNearExpiryTable, setShowNearExpiryTable] = useState(false);
   const [showInventoryDetails, setShowInventoryDetails] = useState(false);
-  const [data, setData] = useState([]);
+  const [inventoryData, setInventoryData] = useState([]);
+  const [nearExpiryData, setNearExpiryData] = useState([]); 
   const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
   useEffect(() => {
-    async function fetch() {
+    async function fetchInventory() {
       const { data, error } = await supabase
       .from('InventoryFull')
       .select()
@@ -34,72 +35,34 @@ const InventoryPage = () => {
         }
         displayData.push(displayObj);
       }
-      setData(displayData);
+      setInventoryData(displayData);
     }
-    fetch();
+    fetchInventory();
+
+    async function fetchNearExpiry() {
+      const { data, error } = await supabase
+      .from('NearExpiryFull')
+      .select()
+
+      let displayData = [];
+      for (let i = 0; i < data.length; i++) {
+        let raw = data[i];
+        let displayObj = {
+          'Products': raw["product_name"],
+          'Items': raw["quantity"],
+          'Category': raw["category_name"],
+          'Days Left': raw["days_left"]
+        }
+        displayData.push(displayObj);
+      }
+      setNearExpiryData(displayData);
+    }
+    fetchNearExpiry();
   }, [])
 
   const columns = ['Products', 'Items', 'Category', 'Price'];
   
   const products = ['Products', 'Items', 'Category', 'Days Left'];
-  const ExpiryData = [
-      {
-          'Products': 'Pat',
-          'Items': 25,
-          'Category': 'Pat Black',
-          'Days Left': 450
-      },
-      {
-          'Products': 'Angel Jones',
-          'Items': 66,
-          'Category': 'Pat Black',
-          'Days Left': 325
-      },
-      {
-          'Products': 'Max Edwards',
-          'Items': 3,
-          'Category': 'Pat Black',
-          'Days Left': 25
-      },
-      {
-          'Products': 'Bruce Fox',
-          'Items': 120,
-          'Category': 'Pat Black',
-          'Days Left': 1500
-      },
-      {
-          'Products': 'Devon Fisher',
-          'Items': 15,
-          'Category': 'Pat Black',
-          'Days Left': 999.00
-      },
-      {
-        'Products': 'Devon Fisher',
-        'Items': 15,
-        'Category': 'Pat Black',
-        'Days Left': 999.00
-      },
-      {
-        'Products': 'Devon Fisher',
-        'Items': 15,
-        'Category': 'Pat Black',
-        'Days Left': 999.00
-      },
-      {
-        'Products': 'Devon Fisher',
-        'Items': 15,
-        'Category': 'Pat Black',
-        'Days Left': 999.00
-      },
-      {
-        'Products': 'Devon Fisher',
-        'Items': 15,
-        'Category': 'Pat Black',
-        'Days Left': 999.00
-      },
-  ];
-  
-  const limitedExpiryData = ExpiryData.slice(0, 4);
 
   return (
     <>
@@ -118,22 +81,22 @@ const InventoryPage = () => {
               <p className="p-4 text-2xl font-bold text-gray-800">Inventory</p>
               <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => setShowInventoryDetails(true)}/>
          </div>
-         <InventoryTable columns={columns} data={data} />
+         <InventoryTable columns={columns} data={inventoryData} />
          </div>
          <div className="m-8 p-4 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
             <div className='flex justify-between'>
             <p className="p-4 text-2xl font-bold text-gray-800">Near Expiry</p>
-            {ExpiryData.length >= 4 && (
+            {nearExpiryData.length >= 4 && (
               <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => setShowNearExpiryTable(true)}/>
             )} 
             </div> 
-            <NearExpiryTable columns={products} data={limitedExpiryData}/>
+            <NearExpiryTable columns={products} data={nearExpiryData}/>
           </div>
         </main>
       </div>
       {showAddItemsModal && <AddItems onClose={() => setShowModal(false)} />}
-      {showNearExpiryTable && <NearExpiryTableModal columns={products} data={ExpiryData} onClose={() => setShowNearExpiryTable(false)} />}
-      {showInventoryDetails && <InventoryDetailsModal columns={columns} data={data} onClose={() => setShowInventoryDetails(false)} />}
+      {showNearExpiryTable && <NearExpiryTableModal columns={products} data={nearExpiryData} onClose={() => setShowNearExpiryTable(false)} />}
+      {showInventoryDetails && <InventoryDetailsModal columns={columns} data={inventoryData} onClose={() => setShowInventoryDetails(false)} />}
     </>
   );
 }
