@@ -21,11 +21,42 @@ const AddItems = ({ onClose }) => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
+
+        const { data: existingProduct, error: fetchError } = await supabase
+            .from('Product')
+            .select()
+            .eq('name', formData.product)
+            .single();
+        
+        if (existingProduct) {
+            alert('Product already exists');
+            console.log('Product already exists');
+            return;
+        }
+        
+        let productData;
+        const { data: productDataArray, error: productError } = await supabase
+            .from('Product')
+            .insert({
+                category_id: formData.category,
+                name: formData.product
+            })
+            .select();
+            productData = productDataArray[0];
+
+        const { error } = await supabase
+            .from('InventoryItem')
+            .insert({
+                product_id: productData.product_id,
+                quantity: 0,
+                price: formData.price
+            });
         onClose(); 
     };
+
 
     useEffect(() => {
         async function fetchCategories() {
@@ -35,25 +66,6 @@ const AddItems = ({ onClose }) => {
                 setCategories(data);
         }
         fetchCategories();
-
-        async function addProductName() {
-            const { error } = await supabase
-            .from('Product')
-            .insert({
-                category_id: formData.category,
-                name: formData.product
-            })
-        }
-        addProductName();
-   
-        async function addPrice() {
-            const { error } = await supabase
-            .from('InventoryItem')
-            .insert({
-                price: formData.price
-            })
-        }
-        addPrice();
     }, []);
 
     return createPortal(
