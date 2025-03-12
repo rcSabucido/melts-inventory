@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { createClient } from '@supabase/supabase-js';
 
-const AddItems = ({ onClose }) => { 
+const AddItems = ({ onClose, refreshData }) => { 
     const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
     const [formData, setFormData] = useState({
@@ -54,7 +54,11 @@ const AddItems = ({ onClose }) => {
                 quantity: 0,
                 price: formData.price
             });
-        onClose(); 
+
+        if (!error && !productError) {
+            await refreshData();
+            onClose();
+        }   
     };
 
 

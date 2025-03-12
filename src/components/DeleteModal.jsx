@@ -1,7 +1,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 
-const DeleteModal = ({ onClose }) => {
+const DeleteModal = ({ onClose, onConfirm }) => {
 
     return createPortal(
         <div className="fixed inset-0 flex justify-center items-center bg-gray-800/40 z-100">
@@ -11,7 +11,7 @@ const DeleteModal = ({ onClose }) => {
                 <p className="text-center">Are you sure you want to delete this item?</p>
                 <div className="flex justify-center mt-6 gap-2 w-full">
                     <button onClick={onClose} className="bg-[#CB3F3F] text-white p-2 w-50 rounded">Cancel</button>
-                    <button onClick={onClose} className="bg-orange-400/70 text-white p-2 w-50 rounded">Delete</button>
+                    <button onClick={onConfirm} className="bg-orange-400/70 text-white p-2 w-50 rounded">Delete</button>
                 </div>
             </div>
         </div>,
