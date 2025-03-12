@@ -63,9 +63,8 @@ const InventoryPage = () => {
     <>
       <div className="flex">
         <Sidebar />
-        <main className="p3z-4 bg-amber-100 w-full">
-        <div className='mx-5 my-3 flex justify-end gap-2'>
-        <SearchBar />
+        <main className="flex-col p-4 bg-[#ffffdb] w-full">
+        <div className='mx-7 my-2 flex justify-end gap-2'>
             <Button onClick={() => setShowModal(true)}>
               <PlusIcon className='h-6 w-6'/>
               Add Item
