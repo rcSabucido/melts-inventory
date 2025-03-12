@@ -22,6 +22,7 @@ const InventoryPage = () => {
     const { data, error } = await supabase
       .from('InventoryFull')
       .select()
+      .eq('is_active', true)
 
     if (data) {
       let displayData = data.map(raw => ({
@@ -37,6 +38,7 @@ const InventoryPage = () => {
     const { data: nearExpiryData, error: nearExpiryError } = await supabase
       .from('NearExpiryFull')
       .select()
+      .eq('is_active', true)
     
     if (nearExpiryData) {
       let displayData = nearExpiryData.map(raw => ({

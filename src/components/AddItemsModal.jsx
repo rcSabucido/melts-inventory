@@ -42,7 +42,8 @@ const AddItems = ({ onClose, refreshData }) => {
             .from('Product')
             .insert({
                 category_id: formData.category,
-                name: formData.product
+                name: formData.product,
+                is_active: true
             })
             .select();
             productData = productDataArray[0];

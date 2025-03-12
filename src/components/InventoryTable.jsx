@@ -21,13 +21,13 @@ const InventoryTable = ({ columns, data, refreshData }) => {
     if (deleteItem) {
       const { error } = await supabase 
         .from('Product')
-        .delete()
+        .update({ is_active: false })
         .eq('product_id', deleteItem.product_id)
       
         if (error) {
-          console.error('Error deleting item:', error);
+          console.error('Error deactivating item:', error);
         } else {
-          console.log('Item deleted successfully');
+          console.log('Item deactivated successfully');
           await refreshData();
         }
 
