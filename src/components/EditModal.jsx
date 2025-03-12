@@ -33,7 +33,7 @@ const EditItems = ({ onClose, refreshData, currentProduct }) => {
 
         if (currentProduct) {
             setFormData({
-                product: currentProduct.product,
+                product: currentProduct.Products,
                 category: currentProduct.category_id,
                 price: currentProduct.Price,
                 product_id: currentProduct.product_id
@@ -65,8 +65,6 @@ const EditItems = ({ onClose, refreshData, currentProduct }) => {
             onClose();
         }   
     };
-
-   
 
     return createPortal(
         <div className="fixed inset-0 flex justify-center items-center bg-gray-800/40 z-100"> 
