@@ -41,3 +41,67 @@ export function getAddressFromId(psgcCodeNum) {
 
   return address
 }
+
+export function getRegionMap() {
+  let arr = Object.entries(psgcData).map(([key, value]) => {
+    return { code: key, name: value.name }
+  });
+  return arr
+}
+
+export function getRegion(regionCode) {
+  return psgcData[regionCode]
+}
+
+export function getSecondLevelMap(region) {
+  let arr = Object.entries(region.provinces).map(([key, value]) => {
+    return { code: key, name: value.name }
+  }).concat(
+    Object.entries(region.cities).map(([key, value]) => {
+      return { code: key, name: value.name }
+    })
+  ).concat(
+    Object.entries(region.municipalities).map(([key, value]) => {
+      return { code: key, name: value.name }
+    })
+  );
+  return arr
+}
+
+export function getProvinceOrCityFromCode(code) {
+  const regionCode = code.substring(0, 2) + '00000000';
+
+  let region = psgcData[regionCode]
+  if (region.provinces[code]) {
+    return {"type": "province", value: region.provinces[code]}
+  } else if (region.cities[code]) {
+    return {"type": "city", value: region.cities[code]}
+  }
+  return null
+}
+
+export function getComponentCityOrMunicipalityFromCode(code) {
+  const regionCode = code.substring(0, 2) + '00000000';
+  const provinceOrHUCCode = code.substring(0, 5) + '00000';
+  const cityCode = code;
+
+  let region = psgcData[regionCode]
+  if (region.provinces[provinceOrHUCCode]) {
+    let province = region.provinces[provinceOrHUCCode]
+    if (province.cities[cityCode]) {
+      return {"type": "city", value: province.cities[cityCode]}
+    } else if (province.municipalities[cityCode]) {
+      return {"type": "municipality", value: province.municipalities[cityCode]}
+    }
+  } else if (region.municipalities[cityCode]) {
+    // Pateros...
+    return {"type": "municipality", value: region.municipalities[code]}
+  }
+  return null
+}
+
+export function getMunicipalitiesCities(state) {
+  return [
+    Object.entries(state.municipalities)
+  ]
+}

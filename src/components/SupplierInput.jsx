@@ -1,107 +1,265 @@
+import { useState } from 'react';
+
+import { getRegionMap, getRegion, getSecondLevelMap, getProvinceOrCityFromCode, getComponentCityOrMunicipalityFromCode } from '../helpers/PsgcLocationLookup.js';
+
 const SupplierInput = ( {className, formData, setFormData} ) => {
+  let [locationInput, setLocationInput] = useState([]);
+  let [streetEnabled, setStreetEnabled] = useState(false);
+  let [streetText, setStreetText] = useState("");
+
   const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData({
-          ...formData,
-          [name]: value
-      });
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+    console.log(formData)
   };
+
+  const handleStreetChange = (e) => {
+    const { name, value } = e.target;
+
+    if (!streetEnabled) {
+      setStreetText("")
+      return
+    }
+    setStreetText(value)
+
+    setFormData({
+      ...formData,
+      "street": value
+    });
+    console.log(formData)
+  };
+
+  const changeBarangay = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      location_id: value
+    })
+    setStreetEnabled(true)
+    console.log(`Barangay changed! ${value}`)
+  }
+
+  const changeCity = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      location_id: value
+    })
+    setStreetEnabled(false)
+    let componentCityOrMunicipality = getComponentCityOrMunicipalityFromCode(value)
+    console.log(`City changed:`)
+    console.log(componentCityOrMunicipality)
+    while (locationInput.length > 2) {
+      locationInput.pop()
+    }
+    let arr = Object.entries(componentCityOrMunicipality.value.barangays).map(([key, value]) => {
+      return { code: key, name: value }
+    })
+    let items = locationInput
+    items.push( 
+      <div className="flex flex-row flex-wrap justify-between">
+        <div className="m-4 grow">
+          <label className="text-sm font-medium text-gray-700">Barangay</label>
+          <select
+
+            type="text"
+            name="barangay"
+            onChange={changeBarangay}
+            className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
+            required
+          >
+          {
+            [{code: "0000000000", name: "--- SELECT A BARANGAY ---"}, ...arr].map(
+                  entry => <option key={entry.code} value={entry.code}>{entry.name}</option>)}
+          }
+          </select>
+        </div>
+      </div>
+    )
+    console.log(`Change city: ${value}`)
+    setLocationInput(items)
+  }
+
+  const changeProvinceAndCity = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      location_id: value
+    })
+    setStreetEnabled(false)
+    let provinceHucCode = value
+    let returnValue = getProvinceOrCityFromCode(provinceHucCode)
+    let [type, provinceHuc] = [returnValue.type, returnValue.value]
+    let arr = []
+    if (type === "city") {
+      arr = Object.entries(provinceHuc.barangays).map(([key, value]) => {
+        return { code: key, name: value }
+      })
+    } else {
+      arr = Object.entries(provinceHuc.municipalities).map(([key, value]) => {
+        return { code: key, name: value.name }
+      }).concat(Object.entries(provinceHuc.cities).map(([key, value]) => {
+        return { code: key, name: value.name }
+      }))
+    }
+    let isCapitalCity = (value === "1380600000")
+    if (isCapitalCity) {
+      let selectPrompt = "--- SELECT A SUBMUNICIPALITY ---"
+    } else if (type === "city") {
+      let selectPrompt = "--- SELECT A CITY ---"
+    } else {
+      let selectPrompt = "--- SELECT A CITY OR MUNICIPALITY ---"
+    }
+
+    // locationInput = [] doesn't work
+    // It needs to be manually popped
+    while (locationInput.length > 1) {
+      locationInput.pop()
+    }
+    let items = locationInput
+    items.push( 
+      <div className="flex flex-row flex-wrap justify-between">
+        <div className="m-4 grow">
+          <label className="text-sm font-medium text-gray-700">{ type === "city" ? "Barangay" : "City" }</label>
+          <select
+
+            type="text"
+            name="region"
+            /*value={formData.location_id}*/
+            onChange={type === "city" ? changeBarangay : changeCity}
+            className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
+            required
+          >
+          {
+            [{code: "0000000000", name: selectPrompt}, ...arr].map(
+                  entry => <option key={entry.code} value={entry.code}>{entry.name}</option>)}
+          }
+          </select>
+        </div>
+      </div>
+    )
+    console.log(`Change province and city: ${value}`)
+    setLocationInput(items)
+  }
+
+  const updateRegion = (regionCode) => {
+    let region = getRegion(regionCode)
+    console.log(Object.keys(region.provinces).length)
+    setStreetEnabled(false)
+
+    // Different settings for National Capital Region.
+    //if (regionCode === "1300000000") {
+
+    //} else {
+      // locationInput = [] doesn't work
+      // It needs to be manually popped
+      while (locationInput.length > 0) {
+        locationInput.pop()
+      }
+      locationInput.push(
+        <div className="flex flex-row flex-wrap justify-between">
+          <div className="m-4 grow">
+            <label className="text-sm font-medium text-gray-700">Province or City</label>
+            <select
+
+              type="text"
+              name="region"
+              onChange={changeProvinceAndCity}
+              className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
+              required
+            >
+              {[{code: "0000000000", name: "--- SELECT A PROVINCE OR CITY ---"},
+                ...getSecondLevelMap(region)].map(
+                  entry => <option key={entry.code} value={entry.code}>{entry.name}</option>)}
+            </select>
+          </div>
+        </div>
+      )
+      console.log("Update region")
+      console.log(locationInput)
+      setLocationInput(locationInput)
+    //}
+  }
+
+  const regionChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      location_id: value
+    })
+    updateRegion(value)
+  }
   
   let addClassName = className
   return (
     <div className={`m-4 p-4 bg-amber-200/30 rounded-xl flex flex-col ${addClassName}`}>
       <div className="m-4">
-          <label className="block text-sm font-medium text-gray-700">Company Name</label>
+        <label className="block text-sm font-medium text-gray-700">Company Name</label>
+        <input
+            type="text"
+            name="companyName"
+            value={formData.companyName}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
+            required
+        />
+      </div>
+      <div className="flex flex-row flex-wrap justify-between">
+        <div className="m-4 grow">
+          <label className="text-sm font-medium text-gray-700">Contact Number</label>
           <input
               type="text"
-              name="companyName"
-              value={formData.companyName}
+              name="contactNumber"
+              value={formData.contactNumber}
               onChange={handleChange}
+              className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
+              required
+          />
+        </div>
+        <div className="m-4 grow">
+          <label className="text-sm font-medium text-gray-700">Email</label>
+          <input
+              type="text"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
+              required
+          />
+        </div>
+      </div>
+      <div className="flex flex-row flex-wrap justify-between">
+        <div className="m-4 grow">
+          <label className="text-sm font-medium text-gray-700">Region</label>
+          <select
+            type="text"
+            name="region"
+            value={formData.region}
+            onChange={regionChange}
+            className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
+            required
+          >
+            {[{code: "0000000000", name: "--- SELECT A REGION ---"},
+              ...getRegionMap()].map(
+                entry =><option key={entry.code} value={entry.code}>{entry.name}</option>)}
+          </select>
+        </div>
+      </div>
+      {locationInput.map(component => {return component})}
+      <div className="flex flex-row flex-wrap justify-between">
+        <div className="m-4 grow">
+          <label className="block text-sm font-medium text-gray-700">Street</label>
+          <input
+              type="text"
+              name="street"
+              value={streetText}
+              onChange={handleStreetChange}
               className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
               required
           />
-      </div>
-      <div className="flex flex-row flex-wrap justify-between">
-        <div className="m-4 grow">
-            <label className="text-sm font-medium text-gray-700">Contact Number</label>
-            <input
-                type="text"
-                name="contactNumber"
-                value={formData.contactNumber}
-                onChange={handleChange}
-                className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
-                required
-            />
-        </div>
-        <div className="m-4 grow">
-            <label className="text-sm font-medium text-gray-700">Email</label>
-            <input
-                type="text"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
-                required
-            />
-        </div>
-      </div>
-      <div className="flex flex-row flex-wrap justify-between">
-        <div className="m-4 grow">
-            <label className="text-sm font-medium text-gray-700">Province</label>
-            <input
-                type="text"
-                name="province"
-                value={formData.province}
-                onChange={handleChange}
-                className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
-                required
-            />
-        </div>
-        <div className="m-4 grow">
-            <label className="text-sm font-medium text-gray-700">City</label>
-            <input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
-                required
-            />
-        </div>
-      </div>
-      <div className="flex flex-row flex-wrap justify-between">
-        <div className="m-4">
-            <label className="text-sm font-medium text-gray-700">District</label>
-            <input
-                type="text"
-                name="district"
-                value={formData.district}
-                onChange={handleChange}
-                className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
-                required
-            />
-        </div>
-        <div className="m-4 grow">
-            <label className="text-sm font-medium text-gray-700">Barangay</label>
-            <input
-                type="text"
-                name="barangay"
-                value={formData.barangay}
-                onChange={handleChange}
-                className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
-                required
-            />
-        </div>
-        <div className="m-4 grow">
-            <label className="text-sm font-medium text-gray-700">Street</label>
-            <input
-                type="text"
-                name="street"
-                value={formData.street}
-                onChange={handleChange}
-                className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
-                required
-            />
         </div>
       </div>
     </div>

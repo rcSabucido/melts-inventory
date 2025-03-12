@@ -16,6 +16,7 @@ const SupplierDetailPage = () => {
 
   const handleSubmit = (e) => {
       e.preventDefault();
+      console.log(`Is updating? ${isUpdating}`)
       console.log(formData);
       navigate("/supplier");
   };
@@ -28,11 +29,7 @@ const SupplierDetailPage = () => {
         companyName: '',
         contactNumber: '',
         email: '',
-        province: '',
-        city: '',
-        district: '',
-        barangay: '',
-        street: ''
+        location_id: ''
     });
   };
 
