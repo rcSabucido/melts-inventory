@@ -81,7 +81,7 @@ const InventoryTable = ({ columns, data, refreshData }) => {
         </table>
       </div>
       {showDeleteModal && <DeleteModal onClose={closeEditModal} onConfirm={confirmDelete} />} 
-      {isEditing && <EditItems onClose={closeEditModal} />} 
+      {isEditing && <EditItems onClose={closeEditModal} refreshData={refreshData} currentProduct={currentProduct} />} 
       </>
     )
   }
