@@ -1,49 +1,80 @@
 import { useState, useRef, useEffect } from 'react';
 import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
-import RestockTable from '../components/RestockTable.jsx';
+import RestockDateGroup from '../components/RestockDateGroup.jsx';
 import AddStockModal from '../components/AddStockModal.jsx';
 import FilterStock from '../components/FilterStock.jsx';
 import FullTableModal from '../components/FullTableModal.jsx';
-import { FunnelIcon, PlusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/solid';
+import { FunnelIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { createClient } from '@supabase/supabase-js';
 
 
 const RestockPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
     const [showFullTable, setShowFullTable] = useState(false);
+    const [selectedGroupData, setSelectedGroupData] = useState(null);
+    const [restockGroups, setRestockGroups] = useState([]);
+    const [filteredGroups, setFilteredGroups] = useState([]);
     const filterRef = useRef(null);
     const columns = ['Product', 'Category', 'Added Items', 'Supplier', 'Expiry Date'];
-    const tableData = [
-        {
-            'Product': 'Adam Smasher',
-            'Category': 'Drinks',
-            'Added Items': 13,
-            'Supplier': 'Melts Inc.',
-            'Expiry Date': '2026-02-19'
-        },
-        {
-            'Product': 'Biryani',
-            'Category': 'Food',
-            'Added Items': 20,
-            'Supplier': 'Melts Inc.',
-            'Expiry Date': '2026-02-19'
-        },
-        {
-            'Product': 'David Martinez',
-            'Category': 'Drinks',
-            'Added Items': 19,
-            'Supplier': 'Melts Inc.',
-            'Expiry Date': '2026-02-19'
-        },
-        {
-          'Product': 'Panam Palmer',
-          'Category': 'Drinks',
-          'Added Items': 15,
-          'Supplier': 'Melts Inc.',
-          'Expiry Date': '2026-02-19'
+    const [currentPage, setCurrentPage] = useState(1);
+    const groupsPerPage = 2;
+    const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+
+    const refreshData = async () => {
+      const { data, error } = await supabase
+        .from('RestockFull')
+        .select()
+        .order('restock_date', { ascending: false })
+      
+        if (data) {
+          const groups = data.reduce((acc, item) => {
+            const date = new Date(item.restock_date).toISOString().split('T')[0];
+            if (!acc[date]) {
+              acc[date] = [];
+            }
+            acc[date].push(item);
+            return acc;
+          }, {});
+          const groupedData = Object.entries(groups).map(([date, items]) => ({
+            date,
+            data: items
+          }));
+          setRestockGroups(groupedData);
+          setFilteredGroups(groupedData);
         }
-    ];
+    }
+
+    const handleApplyFilters = (addedDate, expiryDate) => {
+      if (!addedDate && !expiryDate) {
+        setFilteredGroups(restockGroups);
+        return;
+      }
+
+      const filtered = restockGroups.filter(group => {
+        if (addedDate && group.date !== addedDate) {
+          return false;
+        }
+
+        if (expiryDate) {
+          return group.data.some(item => item.expiration_date === expiryDate);
+        }
+
+        return true;
+      })
+      .map(group => ({
+        data: group.data.filter(item => !expiryDate || item.expiration_date === expiryDate),
+      }));
+
+      setFilteredGroups(filtered);
+      setCurrentPage(1);
+    };
+
+    useEffect(() => {
+      refreshData();
+    }, []);
 
     useEffect(() => {
       const handleClickOutside = (e) => {
@@ -58,8 +89,29 @@ const RestockPage = () => {
       };
     }, [filterRef]);
 
-    const limitedTableData = tableData.slice(0, 4);
+    const handleExpandGroup = (date, data) => {
+      setSelectedGroupData({ date, data });
+      setShowFullTable(true);
+    }
 
+    const indexOfLastGroup = currentPage * groupsPerPage;
+    const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
+    const currentGroups = filteredGroups.slice(indexOfFirstGroup, indexOfLastGroup);
+    const totalPages = Math.ceil(filteredGroups.length / groupsPerPage);
+
+    const handleNextPage = () => {
+      if (currentPage  < totalPages) {
+        setCurrentPage(currentPage + 1);
+      }
+    };
+  
+    const handlePreviousPage = () => {
+      if (currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      } 
+    };
+
+    console.log(restockGroups);
   return (
     <>
       <div className="flex">
@@ -71,7 +123,7 @@ const RestockPage = () => {
               </Button>
               {showFilter && (
               <div ref={filterRef} className="absolute right-60 mt-5 z-50">
-                <FilterStock />
+                <FilterStock onApplyFilters={handleApplyFilters} />
               </div>
             )}
             <Button onClick={() => setShowModal(true)}>
@@ -79,19 +131,35 @@ const RestockPage = () => {
               Add Stock
               </Button>
           </div>
-          <div className='mx-7 w-auto pb-0.5 bg-amber-200/30 rounded-xl'>
-            <div className='flex justify-between'>
-            <p className='px-4 pt-4 text-xl font-bold'>February 20, 2025</p>
-            {tableData.length >= 4 && (
-              <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => setShowFullTable(true)}/>
-            )} 
-            </div> 
-            <RestockTable columns={columns} data={limitedTableData} />
+
+          {currentGroups.map(group => (
+            <RestockDateGroup 
+              key={group.date}
+              date={group.date}
+              data={group.data}
+              columns={columns}
+              onExpand={handleExpandGroup}
+            />
+          ))}
+          <div className='flex justify-center gap-4 py-3 mt-auto'>
+            <button className='text-orange-500 hover:text-orange-700 font-medium text-sm cursor-pointer' onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</button>
+            <button className='text-orange-500 hover:text-orange-700 font-medium text-sm cursor-pointer' onClick={handleNextPage} disabled={currentPage === totalPages}>
+              Next {currentPage < totalPages && '→'}
+              </button>
           </div>
         </main>
       </div>
-      {showModal && <AddStockModal onClose={() => setShowModal(false)} />}
-      {showFullTable && <FullTableModal columns={columns} data={tableData} onClose={() => setShowFullTable(false)} />}  
+      {showModal && <AddStockModal refreshData={refreshData} onClose={() => setShowModal(false)} />}
+      {showFullTable && selectedGroupData && (
+        <FullTableModal 
+          columns={columns} 
+          data={selectedGroupData.data} 
+          onClose={() => {
+            setShowFullTable(false);
+            setSelectedGroupData(null);
+          }} 
+        />
+      )}  
     </>
   );
 }

@@ -1,4 +1,5 @@
 const RestockTable = ({ columns, data }) => {
+ 
     return (
       <div className="relative overflow-x-auto rounded-xl m-5">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
