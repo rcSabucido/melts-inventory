@@ -29,11 +29,37 @@ const AddItems = ({ onClose, refreshData }) => {
             .from('Product')
             .select()
             .eq('name', formData.product)
+            .eq('is_active', true)
             .single();
         
         if (existingProduct) {
             alert('Product already exists');
             console.log('Product already exists');
+            return;
+        }
+
+        const { data: deletedProduct, error: deletedFetchError } = await supabase
+            .from('Product')
+            .select()
+            .eq('name', formData.product)
+            .eq('is_active', false)
+            .single();
+        
+        if (deletedProduct) {
+            const { error } = await supabase
+                .from('Product')
+                .update({ is_active: true })
+                .eq('product_id', deletedProduct.product_id);
+
+            const { error: priceError } = await supabase
+                .from('InventoryItem')
+                .update({ price: formData.price })
+                .eq('product_id', deletedProduct.product_id);
+            
+            if (!error && !priceError) {
+                await refreshData();
+                onClose();
+            }
             return;
         }
         
