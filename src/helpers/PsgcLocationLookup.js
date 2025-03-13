@@ -76,6 +76,9 @@ export function getProvinceOrCityFromCode(code) {
     return {"type": "province", value: region.provinces[code]}
   } else if (region.cities[code]) {
     return {"type": "city", value: region.cities[code]}
+  } else if (region.municipalities[code]) {
+    // Pateros
+    return {"type": "municipality", value: region.municipalities[code]}
   }
   return null
 }
@@ -86,6 +89,7 @@ export function getComponentCityOrMunicipalityFromCode(code) {
   const cityCode = code;
 
   let region = psgcData[regionCode]
+  console.log(`getComponentCityOrMunicipalityFromCode: cityCode: ${cityCode}`)
   if (region.provinces[provinceOrHUCCode]) {
     let province = region.provinces[provinceOrHUCCode]
     if (province.cities[cityCode]) {
@@ -96,6 +100,9 @@ export function getComponentCityOrMunicipalityFromCode(code) {
   } else if (region.municipalities[cityCode]) {
     // Pateros...
     return {"type": "municipality", value: region.municipalities[code]}
+  // For City of Manila, which contains submunicipalities
+  } else if (region.cities[provinceOrHUCCode]?.submunicipalities[cityCode]) {
+    return {"type": "submunicipality", value: region.cities[provinceOrHUCCode].submunicipalities[cityCode]}
   }
   return null
 }

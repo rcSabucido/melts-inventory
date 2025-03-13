@@ -118,6 +118,10 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
           return { code: key, name: value }
         })
       }
+    } else if (type === "municipality") {
+      arr = Object.entries(provinceHuc.barangays).map(([key, value]) => {
+        return { code: key, name: value }
+      })
     } else {
       arr = Object.entries(provinceHuc.municipalities).map(([key, value]) => {
         return { code: key, name: value.name }
@@ -128,8 +132,8 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
     let selectPrompt = ""
     if (isCapitalCity) {
       selectPrompt = "--- SELECT A SUB-MUNICIPALITY ---"
-    } else if (type === "city") {
-      selectPrompt = "--- SELECT A CITY ---"
+    } else if (type === "city" || type === "municipality") {
+      selectPrompt = "--- SELECT A BARANGAY ---"
     } else {
       selectPrompt = "--- SELECT A CITY OR MUNICIPALITY ---"
     }
@@ -138,12 +142,13 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
     items.push( 
       <div className="flex flex-row flex-wrap justify-between">
         <div className="m-4 grow">
-          <label className="text-sm font-medium text-gray-700">{ isCapitalCity ? "Sub-Municipality" : type === "city" ? "Barangay" : "City" }</label>
+          <label className="text-sm font-medium text-gray-700">
+            { isCapitalCity ? "Sub-Municipality" : type === "city" || type === "municipality" ? "Barangay" : "City or Municipality" }
+          </label>
           <select
             type="text"
             name="region"
-            /*value={formData.location_id}*/
-            onChange={type === "city" && !isCapitalCity ? changeBarangay : changeCity}
+            onChange={(type === "city" && !isCapitalCity) || type === "municipality" ? changeBarangay : changeCity}
             className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
             required
           >
