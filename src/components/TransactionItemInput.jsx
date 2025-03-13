@@ -12,11 +12,6 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, removeItem 
         updateParent(index, product);
     }
     
-    const handleRemove = () => {
-        removeItem(index);
-    };
-
-
     console.log("Product: ", product, " Index: ", index);
 
     return (
