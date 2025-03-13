@@ -1,7 +1,7 @@
 import RestockTable from "./RestockTable";
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 
-const RestockDateGroup = ({ date, data, columns, onExpand }) => {
+const RestockDateGroup = ({ date, data, columns, onExpand}) => {
     let displayData = data.map(raw => ({
         'Product': raw["product_name"],
         'Category': raw["category_name"],
@@ -10,6 +10,7 @@ const RestockDateGroup = ({ date, data, columns, onExpand }) => {
         'Expiry Date': raw["expiration_date"]
       }));
       const limitedData = displayData.slice(0, 4);
+      
     return(
         <div className='mx-7 w-auto pb-0.5 bg-amber-200/30 rounded-xl mb-4'>
         <div className='flex justify-between'>

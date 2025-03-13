@@ -15,6 +15,7 @@ const RestockPage = () => {
     const [showFullTable, setShowFullTable] = useState(false);
     const [selectedGroupData, setSelectedGroupData] = useState(null);
     const [restockGroups, setRestockGroups] = useState([]);
+    const [filteredGroups, setFilteredGroups] = useState([]);
     const filterRef = useRef(null);
     const columns = ['Product', 'Category', 'Added Items', 'Supplier', 'Expiry Date'];
     const [currentPage, setCurrentPage] = useState(1);
@@ -37,12 +38,39 @@ const RestockPage = () => {
             acc[date].push(item);
             return acc;
           }, {});
-          setRestockGroups(Object.entries(groups).map(([date, items]) => ({
+          const groupedData = Object.entries(groups).map(([date, items]) => ({
             date,
             data: items
-          })));
+          }));
+          setRestockGroups(groupedData);
+          setFilteredGroups(groupedData);
         }
     }
+
+    const handleApplyFilters = (addedDate, expiryDate) => {
+      if (!addedDate && !expiryDate) {
+        setFilteredGroups(restockGroups);
+        return;
+      }
+
+      const filtered = restockGroups.filter(group => {
+        if (addedDate && group.date !== addedDate) {
+          return false;
+        }
+
+        if (expiryDate) {
+          return group.data.some(item => item.expiration_date === expiryDate);
+        }
+
+        return true;
+      })
+      .map(group => ({
+        data: group.data.filter(item => !expiryDate || item.expiration_date === expiryDate),
+      }));
+
+      setFilteredGroups(filtered);
+      setCurrentPage(1);
+    };
 
     useEffect(() => {
       refreshData();
@@ -68,8 +96,8 @@ const RestockPage = () => {
 
     const indexOfLastGroup = currentPage * groupsPerPage;
     const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
-    const currentGroups = restockGroups.slice(indexOfFirstGroup, indexOfLastGroup);
-    const totalPages = Math.ceil(restockGroups.length / groupsPerPage);
+    const currentGroups = filteredGroups.slice(indexOfFirstGroup, indexOfLastGroup);
+    const totalPages = Math.ceil(filteredGroups.length / groupsPerPage);
 
     const handleNextPage = () => {
       if (currentPage  < totalPages) {
@@ -95,7 +123,7 @@ const RestockPage = () => {
               </Button>
               {showFilter && (
               <div ref={filterRef} className="absolute right-60 mt-5 z-50">
-                <FilterStock />
+                <FilterStock onApplyFilters={handleApplyFilters} />
               </div>
             )}
             <Button onClick={() => setShowModal(true)}>
