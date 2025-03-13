@@ -94,7 +94,13 @@ const AddItems = ({ onClose, refreshData }) => {
             const { data, error } = await supabase
                 .from('ProductCategory')
                 .select();
-                setCategories(data);
+            setCategories(data);
+            if (data && data.length > 0) {
+                setFormData(prev => ({
+                    ...prev,
+                    category: data[0].category
+                }));
+            }
         }
         fetchCategories();
     }, []);
@@ -124,6 +130,7 @@ const AddItems = ({ onClose, refreshData }) => {
                             className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
                             required
                         >
+                            <option value="">Select Category</option>
                             {
                                 categories?.map(category => {
                                     return <option key={category.category_id} value={category.category_id}>{category.name}</option>
