@@ -81,6 +81,11 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
         <>
             <div className="m-4 p-4 p-auto bg-amber-200/30 rounded-xl flex flex-col shadow-md h-150">
                 <div className='flex-grow overflow-y-auto'>
+                     <div className='flex justify-between items-center'>  
+                        <div className="text-sm font-medium text-gray-700">Product</div>
+                        <div className="text-sm font-medium text-gray-700">Quantity</div>
+                        <div className="text-sm font-medium text-gray-700">Price</div>
+                    </div>
                     {displayItems}
                 </div>
                 <div className="flex justify-center items-center">
