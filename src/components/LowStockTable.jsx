@@ -1,9 +1,10 @@
 
-const LowStockTable = ({ columns, data, className}) => {
+const LowStockTable = ({ columns, data}) => {
+  console.log('LowStockTable data:', data); // Add this line to log the data prop
 
-    let addClassName = className;
+
     return (
-      <div className={`relative overflow-x-auto rounded-xl m-5 ${addClassName}`}>
+      <div className={`relative overflow-x-auto rounded-xl m-5`}>
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-orange-200/70">
             <tr>  
