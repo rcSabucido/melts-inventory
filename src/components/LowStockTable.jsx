@@ -1,5 +1,5 @@
 
-const ModifiableTable = ({ columns, data, className}) => {
+const LowStockTable = ({ columns, data, className}) => {
 
     let addClassName = className;
     return (
@@ -26,4 +26,4 @@ const ModifiableTable = ({ columns, data, className}) => {
     );
   };
   
-  export default ModifiableTable;
+  export default LowStockTable;

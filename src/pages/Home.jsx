@@ -7,7 +7,7 @@ import LowStockDetails from '../components/LowStockDetailsModal.jsx';
 
 const HomePage = () => {
   const [showStockDetails, setShowStockDetails] = useState(false);
-   const columns = ['Products', ' ', ' ',  ' ', ' ', ' ','Items'];
+   const columns = ['Products', ' ', ' ',  ' ', ' ', ' ',' ',' ','Items'];
    const tableData = [
        {
            'Products': 'Durian Candy',
