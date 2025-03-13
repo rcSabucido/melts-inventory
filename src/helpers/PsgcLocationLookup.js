@@ -1,10 +1,15 @@
 import psgcData from './PSGC.json'
 
-export function getAddressFromId(psgcCodeNum) {
+export function padDigits(psgcCodeNum) {
   let code = psgcCodeNum + ''
   while (code.length < 10) {
     code = "0" + code
   }
+  return code
+}
+
+export function getAddressFromId(psgcCodeNum) {
+  let code = padDigits(psgcCodeNum)
   const regionCode = code.substring(0, 2) + '00000000';
   const provinceOrHUCCode = code.substring(0, 5) + '00000';
   const cityCode = code.substring(0, 7) + '000';

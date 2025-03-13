@@ -9,7 +9,7 @@ import { PlusIcon } from '@heroicons/react/24/solid';
 
 import { createClient } from '@supabase/supabase-js'
 
-import { getAddressFromId } from '../helpers/PsgcLocationLookup.js';
+import { getAddressFromId, padDigits } from '../helpers/PsgcLocationLookup.js';
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
@@ -100,10 +100,7 @@ const SupplierPage = () => {
     })
   };
 
-  const camelCase = (data, delim) => {
-    if (delim == undefined) {
-      delim = ' '
-    }
+  const camelCase = (data, delim = " ") => {
     const list = Array.isArray(data) ? data : data.toLowerCase().split(delim)
     return list.reduce((res, cur) => res + cur.charAt(0)
       .toUpperCase() + cur.slice(1)
@@ -168,11 +165,13 @@ const SupplierPage = () => {
               )
               : (
                 <ModifiableTable
-                  onEditClick={(row) => {
+                  onEditClick={(data) => {
                     let editQuery = {};
-                    for (const [key, value] of Object.entries(row)) {
+                    for (const [key, value] of Object.entries(data.row)) {
                       editQuery[camelCase(key)] = value;
                     }
+                    editQuery["location_id"] = padDigits(fetchData[data.index]["location_id"])
+                    editQuery["street"] = fetchData[data.index]["street"]
                     navigate("/supplier_detail", {
                       state: {
                         supplierData: editQuery

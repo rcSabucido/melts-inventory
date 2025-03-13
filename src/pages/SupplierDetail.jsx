@@ -104,7 +104,7 @@ const SupplierDetailPage = () => {
           <ArrowLongLeftIcon className='h-6 w-6 mx-4' onClick={() => setLeaveModal(true)}/>
           {headerText}
       </span>
-      <SupplierInput className="shadow-[-4px_4px_4px_#888888]" formData={formData} setFormData={setFormData} />
+      <SupplierInput className="shadow-[-4px_4px_4px_#888888]" formData={formData} setFormData={setFormData} isUpdating={isUpdating} />
 
       <div className="flex flex-row justify-end">
         <button type="button" onClick={clearForm} className="font-bold rounded-lg text-sm text-orange-400/70 mb-2 px-4">

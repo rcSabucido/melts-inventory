@@ -2,12 +2,26 @@ import { useState } from 'react';
 
 import { getRegionMap, getRegion, getSecondLevelMap, getProvinceOrCityFromCode, getComponentCityOrMunicipalityFromCode } from '../helpers/PsgcLocationLookup.js';
 
-const SupplierInput = ( {className, formData, setFormData} ) => {
-  let [locationInput, setLocationInput] = useState([]);
-  let [streetEnabled, setStreetEnabled] = useState(false);
-  let [streetText, setStreetText] = useState("");
+const SupplierInput = ( {className, formData, setFormData, isUpdating} ) => {
+  let [streetText, setStreetText] = useState(formData?.street);
 
-  const handleChange = (e) => {
+  let initialStreetEnabled = false;
+  let initialLocationInput = [];
+  if (isUpdating) {
+    let code = formData.location_id
+    formData.region = code.substring(0, 2) + '00000000'
+    initialStreetEnabled = true;
+
+    const provinceOrHUCCode = code.substring(0, 5) + '00000';
+    const cityCode = code.substring(0, 7) + '000';
+
+    regionSelection(initialLocationInput, formData.region, provinceOrHUCCode)
+    provinceAndCitySelection(initialLocationInput, provinceOrHUCCode, cityCode, code)
+  }
+  let [locationInput, setLocationInput] = useState(initialLocationInput);
+  let [streetEnabled, setStreetEnabled] = useState(initialStreetEnabled);
+
+  function handleChange(e) {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -16,7 +30,7 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
     console.log(formData)
   };
 
-  const handleStreetChange = (e) => {
+  function handleStreetChange(e) {
     const { name, value } = e.target;
 
     if (!streetEnabled) {
@@ -32,7 +46,7 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
     console.log(formData)
   };
 
-  const changeBarangay = (e) => {
+  function changeBarangay(e) {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -47,7 +61,7 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
     console.log(`Barangay changed! ${value}`)
   }
 
-  const changeCity = (e) => {
+  function changeCity(e) {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -89,25 +103,14 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
     setLocationInput(items)
   }
 
-  const changeProvinceAndCity = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      location_id: value
-    })
-    setStreetEnabled(false)
-    setStreetText("")
-
-    // locationInput = [] doesn't work
-    // It needs to be manually popped
-    while (locationInput.length > 1) {
-      locationInput.pop()
-    }
+  function provinceAndCitySelection(locationInput, value, cityCode, code) {
     let provinceHucCode = value
     let returnValue = getProvinceOrCityFromCode(provinceHucCode)
     let [type, provinceHuc] = [returnValue.type, returnValue.value]
     let arr = []
     let isCapitalCity = (value === "1380600000")
+    let selectedValue = code
+    console.log(`provinceAndCitySelection: ${value}`)
     if (type === "city") {
       if (isCapitalCity) {
         arr = Object.entries(provinceHuc.submunicipalities).map(([key, value]) => {
@@ -128,6 +131,7 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
       }).concat(Object.entries(provinceHuc.cities).map(([key, value]) => {
         return { code: key, name: value.name }
       }))
+      selectedValue = cityCode
     }
     let selectPrompt = ""
     if (isCapitalCity) {
@@ -138,8 +142,9 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
       selectPrompt = "--- SELECT A CITY OR MUNICIPALITY ---"
     }
 
-    let items = locationInput
-    items.push( 
+    console.log(`selectedValue: ${selectedValue}`)
+
+    locationInput.push( 
       <div className="flex flex-row flex-wrap justify-between">
         <div className="m-4 grow">
           <label className="text-sm font-medium text-gray-700">
@@ -148,6 +153,7 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
           <select
             type="text"
             name="region"
+            value={selectedValue}
             onChange={(type === "city" && !isCapitalCity) || type === "municipality" ? changeBarangay : changeCity}
             className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
             required
@@ -160,18 +166,29 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
         </div>
       </div>
     )
-    console.log(`Change province and city: ${value}`)
-    setLocationInput(items)
+
+    return locationInput
   }
 
-  const updateRegion = (regionCode) => {
+  function changeProvinceAndCity(e) {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      location_id: value
+    })
     setStreetEnabled(false)
     setStreetText("")
 
-    while (locationInput.length > 0) {
+    // locationInput = [] doesn't work
+    // It needs to be manually popped
+    while (locationInput.length > 1) {
       locationInput.pop()
     }
+    let items = provinceAndCitySelection(locationInput, value)
+    setLocationInput(items)
+  }
 
+  function regionSelection(locationInput, regionCode, selectedValue) {
     let region = getRegion(regionCode)
     console.log(Object.keys(region.provinces).length)
 
@@ -185,6 +202,7 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
 
             type="text"
             name="region"
+            value={selectedValue}
             onChange={changeProvinceAndCity}
             className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
             required
@@ -197,18 +215,25 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
         </div>
       </div>
     )
-    console.log("Update region")
-    console.log(locationInput)
-    setLocationInput(locationInput)
   }
 
-  const regionChange = (e) => {
+  const changeRegion = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       location_id: value
     })
-    updateRegion(value)
+    let regionCode = value
+
+    setStreetEnabled(false)
+    setStreetText("")
+
+    while (locationInput.length > 0) {
+      locationInput.pop()
+    }
+
+    regionSelection(locationInput, value)
+    setLocationInput(locationInput)
   }
   
   let addClassName = className
@@ -254,7 +279,7 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
             type="text"
             name="region"
             value={formData.region}
-            onChange={regionChange}
+            onChange={changeRegion}
             className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
             required
           >
