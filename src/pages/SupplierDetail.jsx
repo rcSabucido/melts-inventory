@@ -7,6 +7,10 @@ import Sidebar from '../components/Sidebar.jsx';
 import SupplierInput from '../components/SupplierInput.jsx';
 import { ArrowLongLeftIcon } from '@heroicons/react/24/solid';
 
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY)
+
 const SupplierDetailPage = () => {
   const [leaveModal, setLeaveModal] = useState(false);
   const navigate = useNavigate();
@@ -14,14 +18,60 @@ const SupplierDetailPage = () => {
 
   const [formData, setFormData] = useState(location.state?.supplierData || {});
 
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      if ((!formData.email || !formData.email.trim()) && (!formData.contactNumber || !formData.contactNumber)) {
-        alert("For a supplier, you must at least input an e-mail or contact number.")
-      }
-      console.log(`Is updating? ${isUpdating}`)
-      console.log(formData);
-      //navigate("/supplier");
+  const addContact = async (type, text, supplier_id) => {
+    let result = await supabase
+      .from('Contact')
+      .insert({
+        contact_type: type,
+        contact_text: text
+      })
+      .select()
+
+    let contact_id = result["data"][0]["contact_id"]
+
+    await supabase
+      .from('SupplierContact')
+      .insert({
+        contact_id,
+        supplier_id
+      })
+      .select()
+  }
+
+  const addSupplier = async () => {
+    let result = await supabase
+      .from('Supplier')
+      .insert({
+          company_name: formData["companyName"],
+          street: formData["street"],
+          location_id: formData["location_id"]
+      })
+      .select()
+    let supplier_id = result["data"][0]["supplier_id"]
+
+    if (formData.email && formData.email.trim()) {
+      addContact("EMAIL", formData.email, supplier_id)
+    }
+    if (formData.contactNumber && formData.contactNumber.trim()) {
+      await addContact("PHONE", formData.contactNumber, supplier_id)
+    }
+
+    navigate("/supplier");
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if ((!formData.email || !formData.email.trim()) && (!formData.contactNumber || !formData.contactNumber)) {
+      alert("For a supplier, you must at least input an e-mail or contact number.")
+    }
+    console.log(`Is updating? ${isUpdating}`)
+    console.log(formData);
+
+    if (isUpdating) {
+
+    } else {
+      await addSupplier()
+    }
   };
 
   const clearForm = () => {
