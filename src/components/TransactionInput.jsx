@@ -4,6 +4,7 @@ import { useEffect, useState, cloneElement } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import TransactionItemInput from "./TransactionItemInput";
 import Switch from "./Switch";
+import TransactionForm from "./TransactionForm";
 
 const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedProduct }) => {
     const [items, setItems] = useState([]);
@@ -20,7 +21,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
     if (items.length === 0 && currentItems) {
         setDisplayItems(currentItems.map((item, index) => {
             return (
-                <TransactionItemInput 
+                <TransactionForm
                     key={index} 
                     index={index} 
                     initialProduct={item.product} 
@@ -34,7 +35,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
     useEffect(() => {
         if (scannedProduct) {
             setDisplayItems(prevItems => [...prevItems, 
-                <TransactionItemInput 
+                <TransactionForm
                     key={prevItems.length} 
                     initialProduct={scannedProduct} 
                     index={prevItems.length}
@@ -58,7 +59,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
     const handleAddItem = () => {
         if (isDesktop) {
             setDisplayItems(prevItems => [...prevItems, 
-                <TransactionItemInput key={prevItems.length} index={prevItems.length} updateParent={updateItemData} />
+                <TransactionForm key={prevItems.length} index={prevItems.length} updateParent={updateItemData} />
             ]);
             items.push(
                 {
@@ -81,31 +82,22 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
         <>
             <div className="m-4 p-4 p-auto bg-amber-200/30 rounded-xl flex flex-col shadow-md h-150">
                 <div className='flex-grow overflow-y-auto'>
-                     <div className='flex justify-between items-center'>  
-                        <div className="text-sm font-medium text-gray-700">Product</div>
-                        <div className="text-sm font-medium text-gray-700">Quantity</div>
-                        <div className="text-sm font-medium text-gray-700">Price</div>
+                     <div className='relative flex mb-1'>
+                        <div className="absolute left-10 text-sm font-medium text-gray-700">Product</div>
+                        <div className="absolute right-98 text-sm font-medium text-gray-700">Quantity</div>
+                        <div className="absolute right-46 text-sm font-medium text-gray-700">Price</div>
                     </div>
                     {displayItems}
                 </div>
                 <div className="flex justify-center items-center">
                     <div className="flex mr-auto">
                         <div className="m-4 grow">
-                            <label className="block text-sm font-medium text-gray-700">Recorded by</label>
-                            <input
-                                type='text'
-                                name='recordedBy'
-                                className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
-                                required 
-                            />
-                        </div>
-                        <div className="m-4 grow">
                             <label className="block text-sm font-medium text-gray-700">Date</label>
                             <input
                                 type='date'
                                 name='date'
                                 className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
-                                required 
+            
                             />
                         </div>
                     </div>
