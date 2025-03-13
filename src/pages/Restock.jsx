@@ -17,7 +17,10 @@ const RestockPage = () => {
     const [restockGroups, setRestockGroups] = useState([]);
     const filterRef = useRef(null);
     const columns = ['Product', 'Category', 'Added Items', 'Supplier', 'Expiry Date'];
+    const [currentPage, setCurrentPage] = useState(1);
+    const groupsPerPage = 2;
     const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
 
     const refreshData = async () => {
       const { data, error } = await supabase
@@ -63,6 +66,23 @@ const RestockPage = () => {
       setShowFullTable(true);
     }
 
+    const indexOfLastGroup = currentPage * groupsPerPage;
+    const indexOfFirstGroup = indexOfLastGroup - groupsPerPage;
+    const currentGroups = restockGroups.slice(indexOfFirstGroup, indexOfLastGroup);
+    const totalPages = Math.ceil(restockGroups.length / groupsPerPage);
+
+    const handleNextPage = () => {
+      if (currentPage  < totalPages) {
+        setCurrentPage(currentPage + 1);
+      }
+    };
+  
+    const handlePreviousPage = () => {
+      if (currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      } 
+    };
+
     console.log(restockGroups);
   return (
     <>
@@ -84,7 +104,7 @@ const RestockPage = () => {
               </Button>
           </div>
 
-          {restockGroups.map(group => (
+          {currentGroups.map(group => (
             <RestockDateGroup 
               key={group.date}
               date={group.date}
@@ -93,6 +113,12 @@ const RestockPage = () => {
               onExpand={handleExpandGroup}
             />
           ))}
+          <div className='flex justify-center gap-4 py-3 mt-auto'>
+            <button className='text-orange-500 hover:text-orange-700 font-medium text-sm cursor-pointer' onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</button>
+            <button className='text-orange-500 hover:text-orange-700 font-medium text-sm cursor-pointer' onClick={handleNextPage} disabled={currentPage === totalPages}>
+              Next {currentPage < totalPages && '→'}
+              </button>
+          </div>
         </main>
       </div>
       {showModal && <AddStockModal refreshData={refreshData} onClose={() => setShowModal(false)} />}

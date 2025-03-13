@@ -2,7 +2,6 @@ import RestockTable from "./RestockTable";
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 
 const RestockDateGroup = ({ date, data, columns, onExpand }) => {
-    console.log(data.expiry_date);
     let displayData = data.map(raw => ({
         'Product': raw["product_name"],
         'Category': raw["category_name"],
