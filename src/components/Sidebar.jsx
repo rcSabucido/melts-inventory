@@ -18,11 +18,11 @@ const Sidebar = () => {
               <ListBulletIcon className="h-6 float-left pr-2" /> Inventory
             </a>
           </li>
-          <li className="py-2 sidebar-link-shadow">
+          {/* <li className="py-2 sidebar-link-shadow">
             <a href="/employee">
               <UserIcon className="h-6 float-left pr-2" /> Employees
             </a>
-          </li>
+          </li> */}
           <li className="py-2 sidebar-link-shadow">
             <a href="/transaction">
               <BanknotesIcon className="h-6 float-left pr-2" /> Transactions
