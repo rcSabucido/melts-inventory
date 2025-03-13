@@ -1,43 +1,29 @@
 
-const LowStockTable = () => {
-  return (
-    <div className="border border-solid border-orange-400/40 border-2 rounded-md w-full">
-    <table className="text-left rtl:text-right w-full">
-      <thead className="text-gray-600 bg-orange-300/30">
-        <tr>
-          <th className="px-6 py-3">
-            Product
-          </th>
-          <th className="px-6 py-3">
-            Items
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th className="px-6 py-5 border-solid border-orange-400/40 border-t-2">Durian Candy</th>
-          <th className="px-6 py-5 border-solid border-orange-400/40 border-t-2">10</th>
-        </tr>
-        <tr>
-          <th className="px-6 py-5 border-solid border-gray-400/20 border-t-2">Mango Chip</th>
-          <th className="px-6 py-5 border-solid border-gray-400/20 border-t-2">59</th>
-        </tr>
-        <tr>
-          <th className="px-6 py-5 border-solid border-gray-400/20 border-t-2">Banana Split</th>
-          <th className="px-6 py-5 border-solid border-gray-400/20 border-t-2">12</th>
-        </tr>
-        <tr>
-          <th className="px-6 py-5 border-solid border-gray-400/20 border-t-2">Lorem Liquorice</th>
-          <th className="px-6 py-5 border-solid border-gray-400/20 border-t-2">15</th>
-        </tr>
-        <tr>
-          <th className="px-6 py-5 border-solid border-gray-400/20 border-t-2">Ipsum Candy</th>
-          <th className="px-6 py-5 border-solid border-gray-400/20 border-t-2">25</th>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-  )
-}
+const ModifiableTable = ({ columns, data, className}) => {
 
-export default LowStockTable;
+    let addClassName = className;
+    return (
+      <div className={`relative overflow-x-auto rounded-xl m-5 ${addClassName}`}>
+        <table className="w-full text-sm font-bold text-left rtl:text-right text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-orange-200/70">
+            <tr>  
+              {columns.map((column, index) => (
+                <th key={index} scope="col" className="px-6 py-4">{column}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((row, rowIndex) => (
+              <tr key={rowIndex} className="bg-[#fff2bf] border-b border-gray-200 text-gray-900">
+                {columns.map((column, colIndex) => (
+                  <td key={colIndex} className="px-6 py-4">{row[column]}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+  
+  export default ModifiableTable;
