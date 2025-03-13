@@ -4,7 +4,7 @@ const LowStockTable = ({ columns, data, className}) => {
     let addClassName = className;
     return (
       <div className={`relative overflow-x-auto rounded-xl m-5 ${addClassName}`}>
-        <table className="w-full text-sm font-bold text-left rtl:text-right text-gray-500">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-orange-200/70">
             <tr>  
               {columns.map((column, index) => (
