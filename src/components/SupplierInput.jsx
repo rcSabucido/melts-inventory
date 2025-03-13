@@ -234,7 +234,6 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
               value={formData.contactNumber}
               onChange={handleChange}
               className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
-              required
           />
         </div>
         <div className="m-4 grow">
@@ -245,7 +244,6 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
               value={formData.email}
               onChange={handleChange}
               className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
-              required
           />
         </div>
       </div>
@@ -275,7 +273,7 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
               name="street"
               value={streetText}
               onChange={handleStreetChange}
-              className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
+              className={`mt-1 block w-full p-2 border border-gray-300 ${streetEnabled ? "bg-white" : "bg-stone-300"} rounded-md`}
               required
           />
         </div>

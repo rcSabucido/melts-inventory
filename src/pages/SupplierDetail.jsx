@@ -16,9 +16,12 @@ const SupplierDetailPage = () => {
 
   const handleSubmit = (e) => {
       e.preventDefault();
+      if ((!formData.email || !formData.email.trim()) && (!formData.contactNumber || !formData.contactNumber)) {
+        alert("For a supplier, you must at least input an e-mail or contact number.")
+      }
       console.log(`Is updating? ${isUpdating}`)
       console.log(formData);
-      navigate("/supplier");
+      //navigate("/supplier");
   };
 
   const clearForm = () => {
@@ -54,7 +57,7 @@ const SupplierDetailPage = () => {
       <SupplierInput className="shadow-[-4px_4px_4px_#888888]" formData={formData} setFormData={setFormData} />
 
       <div className="flex flex-row justify-end">
-        <button type="button" onClick={() => clearForm()} className="font-bold rounded-lg text-sm text-orange-400/70 mb-2 px-4">
+        <button type="button" onClick={clearForm} className="font-bold rounded-lg text-sm text-orange-400/70 mb-2 px-4">
             Clear
         </button>
         <Button type="submit">
