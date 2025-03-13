@@ -1,8 +1,12 @@
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 
-const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick, orderBy = null, returnIndex = false }) => {
+const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick, orderBy = null, returnIndex = false, descending = false }) => {
     if (orderBy !== null || orderBy !== undefined) {
-      data.sort((a, b) => a[orderBy] - b[orderBy]);
+      if (!descending) {
+        data.sort((a, b) => a[orderBy] - b[orderBy]);
+      } else {
+        data.sort((a, b) => b[orderBy] - a[orderBy]);
+      }
     }
     let addClassName = className;
     return (

@@ -38,6 +38,11 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
       ...formData,
       location_id: value
     })
+    setStreetText("")
+    if (value === "0000000000") {
+      setStreetEnabled(false)
+      return
+    }
     setStreetEnabled(true)
     console.log(`Barangay changed! ${value}`)
   }
@@ -49,12 +54,13 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
       location_id: value
     })
     setStreetEnabled(false)
-    let componentCityOrMunicipality = getComponentCityOrMunicipalityFromCode(value)
-    console.log(`City changed:`)
-    console.log(componentCityOrMunicipality)
+    setStreetText("")
     while (locationInput.length > 2) {
       locationInput.pop()
     }
+    let componentCityOrMunicipality = getComponentCityOrMunicipalityFromCode(value)
+    console.log(`City changed:`)
+    console.log(componentCityOrMunicipality)
     let arr = Object.entries(componentCityOrMunicipality.value.barangays).map(([key, value]) => {
       return { code: key, name: value }
     })
@@ -90,14 +96,28 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
       location_id: value
     })
     setStreetEnabled(false)
+    setStreetText("")
+
+    // locationInput = [] doesn't work
+    // It needs to be manually popped
+    while (locationInput.length > 1) {
+      locationInput.pop()
+    }
     let provinceHucCode = value
     let returnValue = getProvinceOrCityFromCode(provinceHucCode)
     let [type, provinceHuc] = [returnValue.type, returnValue.value]
     let arr = []
+    let isCapitalCity = (value === "1380600000")
     if (type === "city") {
-      arr = Object.entries(provinceHuc.barangays).map(([key, value]) => {
-        return { code: key, name: value }
-      })
+      if (isCapitalCity) {
+        arr = Object.entries(provinceHuc.submunicipalities).map(([key, value]) => {
+          return { code: key, name: value.name }
+        })
+      } else {
+        arr = Object.entries(provinceHuc.barangays).map(([key, value]) => {
+          return { code: key, name: value }
+        })
+      }
     } else {
       arr = Object.entries(provinceHuc.municipalities).map(([key, value]) => {
         return { code: key, name: value.name }
@@ -105,31 +125,25 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
         return { code: key, name: value.name }
       }))
     }
-    let isCapitalCity = (value === "1380600000")
+    let selectPrompt = ""
     if (isCapitalCity) {
-      let selectPrompt = "--- SELECT A SUBMUNICIPALITY ---"
+      selectPrompt = "--- SELECT A SUB-MUNICIPALITY ---"
     } else if (type === "city") {
-      let selectPrompt = "--- SELECT A CITY ---"
+      selectPrompt = "--- SELECT A CITY ---"
     } else {
-      let selectPrompt = "--- SELECT A CITY OR MUNICIPALITY ---"
+      selectPrompt = "--- SELECT A CITY OR MUNICIPALITY ---"
     }
 
-    // locationInput = [] doesn't work
-    // It needs to be manually popped
-    while (locationInput.length > 1) {
-      locationInput.pop()
-    }
     let items = locationInput
     items.push( 
       <div className="flex flex-row flex-wrap justify-between">
         <div className="m-4 grow">
-          <label className="text-sm font-medium text-gray-700">{ type === "city" ? "Barangay" : "City" }</label>
+          <label className="text-sm font-medium text-gray-700">{ isCapitalCity ? "Sub-Municipality" : type === "city" ? "Barangay" : "City" }</label>
           <select
-
             type="text"
             name="region"
             /*value={formData.location_id}*/
-            onChange={type === "city" ? changeBarangay : changeCity}
+            onChange={type === "city" && !isCapitalCity ? changeBarangay : changeCity}
             className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
             required
           >
@@ -146,42 +160,41 @@ const SupplierInput = ( {className, formData, setFormData} ) => {
   }
 
   const updateRegion = (regionCode) => {
+    setStreetEnabled(false)
+    setStreetText("")
+
+    while (locationInput.length > 0) {
+      locationInput.pop()
+    }
+
     let region = getRegion(regionCode)
     console.log(Object.keys(region.provinces).length)
-    setStreetEnabled(false)
 
-    // Different settings for National Capital Region.
-    //if (regionCode === "1300000000") {
+    locationInput.push(
+      <div className="flex flex-row flex-wrap justify-between">
+        <div className="m-4 grow">
+          <label className="text-sm font-medium text-gray-700">
+            {`Province${regionCode === "1300000000" ? ", Municipality," : ""} or City`}
+          </label>
+          <select
 
-    //} else {
-      // locationInput = [] doesn't work
-      // It needs to be manually popped
-      while (locationInput.length > 0) {
-        locationInput.pop()
-      }
-      locationInput.push(
-        <div className="flex flex-row flex-wrap justify-between">
-          <div className="m-4 grow">
-            <label className="text-sm font-medium text-gray-700">Province or City</label>
-            <select
-
-              type="text"
-              name="region"
-              onChange={changeProvinceAndCity}
-              className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
-              required
-            >
-              {[{code: "0000000000", name: "--- SELECT A PROVINCE OR CITY ---"},
-                ...getSecondLevelMap(region)].map(
-                  entry => <option key={entry.code} value={entry.code}>{entry.name}</option>)}
-            </select>
-          </div>
+            type="text"
+            name="region"
+            onChange={changeProvinceAndCity}
+            className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
+            required
+          >
+            {[{code: "0000000000", name: "--- SELECT A PROVINCE" +
+                (regionCode === "1300000000" ? ", MUNICIPALITY," : "") + " OR CITY ---"},
+              ...getSecondLevelMap(region)].map(
+                entry => <option key={entry.code} value={entry.code}>{entry.name}</option>)}
+          </select>
         </div>
-      )
-      console.log("Update region")
-      console.log(locationInput)
-      setLocationInput(locationInput)
-    //}
+      </div>
+    )
+    console.log("Update region")
+    console.log(locationInput)
+    setLocationInput(locationInput)
   }
 
   const regionChange = (e) => {

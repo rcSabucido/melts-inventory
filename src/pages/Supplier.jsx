@@ -41,7 +41,7 @@ const SupplierPage = () => {
       .from('SupplierFull')
       .select("*")
       .range(start, Math.min(start + pageLength - 1, result.count))
-      .order("supplier_id", { ascending: true })
+      .order("supplier_id", { ascending: false })
       .then((result) => {
 
       const data = result.data
@@ -187,6 +187,7 @@ const SupplierPage = () => {
                   data={displayData}
                   className="shadow-[-4px_4px_4px_#888888]"
                   orderBy="supplier_id"
+                  descending={true}
                   returnIndex={true} />
               )
             }
