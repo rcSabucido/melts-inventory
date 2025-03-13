@@ -14,54 +14,108 @@ import { getAddressFromId } from '../helpers/PsgcLocationLookup.js';
 const SupplierPage = () => {
   let navigate = useNavigate();
   const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY)
-  const [data, setData] = useState([]);
+  const [fetchData, setFetchData] = useState([]);
+  const [displayData, setDisplayData] = useState([]);
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(0);
+  const pageLength = 10;
 
-  useEffect(() => {
-      async function fetch() {
-        const { data, error } = await supabase
-        .from('SupplierFull')
-        .select()
+  const fetchSuppliers = (start) => {
+    if (start === undefined) { start = 0 }
+    supabase
+      .from('Supplier')
+      .select('*', { count: 'exact', head: true })
+      .then((result) => {
 
-        let displayData = []
-        for (let i = 0; i < data.length; i++) {
-          let raw = data[i]
-          console.log(raw)
+      setEndIndex(result.count - 1)
 
-          const address = raw["street"] ? raw["street"] + ", " + getAddressFromId(raw["location_id"]) : getAddressFromId(raw["location_id"])
-          let displayObj = {
-            'Company Name': raw["company_name"],
-            'Address': address,
-          }
-          let contacts = raw["contacts"]
-          for (let j = 0; j < contacts.length; j++) {
-            let contact = contacts[j]
-            if (contact.type === "PHONE") {
-              displayObj["Contact Number"] = contact["text"]
-            } else if (contact.type === "EMAIL") {
-              displayObj["Email"] = contact["text"]
-            }
-          }
-          displayData.push(displayObj)
+      supabase
+      .from('SupplierFull')
+      .select("*")
+      .range(start, Math.min(start + pageLength, result.count - 1))
+      .then((result) => {
+
+      const data = result.data
+      setFetchData(data)
+
+      let displayData = []
+      for (let i = 0; i < data.length; i++) {
+        let raw = data[i]
+        console.log(raw)
+
+        let address = raw["street"] ? raw["street"] + (raw["location_id"] ? ", " : "") : ""
+        address += raw["location_id"] ? getAddressFromId(raw["location_id"]) : ""
+        let displayObj = {
+          'Company Name': raw["company_name"],
+          'Address': address,
         }
-
-        setData(displayData)
+        let contacts = raw["contacts"]
+        for (let j = 0; j < contacts.length; j++) {
+          let contact = contacts[j]
+          if (contact.type === "PHONE") {
+            displayObj["Contact Number"] = contact["text"]
+          } else if (contact.type === "EMAIL") {
+            displayObj["Email"] = contact["text"]
+          }
+        }
+        displayData.push(displayObj)
       }
-      fetch();
-    }, [])
+
+      setDisplayData(displayData)
+      })
+    })
+  }
+
+  useEffect(fetchSuppliers, [])
   const columns = ['Company Name', 'Email', 'Contact Number', 'Address'];
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteRow, setDeleteRow] = useState(null);
 
   const deleteSupplier = () => {
-    console.log(`Deleting supplier: `)
-    console.log(deleteRow)
+    let [index, _] = deleteRow
+    console.log(`Deleting supplier [${index}]:`)
+    console.log(fetchData)
   };
 
-  function camelCase (data, delim = ' ') {
+  const camelCase = (data, delim) => {
+    if (delim == undefined) {
+      delim = ' '
+    }
     const list = Array.isArray(data) ? data : data.toLowerCase().split(delim)
     return list.reduce((res, cur) => res + cur.charAt(0)
       .toUpperCase() + cur.slice(1)
+    )
+  }
+
+  const nextPage = () => {
+    let next = Math.min(startIndex + pageLength, endIndex)
+    setStartIndex(next)
+    fetchSuppliers(next)
+  }
+
+  const previousPage = () => {
+    let prev = Math.max(startIndex - pageLength, 0)
+    setStartIndex(prev)
+    fetchSuppliers(prev)
+  }
+
+  const paginationSection = () => {
+    let hasPrevious = startIndex > 0
+    let hasNext = endIndex > 0 && startIndex + pageLength < endIndex
+    return (
+      <div className="place-self-center">
+        {
+          (hasPrevious ? (<button type="button" className="cursor-pointer" onClick={previousPage}>Previous</button>) : null)
+        }
+        {
+          (hasPrevious && hasNext ? ( <span className="px-3">|</span> ) : null)
+        }
+        {
+          (hasNext ?
+            (<button type="button" className="cursor-pointer" onClick={nextPage}>Next</button>) : null)
+        }
+      </div>
     )
   }
 
@@ -81,9 +135,12 @@ const SupplierPage = () => {
               </a>
             </div>
             {
-              (data.length == 0) ?
+              (displayData.length > 0) ? (paginationSection()) : null
+            }
+            {
+              (displayData.length == 0) ?
               (
-                <div className="justify-center">
+                <div className="place-self-center">
                   <p className="text-xl">Loading table</p>
                 </div>
               )
@@ -100,14 +157,17 @@ const SupplierPage = () => {
                       }
                     })
                   }}
-                  onDeleteClick={(row) => {
-                    setDeleteRow(row)
+                  onDeleteClick={(data) => {
+                    setDeleteRow([data.rowIndex, data.row])
                     setDeleteModal(true)
                   }}
                   columns={columns}
-                  data={data}
+                  data={displayData}
                   className="shadow-[-4px_4px_4px_#888888]" />
               )
+            }
+            {
+              (displayData.length > 0) ? (paginationSection()) : null
             }
         </div>
         </main>
