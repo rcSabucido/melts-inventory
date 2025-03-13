@@ -28,7 +28,7 @@ const RestockPage = () => {
       
         if (data) {
           const groups = data.reduce((acc, item) => {
-            const date = new Date(item.restock_date).toLocaleDateString();
+            const date = new Date(item.restock_date).toISOString().split('T')[0];
             if (!acc[date]) {
               acc[date] = [];
             }
@@ -96,7 +96,7 @@ const RestockPage = () => {
           ))}
         </main>
       </div>
-      {showModal && <AddStockModal onClose={() => setShowModal(false)} />}
+      {showModal && <AddStockModal refreshData={refreshData} onClose={() => setShowModal(false)} />}
       {showFullTable && selectedGroupData && (
         <FullTableModal 
           columns={columns} 
