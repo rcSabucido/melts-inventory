@@ -96,7 +96,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
                                 type='date'
                                 name='date'
                                 className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
-                                required 
+            
                             />
                         </div>
                     </div>
