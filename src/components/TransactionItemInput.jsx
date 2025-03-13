@@ -4,6 +4,9 @@ import { useState } from "react";
 const TransactionItemInput = ({ initialProduct, index, updateParent, removeItem }) => {
     index = index || 0;
     const [product, setProduct] = useState(initialProduct);
+    const [quantity, setQuantity] = useState(0);
+    const [price, setPrice] = useState(0);
+
     const productNameChange = (e) => {
         const {_, value} = e.target;
         console.log("Product name changed!")
@@ -11,20 +14,38 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, removeItem 
         setProduct(value);
         updateParent(index, product);
     }
+
+    const quantityChange = (e) => {
+        const { value } = e.target;
+        setQuantity(value);
+        updateParent(index, { product, quantity: value, price });
+    };
+
+    const priceChange = (e) => {
+        const { value } = e.target;
+        setPrice(value);
+        updateParent(index, { product, quantity, price: value });
+    };
+    
+    const handleRemove = () => {
+        removeItem();
+    };
+
+    
     
     console.log("Product: ", product, " Index: ", index);
 
     return (
         <div className='flex flex-wrap justify-between'>
                     <div className="m-4 grow-[3] flex items-center gap-2">
-                        <button className="bg-transparent border-2 border-solid border-[#CB3F3F] hover:bg-[#CB3F3F] text-[#CB3F3F] hover:text-white h-auto w-4.5"><XMarkIcon/></button>
+                        <button className="bg-transparent border-2 border-solid border-[#CB3F3F] hover:bg-[#CB3F3F] text-[#CB3F3F] hover:text-white h-auto w-4.5"onClick={handleRemove}><XMarkIcon/></button>
                         <input 
                             type='text'
                             name='product'
                             className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
                             defaultValue={initialProduct}
                             onChange={productNameChange}
-                            required
+                            
                         />
                     </div>
                     <div className="flex ml-auto">
@@ -34,7 +55,8 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, removeItem 
                                 type='number'
                                 name='quantity'
                                 className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
-                                required 
+                                onChange={quantityChange}
+                                 
                             />
                         </div>
                         <div className="m-4 grow">
@@ -43,7 +65,8 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, removeItem 
                                 type='number'
                                 name='price'
                                 className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
-                                required 
+                                onChange={priceChange}
+                                 
                             />
                         </div>
                     </div>
