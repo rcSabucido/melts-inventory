@@ -2,7 +2,14 @@ import RestockTable from "./RestockTable";
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 
 const RestockDateGroup = ({ date, data, columns, onExpand }) => {
-    const limitedData = data.slice(0, 4);
+    let displayData = data.map(raw => ({
+        'Product': raw["product_name"],
+        'Category': raw["category_name"],
+        'Added Items': raw["quantity"],
+        'Supplier': raw["supplier_name"],
+        'Expiry Date': new Date(raw["expiry_date"]).toLocaleDateString()
+      }));
+      const limitedData = displayData.slice(0, 4);
     return(
         <div className='mx-7 w-auto pb-0.5 bg-amber-200/30 rounded-xl mb-4'>
         <div className='flex justify-between'>
@@ -10,7 +17,7 @@ const RestockDateGroup = ({ date, data, columns, onExpand }) => {
           {data.length >= 4 && (
             <ArrowsPointingOutIcon 
               className='h-6 w-6 mr-6 mt-4 cursor-pointer' 
-              onClick={() => onExpand(date, data)}
+              onClick={() => onExpand(date, displayData)}
             />
           )}
         </div>

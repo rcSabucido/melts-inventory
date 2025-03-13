@@ -2,10 +2,11 @@ import { useState, useRef, useEffect } from 'react';
 import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
 import RestockTable from '../components/RestockTable.jsx';
+import RestockDateGroup from '../components/RestockDateGroup.jsx';
 import AddStockModal from '../components/AddStockModal.jsx';
 import FilterStock from '../components/FilterStock.jsx';
 import FullTableModal from '../components/FullTableModal.jsx';
-import { FunnelIcon, PlusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/solid';
+import { FunnelIcon, PlusIcon } from '@heroicons/react/24/solid';
 import { createClient } from '@supabase/supabase-js';
 
 
@@ -13,31 +14,37 @@ const RestockPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
     const [showFullTable, setShowFullTable] = useState(false);
-    const [restockData, setShowRestockData] = useState([]);
+    const [selectedGroupData, setSelectedGroupData] = useState(null);
+    const [restockGroups, setRestockGroups] = useState([]);
     const filterRef = useRef(null);
     const columns = ['Product', 'Category', 'Added Items', 'Supplier', 'Expiry Date'];
-    const tableData = [
-        {
-            'Product': 'Adam Smasher',
-            'Category': 'Drinks',
-            'Added Items': 13,
-            'Supplier': 'Melts Inc.',
-            'Expiry Date': '2026-02-19'
-        },
-        {
-            'Product': 'Biryani',
-            'Category': 'Food',
-            'Added Items': 20,
-            'Supplier': 'Melts Inc.',
-            'Expiry Date': '2026-02-19'
-        }
-    ];
     const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
     const refreshData = async () => {
       const { data, error } = await supabase
-
+        .from('RestockFull')
+        .select()
+        .order('restock_date', { ascending: false })
+      
+        if (data) {
+          const groups = data.reduce((acc, item) => {
+            const date = new Date(item.restock_date).toLocaleDateString();
+            if (!acc[date]) {
+              acc[date] = [];
+            }
+            acc[date].push(item);
+            return acc;
+          }, {});
+          setRestockGroups(Object.entries(groups).map(([date, items]) => ({
+            date,
+            data: items
+          })));
+        }
     }
+
+    useEffect(() => {
+      refreshData();
+    }, []);
 
     useEffect(() => {
       const handleClickOutside = (e) => {
@@ -52,8 +59,12 @@ const RestockPage = () => {
       };
     }, [filterRef]);
 
-    const limitedTableData = tableData.slice(0, 4);
+    const handleExpandGroup = (date, data) => {
+      setSelectedGroupData({ date, data });
+      setShowFullTable(true);
+    }
 
+    console.log(restockGroups);
   return (
     <>
       <div className="flex">
@@ -73,19 +84,29 @@ const RestockPage = () => {
               Add Stock
               </Button>
           </div>
-          <div className='mx-7 w-auto pb-0.5 bg-amber-200/30 rounded-xl'>
-            <div className='flex justify-between'>
-            <p className='px-4 pt-4 text-xl font-bold'>February 20, 2025</p>
-            {tableData.length >= 4 && (
-              <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => setShowFullTable(true)}/>
-            )} 
-            </div> 
-            <RestockTable columns={columns} data={limitedTableData} />
-          </div>
+
+          {restockGroups.map(group => (
+            <RestockDateGroup 
+              key={group.date}
+              date={group.date}
+              data={group.data}
+              columns={columns}
+              onExpand={handleExpandGroup}
+            />
+          ))}
         </main>
       </div>
       {showModal && <AddStockModal onClose={() => setShowModal(false)} />}
-      {showFullTable && <FullTableModal columns={columns} data={tableData} onClose={() => setShowFullTable(false)} />}  
+      {showFullTable && selectedGroupData && (
+        <FullTableModal 
+          columns={columns} 
+          data={selectedGroupData.data} 
+          onClose={() => {
+            setShowFullTable(false);
+            setSelectedGroupData(null);
+          }} 
+        />
+      )}  
     </>
   );
 }
