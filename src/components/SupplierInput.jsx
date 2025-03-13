@@ -153,7 +153,7 @@ const SupplierInput = ( {className, formData, setFormData, isUpdating} ) => {
           <select
             type="text"
             name="region"
-            value={selectedValue}
+            defaultValue={selectedValue}
             onChange={(type === "city" && !isCapitalCity) || type === "municipality" ? changeBarangay : changeCity}
             className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
             required
@@ -202,7 +202,7 @@ const SupplierInput = ( {className, formData, setFormData, isUpdating} ) => {
 
             type="text"
             name="region"
-            value={selectedValue}
+            defaultValue={selectedValue}
             onChange={changeProvinceAndCity}
             className="mt-1 w-full p-2 border border-gray-300 bg-white rounded-md"
             required
