@@ -65,7 +65,7 @@ const HomePage = () => {
           </div>
           <div className="m-8 p-4 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
             <div className='flex justify-between'>
-                <p className='p-4 font-bold text-gray-800'>Low Stock</p>
+                <p className='p-2  text-gray-800'>Low Stock</p>
                 <div className="border-solid w-1/4 rounded-xl mx-auto mt-2 border-gray-800"></div>
                 {tableData.length >= 4 && (
                 <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => setShowStockDetails(true)}/>
