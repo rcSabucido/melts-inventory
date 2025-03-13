@@ -1,50 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ArrowsPointingOutIcon from '@heroicons/react/24/outline/ArrowsPointingOutIcon';
 import Sidebar from '../components/Sidebar.jsx';
 import BarChart from "../components/BarChart.jsx";
 import LowStockTable from "../components/LowStockTable.jsx";
 import LowStockDetails from '../components/LowStockDetailsModal.jsx';
+import { createClient } from '@supabase/supabase-js';
 
 const HomePage = () => {
   const [showStockDetails, setShowStockDetails] = useState(false);
-   const columns = ['Products', ' ', ' ',  ' ', ' ', ' ',' ',' ','Items'];
-   const tableData = [
-       {
-           'Products': 'Durian Candy',
-           'Items': 25,
-       },
-       {
-           'Products': 'Mango Chip',
-           'Items': 66,
-       },
-       {
-           'Products': 'Banana Split',
-           'Items': 3,
+  const [StockData, setStockDetails] = useState([]);
+  const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
-       },
-       {
-         'Products': 'Lorem Liquorice',
-         'Items': 120,
-       },
-       {
-         'Products': 'Ipsum Candy',
-         'Items': 15,
-       },
-       {
-        'Products': 'Ipsum Candy',
-        'Items': 15,
-      },
-      {
-        'Products': 'Ipsum Candy',
-        'Items': 15,
-      },
-      {
-        'Products': 'Ipsum Candy',
-        'Items': 15,
-      }
-   ];
+  const refreshData = async () => {
+    const { data: StockData, error: StockDataError } = await supabase
+      .from('LowStockFull')
+      .select()
+      //.eq('is_active', true)
+    
+    if (StockData) {
+      let displayData = StockData
+      .map(raw => ({
+        'Products': raw["product_name"],
+        'Items': raw["quantity"],
+      }));
+      setStockDetails(displayData);
+    }
+  }
+       
 
+useEffect(() => {
+    refreshData();
+  }, [])
 
+  const columns = ['Products', ' ', ' ',  ' ', ' ', ' ',' ',' ','Items'];
 
   return (
     <>
@@ -67,15 +55,15 @@ const HomePage = () => {
             <div className='flex justify-between'>
                 <p className='p-2  text-gray-800'>Low Stock</p>
                 <div className="border-solid w-1/4 rounded-xl mx-auto mt-2 border-gray-800"></div>
-                {tableData.length >= 4 && (
+                {StockData.length >= 4 && (
                 <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => setShowStockDetails(true)}/>
                 )}
               </div>
-            <LowStockTable columns={columns} data={tableData.slice(0, 4)}/>
+            <LowStockTable columns={columns} data={StockData.slice(0, 4)}/>
           </div>
         </main>
       </div>
-      {showStockDetails && <LowStockDetails columns={columns} data={tableData} onClose={() => setShowStockDetails(false)} />}
+      {showStockDetails && <LowStockDetails columns={columns} data={StockData} onClose={() => setShowStockDetails(false)} />}
     </>
   );
 }
