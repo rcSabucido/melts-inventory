@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Button from '../components/Button.jsx';
 import { PlusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/solid';
 import Sidebar from '../components/Sidebar.jsx';
-import SearchBar from '../components/SearchBar.jsx';
 import InventoryTable from "../components/InventoryTable.jsx";
 import InventoryDetailsModal from '../components/InventoryDetailsModal.jsx';
 import NearExpiryTable from "../components/NearExpiry.jsx";

@@ -6,12 +6,14 @@ import AddStockModal from '../components/AddStockModal.jsx';
 import FilterStock from '../components/FilterStock.jsx';
 import FullTableModal from '../components/FullTableModal.jsx';
 import { FunnelIcon, PlusIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/solid';
+import { createClient } from '@supabase/supabase-js';
 
 
 const RestockPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
     const [showFullTable, setShowFullTable] = useState(false);
+    const [restockData, setShowRestockData] = useState([]);
     const filterRef = useRef(null);
     const columns = ['Product', 'Category', 'Added Items', 'Supplier', 'Expiry Date'];
     const tableData = [
@@ -28,22 +30,14 @@ const RestockPage = () => {
             'Added Items': 20,
             'Supplier': 'Melts Inc.',
             'Expiry Date': '2026-02-19'
-        },
-        {
-            'Product': 'David Martinez',
-            'Category': 'Drinks',
-            'Added Items': 19,
-            'Supplier': 'Melts Inc.',
-            'Expiry Date': '2026-02-19'
-        },
-        {
-          'Product': 'Panam Palmer',
-          'Category': 'Drinks',
-          'Added Items': 15,
-          'Supplier': 'Melts Inc.',
-          'Expiry Date': '2026-02-19'
         }
     ];
+    const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+    const refreshData = async () => {
+      const { data, error } = await supabase
+
+    }
 
     useEffect(() => {
       const handleClickOutside = (e) => {
