@@ -9,7 +9,8 @@ const AddStockModal = ({ onClose, refreshData }) => {
         product: '',
         addedItems: '',
         supplier: '',
-        expiryDate: ''
+        expiryDate: '',
+        restockDate: new Date().toISOString().split('T')[0]
     });
 
 
@@ -100,7 +101,8 @@ const AddStockModal = ({ onClose, refreshData }) => {
             .update({
                 quantity: newQuantity,
                 supplier_id: formData.supplier_id,
-                expiration_date: formData.expiryDate
+                expiration_date: formData.expiryDate,
+                restock_date: formData.restockDate
             })
             .eq('product_id', formData.product_id);
         
@@ -181,6 +183,17 @@ const AddStockModal = ({ onClose, refreshData }) => {
                             type="date"
                             name="expiryDate"
                             value={formData.expiryDate}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700">Restock Date</label>
+                        <input
+                            type="date"
+                            name="restockDate"
+                            value={formData.restockDate}
                             onChange={handleChange}
                             className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
                             required

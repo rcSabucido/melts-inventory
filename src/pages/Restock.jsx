@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Button from '../components/Button.jsx';
 import Sidebar from '../components/Sidebar.jsx';
-import RestockTable from '../components/RestockTable.jsx';
 import RestockDateGroup from '../components/RestockDateGroup.jsx';
 import AddStockModal from '../components/AddStockModal.jsx';
 import FilterStock from '../components/FilterStock.jsx';
