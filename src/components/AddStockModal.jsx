@@ -86,6 +86,15 @@ const AddStockModal = ({ onClose, refreshData }) => {
         e.preventDefault();
         console.log(formData);
 
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const expiryDate = new Date(formData.expiryDate);
+
+        if (expiryDate < today) {
+            alert('Expiry date cannot be in the past');
+            return;
+        }   
+
         const { data: inventoryData, error: inventoryError } = await supabase
         .from('InventoryItem')
         .select('quantity')
@@ -184,6 +193,7 @@ const AddStockModal = ({ onClose, refreshData }) => {
                             name="expiryDate"
                             value={formData.expiryDate}
                             onChange={handleChange}
+                            min={new Date().toISOString().split('T')[0]}
                             className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
                             required
                         />
