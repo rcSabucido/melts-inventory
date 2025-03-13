@@ -11,9 +11,10 @@ import { createClient } from '@supabase/supabase-js'
 
 import { getAddressFromId } from '../helpers/PsgcLocationLookup.js';
 
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY)
+
 const SupplierPage = () => {
   let navigate = useNavigate();
-  const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY)
   const [fetchData, setFetchData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
@@ -25,14 +26,22 @@ const SupplierPage = () => {
     supabase
       .from('Supplier')
       .select('*', { count: 'exact', head: true })
+      .eq('is_active', true)
       .then((result) => {
 
-      setEndIndex(result.count - 1)
+      console.log(`New count: ${result.count}`)
+      if (start >= result.count) {
+        start = Math.max(0, (Math.floor(result.count / pageLength) - 1) * pageLength)
+        console.log(`New start: ${start}`)
+        setStartIndex(start)
+      }
+      setEndIndex(result.count)
 
       supabase
       .from('SupplierFull')
       .select("*")
-      .range(start, Math.min(start + pageLength, result.count - 1))
+      .range(start, Math.min(start + pageLength - 1, result.count))
+      .order("supplier_id", { ascending: true })
       .then((result) => {
 
       const data = result.data
@@ -41,13 +50,14 @@ const SupplierPage = () => {
       let displayData = []
       for (let i = 0; i < data.length; i++) {
         let raw = data[i]
-        console.log(raw)
+        //console.log(raw)
 
         let address = raw["street"] ? raw["street"] + (raw["location_id"] ? ", " : "") : ""
         address += raw["location_id"] ? getAddressFromId(raw["location_id"]) : ""
         let displayObj = {
           'Company Name': raw["company_name"],
           'Address': address,
+          'supplier_id': raw["supplier_id"]
         }
         let contacts = raw["contacts"]
         for (let j = 0; j < contacts.length; j++) {
@@ -75,7 +85,19 @@ const SupplierPage = () => {
   const deleteSupplier = () => {
     let [index, _] = deleteRow
     console.log(`Deleting supplier [${index}]:`)
-    console.log(fetchData)
+    console.log(fetchData[index])
+
+    supabase 
+      .from('Supplier')
+      .update({ is_active: false })
+      .eq('supplier_id', fetchData[index]["supplier_id"])
+      .then(() => {
+        console.log(`startIndex: ${startIndex}`)
+
+        setDeleteRow(null)
+        setDeleteModal(false)
+        fetchSuppliers(startIndex)
+    })
   };
 
   const camelCase = (data, delim) => {
@@ -158,12 +180,14 @@ const SupplierPage = () => {
                     })
                   }}
                   onDeleteClick={(data) => {
-                    setDeleteRow([data.rowIndex, data.row])
+                    setDeleteRow([data.index, data.row])
                     setDeleteModal(true)
                   }}
                   columns={columns}
                   data={displayData}
-                  className="shadow-[-4px_4px_4px_#888888]" />
+                  className="shadow-[-4px_4px_4px_#888888]"
+                  orderBy="supplier_id"
+                  returnIndex={true} />
               )
             }
             {
@@ -178,8 +202,6 @@ const SupplierPage = () => {
         message="Are you sure you want to delete this supplier's information?"
         onYes={() => {
           deleteSupplier()
-          setDeleteRow(null)
-          setDeleteModal(false)
         }}
         onNo={() => setDeleteModal(false)}
       />}
