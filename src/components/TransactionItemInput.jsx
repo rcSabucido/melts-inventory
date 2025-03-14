@@ -1,8 +1,7 @@
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
-const TransactionItemInput = ({ initialProduct, index, updateParent, deleteItem }) => {
-    
+const TransactionItemInput = ({ initialProduct, index, updateParent, deleteItem }) => {    
     const [product, setProduct] = useState(initialProduct);
     const productValueChange = (e) => {
         const {name, value} = e.target;
@@ -13,11 +12,12 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, deleteItem 
     }
 
     const handleRemove = () => {
-        if (typeof removeItem === 'function') {
+        console.log("Deleting " + index)
+        //if (typeof removeItem === 'function') {
             deleteItem(index);
-        } else {
-            console.error('deleteItem is not a function');
-        }
+        //} else {
+        //    console.error('deleteItem is not a function');
+        //}
     };
 
     return (

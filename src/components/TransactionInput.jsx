@@ -4,27 +4,21 @@ import { useEffect, useState, cloneElement } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import TransactionItemInput from "./TransactionItemInput";
 import Switch from "./Switch";
-import TransactionForm from "./TransactionForm";
+
+import { v4 as uuidv4 } from 'uuid';
 
 const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedProduct, firstTime, setFirstTime }) => {
     let initialItems = []
-    let initialDisplayItems = []
     
     if (firstTime) {
         console.log("I've come from a different page... Current items: ", currentItems);
 
         if (currentItems) {
-            initialDisplayItems = currentItems.map((item, index) => {
-                return (
-                    <TransactionForm
-                        key={index} 
-                        index={index} 
-                        initialProduct={item} 
-                        updateParent={updateItemData}
-                        deleteParent={deleteItem}
-                    />
-                )
-            });
+            for (let i = 0; i < initialItems.length; i++) {
+                if (!initialItems["uuid"]) {
+                    initialItems["uuid"] = uuidv4();
+                }
+            }
             initialItems = currentItems;
         }
 
@@ -33,26 +27,17 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
             let item = {
                 "product": scannedProduct,
                 "quantity": 0,
-                "price": 0
+                "price": 0,
+                "uuid": uuidv4()
             }
             console.log("Scanned a product!")
             console.log(item)
-            initialDisplayItems.push( 
-                <TransactionForm
-                    key={initialItems.length} 
-                    initialProduct={item} 
-                    index={initialItems.length}
-                    updateParent={updateItemData}
-                    deleteParent={deleteItem}
-                />
-            );
             initialItems.push(item)
         }
         setFirstTime(false)
     }
 
     const [items, setItems] = useState(initialItems);
-    const [displayItems, setDisplayItems] = useState(initialDisplayItems);
     const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
 
@@ -61,26 +46,21 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
         console.log("Item are now: ", items);
     }
     function deleteItem(index) {
-        const items = items.filter((_, i) => i !== index);
-        setItems(items);
+        let key = items[index]["uuid"]
+        let filteredItems = items.filter((_, i) => i !== index)
+        setItems(filteredItems)
     };
 
     const handleAddItem = () => {
         if (isDesktop) {
-            setDisplayItems(prevItems => [...prevItems, 
-                <TransactionForm key={prevItems.length} index={prevItems.length} updateParent={updateItemData}
-                    items={items}
-                    setItems={setItems}
-                />
-            ]);
-            items.push(
-                {
-                    product: '',
-                    quantity: 0,
-                    price: 0
-                }
-            )
-            console.log(`Display items len: ${displayItems.length}`)
+            console.log(deleteItem)
+            let item = {
+                product: '',
+                quantity: 0,
+                price: 0,
+                uuid: uuidv4()
+            }
+            setItems(prevItems => [...prevItems, item])
         } else {
             navigate('/qr_transaction', { 
                 state: { 
@@ -100,7 +80,15 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
                         <div className="absolute right-98 text-sm font-medium text-gray-700">Quantity</div>
                         <div className="absolute right-46 text-sm font-medium text-gray-700">Price</div>
                     </div>
-                    {displayItems}
+                    {items.map((item, index) => (
+                        <TransactionItemInput
+                            key={item.uuid}
+                            index={index}
+                            initialProduct={item}
+                            updateParent={updateItemData}
+                            deleteItem={() => deleteItem(index)}
+                        />
+                    ))}
                 </div>
                 <div className="flex justify-center items-center">
                     <div className="flex mr-auto">
