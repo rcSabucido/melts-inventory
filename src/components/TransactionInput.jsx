@@ -4,79 +4,105 @@ import { useEffect, useState, cloneElement } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import TransactionItemInput from "./TransactionItemInput";
 import Switch from "./Switch";
-import TransactionForm from "./TransactionForm";
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedProduct }) => {
-    const [items, setItems] = useState([]);
-    const [displayItems, setDisplayItems] = useState([]);
+import { v4 as uuidv4 } from 'uuid';
+
+const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime }) => {
+    let initialItems = []
+    let [date, setDate] = useState(transactionDate || new Date().toISOString().substring(0, 10))
+    let initialPrice = 0
+    
+    if (firstTime) {
+        console.log("I've come from a different page... Current items: ", currentItems);
+
+        if (currentItems) {
+            for (let i = 0; i < initialItems.length; i++) {
+                if (!initialItems["uuid"]) {
+                    initialItems["uuid"] = uuidv4();
+                }
+            }
+            initialItems = currentItems;
+        }
+
+        console.log("checking scanned product ")
+        if (scannedProduct) {
+            let newProduct = true;
+            for (let i = 0; i < initialItems.length; i++) {
+                if (initialItems[i]["product"] === scannedProduct) {
+                    initialItems[i]["quantity"] += 1
+                    newProduct = false
+                    break
+                }
+            }
+            if (newProduct) {
+                let item = {
+                    "product": scannedProduct,
+                    "quantity": 1,
+                    "price": 0,
+                    "uuid": uuidv4()
+                }
+                console.log("Scanned a product!")
+                console.log(item)
+                initialItems.push(item)
+            }
+        }
+        initialPrice = initialItems.reduce((acc, item) => acc + (item["price"] * item["quantity"]), 0)
+        setFirstTime(false)
+    }
+    let [totalPrice, setTotalPrice] = useState(initialPrice)
+
+    const [items, setItems] = useState(initialItems);
     const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
 
-    const updateItemData = (index, productName) => {
-        items[index]["product"] = productName;
-        console.log("Item are now: ", items);
+    function updateTotalPrice(newItems) {
+        setTotalPrice((newItems ? newItems : items).reduce((acc, item) => acc + (item["price"] * item["quantity"]), 0))
     }
 
-    console.log("I've come from a different page... Current items: ", currentItems);
-    if (items.length === 0 && currentItems) {
-        setDisplayItems(currentItems.map((item, index) => {
-            return (
-                <TransactionForm
-                    key={index} 
-                    index={index} 
-                    initialProduct={item.product} 
-                    updateParent={updateItemData}
-                />
-            )
-        }));
-        setItems(currentItems);
-    }  
+    function updateItemData(index, part, data) {
+        items[index][part] = data;
+        console.log("Item are now: ", items);
 
-    useEffect(() => {
-        if (scannedProduct) {
-            setDisplayItems(prevItems => [...prevItems, 
-                <TransactionForm
-                    key={prevItems.length} 
-                    initialProduct={scannedProduct} 
-                    index={prevItems.length}
-                    updateParent={updateItemData}
-                />
-            ]);
-            items.push(
-                {
-                    product: scannedProduct,
-                    quantity: 0,
-                    price: 0
-                }
-            )
+        if (part === 'price' || part === 'quantity') {
+            updateTotalPrice()
         }
-    }, [scannedProduct]);
 
-    useEffect(() => {
-        setIsDesktop(initialIsDesktop);
-    }, [initialIsDesktop]);
+    }
+    function deleteItem(index) {
+        let key = items[index]["uuid"]
+        let filteredItems = items.filter((_, i) => i !== index)
+        setItems(filteredItems)
+        updateTotalPrice(filteredItems)
+    };
 
     const handleAddItem = () => {
         if (isDesktop) {
-            setDisplayItems(prevItems => [...prevItems, 
-                <TransactionForm key={prevItems.length} index={prevItems.length} updateParent={updateItemData} />
-            ]);
-            items.push(
-                {
-                    product: '',
-                    quantity: 0,
-                    price: 0
-                }
-            )
+            console.log(deleteItem)
+            let item = {
+                product: '',
+                quantity: 1,
+                price: 0,
+                uuid: uuidv4()
+            }
+            setItems(prevItems => [...prevItems, item])
         } else {
             navigate('/qr_transaction', { 
                 state: { 
                     addItem: true,
-                    currentItems: items
+                    currentItems: items,
+                    transactionDate: date
                 } 
             });
         }
     };
+
+    const clearItems = () => {
+        setItems([])
+    }
+
+    const saveData = () =>{
+
+    }
 
     return (
         <>
@@ -87,7 +113,15 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
                         <div className="absolute right-98 text-sm font-medium text-gray-700">Quantity</div>
                         <div className="absolute right-46 text-sm font-medium text-gray-700">Price</div>
                     </div>
-                    {displayItems}
+                    {items.map((item, index) => (
+                        <TransactionItemInput
+                            key={item.uuid}
+                            index={index}
+                            initialProduct={item}
+                            updateParent={updateItemData}
+                            deleteItem={() => deleteItem(index)}
+                        />
+                    ))}
                 </div>
                 <div className="flex justify-center items-center">
                     <div className="flex mr-auto">
@@ -97,12 +131,16 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
                                 type='date'
                                 name='date'
                                 className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
-            
+                                defaultValue={date}
+                                onChange={(e) => {
+                                    const {_, value} = e.target
+                                    setDate(value)
+                                }}
                             />
                         </div>
                     </div>
                     <div className="mt-5 mr-10">
-                        <p className="text-3xl font-bold ">Total: $0000</p>
+                        <p className="text-3xl font-bold ">{`Total: ₱${totalPrice}`}</p>
                         </div>
                 </div>
             </div>
@@ -111,12 +149,13 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
                     {[<QrCodeIcon className="h-6 w-6"/>, <ComputerDesktopIcon className="h-6 w-6" />]}
             </Switch>
             <div className="flex">
-                <button type='button' className="font-bold rounded-lg text-medium text-orange-400/70 hover:text-orange-500 mb-2 px-4">Clear</button>
+                <button type='button' onClick={clearItems}
+                    className="font-bold rounded-lg text-medium text-orange-400/70 hover:text-orange-500 mb-2 px-4">Clear</button>
                 <Button type='button' onClick={handleAddItem}>
                     <PlusIcon className="h-6 w-6" />
                     Add Item
                 </Button>
-                <Button type='submit'>
+                <Button type='button' onClick={saveData}>
                     Save
                 </Button>
             </div>   

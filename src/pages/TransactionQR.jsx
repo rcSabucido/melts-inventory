@@ -19,7 +19,8 @@ const TransactionQR = () => {
                     isDesktop: false,
                     scannedProduct: scanResult,
                     returnToTransaction: location.state?.addItem || false,
-                    currentItems: location.state?.currentItems || 0
+                    currentItems: location.state?.currentItems || [],
+                    transactionDate: location.state?.transactionDate
                 }
             })
         } 
