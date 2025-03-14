@@ -20,15 +20,15 @@ const TransactionDetail = () => {
         async function fetchProducts() {
             const { data, error } = await supabase
                 .from('InventoryFull')
-                .select("product_name, price")
+                .select("product_name, price, quantity")
                 .eq('is_active', true)
 
             if (error) {
                 console.error("Unable to get the list of products!")
                 return
             }
-            setProductList(data.reduce((acc, obj) => {
-                acc[obj.product_name] = {price: obj.price, product_id: obj.product_id};
+            setProductList(data.filter((item) => item.quantity > 0).reduce((acc, obj) => {
+                acc[obj.product_name] = {price: obj.price, product_id: obj.product_id, quantity: obj.quantity};
                 return acc;
             }, {}));
         }

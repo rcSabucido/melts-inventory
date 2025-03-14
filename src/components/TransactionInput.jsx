@@ -124,7 +124,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
                 return
             }
             if (!items[i]["product"].trim()) {
-                alert("Please type in a valid product name.")
+                alert("Please type in a valid product that is in stock.")
                 return
             }
             if (!productList.hasOwnProperty(items[i]["product"])) {
