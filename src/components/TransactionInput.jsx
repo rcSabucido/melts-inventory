@@ -6,60 +6,72 @@ import TransactionItemInput from "./TransactionItemInput";
 import Switch from "./Switch";
 import TransactionForm from "./TransactionForm";
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedProduct }) => {
-    const [items, setItems] = useState([]);
-    const [displayItems, setDisplayItems] = useState([]);
-    const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
-    const navigate = useNavigate();
-
-    const updateItemData = (index, productName) => {
-        items[index]["product"] = productName;
-        console.log("Item are now: ", items);
-    }
-
+const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedProduct, firstTime, setFirstTime }) => {
+    let initialItems = []
+    let initialDisplayItems = []
+    
+    if (firstTime) {
     console.log("I've come from a different page... Current items: ", currentItems);
-    if (items.length === 0 && currentItems) {
-        setDisplayItems(currentItems.map((item, index) => {
+
+    if (currentItems) {
+        initialDisplayItems = currentItems.map((item, index) => {
             return (
                 <TransactionForm
                     key={index} 
                     index={index} 
-                    initialProduct={item.product} 
+                    initialProduct={item} 
                     updateParent={updateItemData}
+                    deleteParent={deleteItem}
                 />
             )
-        }));
-        setItems(currentItems);
-    }  
+        });
+        initialItems = currentItems;
+    }
 
-    useEffect(() => {
-        if (scannedProduct) {
-            setDisplayItems(prevItems => [...prevItems, 
-                <TransactionForm
-                    key={prevItems.length} 
-                    initialProduct={scannedProduct} 
-                    index={prevItems.length}
-                    updateParent={updateItemData}
-                />
-            ]);
-            items.push(
-                {
-                    product: scannedProduct,
-                    quantity: 0,
-                    price: 0
-                }
-            )
+    console.log("checking scanned product ")
+    if (scannedProduct) {
+        let item = {
+            "product": scannedProduct,
+            "quantity": 0,
+            "price": 0
         }
-    }, [scannedProduct]);
+        console.log("Scanned a product!")
+        console.log(item)
+        initialDisplayItems.push( 
+            <TransactionForm
+                key={initialItems.length} 
+                initialProduct={item} 
+                index={initialItems.length}
+                updateParent={updateItemData}
+                deleteParent={deleteItem}
+            />
+        );
+        initialItems.push(item)
+    }
+    setFirstTime(false)
+    }
 
-    useEffect(() => {
-        setIsDesktop(initialIsDesktop);
-    }, [initialIsDesktop]);
+    const [items, setItems] = useState(initialItems);
+    const [displayItems, setDisplayItems] = useState(initialDisplayItems);
+    const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
+    const navigate = useNavigate();
+
+    function updateItemData(index, part, data) {
+        items[index][part] = data;
+        console.log("Item are now: ", items);
+    }
+    function deleteItem(index) {
+        const items = items.filter((_, i) => i !== index);
+        setItems(items);
+    };
 
     const handleAddItem = () => {
         if (isDesktop) {
             setDisplayItems(prevItems => [...prevItems, 
-                <TransactionForm key={prevItems.length} index={prevItems.length} updateParent={updateItemData} />
+                <TransactionForm key={prevItems.length} index={prevItems.length} updateParent={updateItemData}
+                    items={items}
+                    setItems={setItems}
+                />
             ]);
             items.push(
                 {
@@ -68,6 +80,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
                     price: 0
                 }
             )
+            console.log(`Display items len: ${displayItems.length}`)
         } else {
             navigate('/qr_transaction', { 
                 state: { 

@@ -1,22 +1,22 @@
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
-const TransactionItemInput = ({ initialProduct, index, updateParent, removeItem }) => {
+const TransactionItemInput = ({ initialProduct, index, updateParent, deleteItem }) => {
     
     const [product, setProduct] = useState(initialProduct);
-    const productNameChange = (e) => {
-        const {_, value} = e.target;
-        console.log("Product name changed!")
+    const productValueChange = (e) => {
+        const {name, value} = e.target;
+        console.log(`Product ${name} changed!`)
         console.log(value);
         setProduct(value);
-        updateParent(index, product);
+        updateParent(index, name, value);
     }
 
     const handleRemove = () => {
         if (typeof removeItem === 'function') {
-            removeItem(index);
+            deleteItem(index);
         } else {
-            console.error('removeItem is not a function');
+            console.error('deleteItem is not a function');
         }
     };
 
@@ -30,8 +30,8 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, removeItem 
                     type='text'
                     name='product'
                     className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
-                    defaultValue={initialProduct}
-                    onChange={productNameChange}
+                    defaultValue={initialProduct ? initialProduct["product"] : ""}
+                    onChange={productValueChange}
                 />
             </div>
             <div className="flex ml-auto">
@@ -40,6 +40,8 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, removeItem 
                         type='number'
                         name='quantity'
                         className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
+                        defaultValue={initialProduct ? initialProduct["quantity"] : ""}
+                        onChange={productValueChange}
                     />
                 </div>
                 <div className="m-4 grow">
@@ -47,6 +49,8 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, removeItem 
                         type='number'
                         name='price'
                         className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
+                        defaultValue={initialProduct ? initialProduct["price"] : ""}
+                        onChange={productValueChange}
                     />
                 </div>
             </div>
