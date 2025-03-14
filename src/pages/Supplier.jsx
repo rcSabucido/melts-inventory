@@ -146,12 +146,10 @@ const SupplierPage = () => {
           <div>
             <div className='w-auto mx-5 my-3 flex gap-2 justify-between'>
               <p className='px-4 pt-4 text-xl'>Suppliers</p>
-              <a href="/supplier_detail" className="">
-                <Button>
-                  <PlusIcon className='h-6 w-6'/>
-                  Add Supplier
-                </Button>
-              </a>
+              <Button onClick={() => navigate("/supplier_detail")}>
+                <PlusIcon className='h-6 w-6'/>
+                Add Supplier
+              </Button>
             </div>
             {
               (displayData.length > 0) ? (paginationSection()) : null

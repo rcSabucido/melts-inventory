@@ -199,7 +199,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
             deductQuantity(product.product_id, item["product"], item["quantity"])
             addSalesDetails(product.product_id, sales_id, product.price, item["quantity"])
         }
-        window.location.href = "/transaction"
+        navigate("/transaction")
     }
 
     return (
