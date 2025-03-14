@@ -40,9 +40,13 @@ const Sidebar = () => {
               <TruckIcon className="h-6 float-left pr-2" /> Suppliers
             </a>
           </li>
+          {
+          /*
           <li className="py-2 sidebar-link-shadow">
             <LockClosedIcon className="h-6 float-left pr-2" /> User: Admin
           </li>
+          */
+          }
           <li className="py-2 sidebar-link-shadow">
             <a href="/">
               <ArrowRightStartOnRectangleIcon className="h-6 float-left pr-2" /> Logout
