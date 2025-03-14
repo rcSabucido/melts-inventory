@@ -71,6 +71,10 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
         }
     };
 
+    const clearItems = () => {
+        setItems([])
+    }
+
     return (
         <>
             <div className="m-4 p-4 p-auto bg-amber-200/30 rounded-xl flex flex-col shadow-md h-150">
@@ -112,7 +116,8 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
                     {[<QrCodeIcon className="h-6 w-6"/>, <ComputerDesktopIcon className="h-6 w-6" />]}
             </Switch>
             <div className="flex">
-                <button type='button' className="font-bold rounded-lg text-medium text-orange-400/70 hover:text-orange-500 mb-2 px-4">Clear</button>
+                <button type='button' onClick={clearItems}
+                    className="font-bold rounded-lg text-medium text-orange-400/70 hover:text-orange-500 mb-2 px-4">Clear</button>
                 <Button type='button' onClick={handleAddItem}>
                     <PlusIcon className="h-6 w-6" />
                     Add Item
