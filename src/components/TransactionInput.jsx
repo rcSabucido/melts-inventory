@@ -11,44 +11,44 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
     let initialDisplayItems = []
     
     if (firstTime) {
-    console.log("I've come from a different page... Current items: ", currentItems);
+        console.log("I've come from a different page... Current items: ", currentItems);
 
-    if (currentItems) {
-        initialDisplayItems = currentItems.map((item, index) => {
-            return (
+        if (currentItems) {
+            initialDisplayItems = currentItems.map((item, index) => {
+                return (
+                    <TransactionForm
+                        key={index} 
+                        index={index} 
+                        initialProduct={item} 
+                        updateParent={updateItemData}
+                        deleteParent={deleteItem}
+                    />
+                )
+            });
+            initialItems = currentItems;
+        }
+
+        console.log("checking scanned product ")
+        if (scannedProduct) {
+            let item = {
+                "product": scannedProduct,
+                "quantity": 0,
+                "price": 0
+            }
+            console.log("Scanned a product!")
+            console.log(item)
+            initialDisplayItems.push( 
                 <TransactionForm
-                    key={index} 
-                    index={index} 
+                    key={initialItems.length} 
                     initialProduct={item} 
+                    index={initialItems.length}
                     updateParent={updateItemData}
                     deleteParent={deleteItem}
                 />
-            )
-        });
-        initialItems = currentItems;
-    }
-
-    console.log("checking scanned product ")
-    if (scannedProduct) {
-        let item = {
-            "product": scannedProduct,
-            "quantity": 0,
-            "price": 0
+            );
+            initialItems.push(item)
         }
-        console.log("Scanned a product!")
-        console.log(item)
-        initialDisplayItems.push( 
-            <TransactionForm
-                key={initialItems.length} 
-                initialProduct={item} 
-                index={initialItems.length}
-                updateParent={updateItemData}
-                deleteParent={deleteItem}
-            />
-        );
-        initialItems.push(item)
-    }
-    setFirstTime(false)
+        setFirstTime(false)
     }
 
     const [items, setItems] = useState(initialItems);
