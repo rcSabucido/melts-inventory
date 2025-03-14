@@ -11,15 +11,11 @@ const TransactionDetail = () => {
     const [leaveModal, setLeaveModal] = useState(false);
     const [firstTime, setFirstTime] = useState(true);
 
-    const handleSubmit = () => {
-        e.preventDefault();
-        navigate('/transaction');
-    }
     return (
         <>
             <div className="flex">
                 <Sidebar />
-                <form className='p-4 flex-col bg-[#ffffdb] w-full' onSubmit={handleSubmit}>
+                <form className='p-4 flex-col bg-[#ffffdb] w-full'>
                     <div className="flex gap-4 p-4 items-center">
                         <ArrowLeftIcon className="h-6 w-6 cursor-pointer" onClick={() => setLeaveModal(true)} />
                         <p className="text-2xl font-bold">Transaction Details</p>
@@ -29,6 +25,7 @@ const TransactionDetail = () => {
                     setFirstTime={setFirstTime}
                     currentItems={location.state?.currentItems}
                     isDesktop={location.state?.isDesktop ?? true}
+                    transactionDate={location.state?.transactionDate}
                     scannedProduct={location.state?.scannedProduct} />
                 </form>
             </div>

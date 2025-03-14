@@ -7,8 +7,10 @@ import Switch from "./Switch";
 
 import { v4 as uuidv4 } from 'uuid';
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedProduct, firstTime, setFirstTime }) => {
+const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime }) => {
     let initialItems = []
+    let [date, setDate] = useState(transactionDate || new Date().toISOString().substring(0, 10))
+    let initialPrice = 0
     
     if (firstTime) {
         console.log("I've come from a different page... Current items: ", currentItems);
@@ -44,21 +46,33 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
                 initialItems.push(item)
             }
         }
+        initialPrice = initialItems.reduce((acc, item) => acc + (item["price"] * item["quantity"]), 0)
         setFirstTime(false)
     }
+    let [totalPrice, setTotalPrice] = useState(initialPrice)
 
     const [items, setItems] = useState(initialItems);
     const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
 
+    function updateTotalPrice(newItems) {
+        setTotalPrice((newItems ? newItems : items).reduce((acc, item) => acc + (item["price"] * item["quantity"]), 0))
+    }
+
     function updateItemData(index, part, data) {
         items[index][part] = data;
         console.log("Item are now: ", items);
+
+        if (part === 'price' || part === 'quantity') {
+            updateTotalPrice()
+        }
+
     }
     function deleteItem(index) {
         let key = items[index]["uuid"]
         let filteredItems = items.filter((_, i) => i !== index)
         setItems(filteredItems)
+        updateTotalPrice(filteredItems)
     };
 
     const handleAddItem = () => {
@@ -75,7 +89,8 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
             navigate('/qr_transaction', { 
                 state: { 
                     addItem: true,
-                    currentItems: items
+                    currentItems: items,
+                    transactionDate: date
                 } 
             });
         }
@@ -83,6 +98,10 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
 
     const clearItems = () => {
         setItems([])
+    }
+
+    const saveData = () =>{
+
     }
 
     return (
@@ -112,12 +131,16 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
                                 type='date'
                                 name='date'
                                 className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
-                                defaultValue={new Date().toISOString().substring(0,10)}
+                                defaultValue={date}
+                                onChange={(e) => {
+                                    const {_, value} = e.target
+                                    setDate(value)
+                                }}
                             />
                         </div>
                     </div>
                     <div className="mt-5 mr-10">
-                        <p className="text-3xl font-bold ">Total: $0000</p>
+                        <p className="text-3xl font-bold ">{`Total: ₱${totalPrice}`}</p>
                         </div>
                 </div>
             </div>
@@ -132,7 +155,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
                     <PlusIcon className="h-6 w-6" />
                     Add Item
                 </Button>
-                <Button type='submit'>
+                <Button type='button' onClick={saveData}>
                     Save
                 </Button>
             </div>   
