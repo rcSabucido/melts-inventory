@@ -70,6 +70,15 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
                 items[index]["price"] = 0
             }
             setItems(items)
+        } else if (part === "quantity") {
+            let product = items[index]["product"]
+            if (data <= 0) {
+                items[index][part] = 1
+            }
+            if (productList[product]?.quantity < data) {
+                items[index]["quantity"] = productList[product].quantity
+                setItems(items)
+            }
         }
 
         updateTotalPrice()
