@@ -17,6 +17,7 @@ const SupplierDetailPage = () => {
   const location = useLocation();
 
   const [formData, setFormData] = useState(location.state?.supplierData || {});
+  const [firstTime, setFirstTime] = useState(true);
 
   const addContact = async (type, text, supplier_id) => {
     let result = await supabase
@@ -50,7 +51,7 @@ const SupplierDetailPage = () => {
     let supplier_id = result["data"][0]["supplier_id"]
 
     if (formData.email && formData.email.trim()) {
-      addContact("EMAIL", formData.email, supplier_id)
+      await addContact("EMAIL", formData.email, supplier_id)
     }
     if (formData.contactNumber && formData.contactNumber.trim()) {
       await addContact("PHONE", formData.contactNumber, supplier_id)
@@ -59,16 +60,65 @@ const SupplierDetailPage = () => {
     navigate("/supplier");
   }
 
+  const editSupplier = async () => {
+    let update_result = await supabase
+      .from('Supplier')
+      .update({
+          company_name: formData["companyName"],
+          street: formData["street"],
+          location_id: formData["location_id"]
+      })
+      .eq('supplier_id', formData.supplier_id)
+
+    let contacts_result = await supabase
+      .from('SupplierContact')
+      .select("supplier_id, Contact ( contact_id, contact_type, contact_text) ")
+      .eq('supplier_id', formData.supplier_id)
+
+    let supplier_contacts = contacts_result["data"]
+
+    let hasEmail = false;
+    let hasContactNumber = false;
+    for (let i = 0; i < supplier_contacts.length; i++) {
+      let supplier_contact = supplier_contacts[i]
+      let contact = supplier_contact.Contact
+
+      let result = await supabase
+        .from("Contact")
+        .update({
+          contact_text: contact["contact_type"] === 'EMAIL' ? formData.email : formData.contactNumber
+        })
+        .eq('contact_id', contact["contact_id"])
+
+      if (contact["contact_type"] === 'EMAIL') {
+        hasEmail = true
+      } else {
+        hasContactNumber = true
+      }
+    }
+
+    if (!hasEmail && formData.email && formData.email.trim()) {
+      console.log("This supplier doesn't have an email!")
+      await addContact("EMAIL", formData.email, formData.supplier_id)
+    }
+    if (!hasContactNumber && formData.contactNumber && formData.contactNumber.trim()) {
+      console.log("This supplier doesn't have a contact number!")
+      await addContact("PHONE", formData.contactNumber, formData.supplier_id)
+    }
+    navigate("/supplier");
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if ((!formData.email || !formData.email.trim()) && (!formData.contactNumber || !formData.contactNumber)) {
       alert("For a supplier, you must at least input an e-mail or contact number.")
+      return
     }
     console.log(`Is updating? ${isUpdating}`)
     console.log(formData);
 
     if (isUpdating) {
-
+      await editSupplier()
     } else {
       await addSupplier()
     }
@@ -104,7 +154,14 @@ const SupplierDetailPage = () => {
           <ArrowLongLeftIcon className='h-6 w-6 mx-4' onClick={() => setLeaveModal(true)}/>
           {headerText}
       </span>
-      <SupplierInput className="shadow-[-4px_4px_4px_#888888]" formData={formData} setFormData={setFormData} isUpdating={isUpdating} />
+      <SupplierInput
+        className="shadow-[-4px_4px_4px_#888888]"
+        formData={formData}
+        setFormData={setFormData}
+        isUpdating={isUpdating}
+        firstTime={firstTime}
+        setFirstTime={setFirstTime}
+        />
 
       <div className="flex flex-row justify-end">
         <button type="button" onClick={clearForm} className="font-bold rounded-lg text-sm text-orange-400/70 mb-2 px-4">

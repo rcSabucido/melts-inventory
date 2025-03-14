@@ -2,12 +2,12 @@ import { useState } from 'react';
 
 import { getRegionMap, getRegion, getSecondLevelMap, getProvinceOrCityFromCode, getComponentCityOrMunicipalityFromCode } from '../helpers/PsgcLocationLookup.js';
 
-const SupplierInput = ( {className, formData, setFormData, isUpdating} ) => {
+const SupplierInput = ( {className, formData, setFormData, isUpdating, firstTime, setFirstTime} ) => {
   let [streetText, setStreetText] = useState(formData?.street);
 
   let initialStreetEnabled = false;
   let initialLocationInput = [];
-  if (isUpdating) {
+  if (isUpdating && firstTime) {
     let code = formData.location_id
     formData.region = code.substring(0, 2) + '00000000'
     initialStreetEnabled = true;
@@ -20,6 +20,7 @@ const SupplierInput = ( {className, formData, setFormData, isUpdating} ) => {
     if (getComponentCityOrMunicipalityFromCode(cityCode)) {
       citySelection(initialLocationInput, cityCode, code)
     }
+    setFirstTime(false)
   }
   let [locationInput, setLocationInput] = useState(initialLocationInput);
   let [streetEnabled, setStreetEnabled] = useState(initialStreetEnabled);
