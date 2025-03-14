@@ -2,15 +2,39 @@ import { useState } from "react";
 import { PencilIcon,TrashIcon } from "@heroicons/react/24/solid";
 import EditItems from "./EditModal"; 
 import DeleteModal from "./DeleteModal";
+import { createClient } from '@supabase/supabase-js';
 
-const InventoryTable = ({ columns, data }) => {
+const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+const InventoryTable = ({ columns, data, refreshData }) => {
   const [isEditing, setIsEditing,] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(null);
 
   const handleDelete = (item) => {
+    setDeleteItem(item);
     setShowDeleteModal(item, true);
   };
+
+  const confirmDelete = async () => {
+    if (deleteItem) {
+      const { error } = await supabase 
+        .from('Product')
+        .update({ is_active: false })
+        .eq('product_id', deleteItem.product_id)
+      
+        if (error) {
+          console.error('Error deactivating item:', error);
+        } else {
+          console.log('Item deactivated successfully');
+          await refreshData();
+        }
+
+        setShowDeleteModal(false);
+        setDeleteItem(null);
+    }
+  }
 
   const handleEdit = (product) => {
       setCurrentProduct(product);
@@ -19,7 +43,7 @@ const InventoryTable = ({ columns, data }) => {
 
   const closeEditModal = () => {
       setIsEditing(false);
-      setShowDeleteModal(null);
+      setShowDeleteModal(false);
       setCurrentProduct(null);
   };
 
@@ -42,8 +66,8 @@ const InventoryTable = ({ columns, data }) => {
               <tr key={rowIndex} className="bg-[#fff2bf] border-b border-gray-200 text-gray-900">
                 <td key="0" className="w-25 px-5">
                   <div className='flex gap-8 justify-center items-center'>
-                    <PencilIcon onClick={handleEdit}  className='h-5 w-5 cursor-pointer'/>
-                    <TrashIcon onClick={handleDelete}  className='h-5 w-5 cursor-pointer'/>
+                    <PencilIcon onClick={() => handleEdit(row)}  className='h-5 w-5 cursor-pointer'/>
+                    <TrashIcon onClick={() => handleDelete(row)}  className='h-5 w-5 cursor-pointer'/>
                   </div>
                 </td>
                 {columns.map((column, colIndex) => (
@@ -56,8 +80,8 @@ const InventoryTable = ({ columns, data }) => {
           </tbody>
         </table>
       </div>
-      {showDeleteModal && <DeleteModal onClose={closeEditModal} />} {/* Render the delete modal if editing */}
-      {isEditing && <EditItems onClose={closeEditModal} />} {/* Render the edit modal if editing */}
+      {showDeleteModal && <DeleteModal onClose={closeEditModal} onConfirm={confirmDelete} />} 
+      {isEditing && <EditItems onClose={closeEditModal} refreshData={refreshData} currentProduct={currentProduct} />} 
       </>
     )
   }
