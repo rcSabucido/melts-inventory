@@ -49,7 +49,7 @@ const TransactionPage = () => {
       setTableData(tableData)
     }
     fetchTransactions()
-  }, [])
+  }, [tableData])
 
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 9;
