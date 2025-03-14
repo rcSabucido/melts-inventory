@@ -24,15 +24,25 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
 
         console.log("checking scanned product ")
         if (scannedProduct) {
-            let item = {
-                "product": scannedProduct,
-                "quantity": 0,
-                "price": 0,
-                "uuid": uuidv4()
+            let newProduct = true;
+            for (let i = 0; i < initialItems.length; i++) {
+                if (initialItems[i]["product"] === scannedProduct) {
+                    initialItems[i]["quantity"] += 1
+                    newProduct = false
+                    break
+                }
             }
-            console.log("Scanned a product!")
-            console.log(item)
-            initialItems.push(item)
+            if (newProduct) {
+                let item = {
+                    "product": scannedProduct,
+                    "quantity": 1,
+                    "price": 0,
+                    "uuid": uuidv4()
+                }
+                console.log("Scanned a product!")
+                console.log(item)
+                initialItems.push(item)
+            }
         }
         setFirstTime(false)
     }
@@ -56,7 +66,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, currentItems, scannedPr
             console.log(deleteItem)
             let item = {
                 product: '',
-                quantity: 0,
+                quantity: 1,
                 price: 0,
                 uuid: uuidv4()
             }
