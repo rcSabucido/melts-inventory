@@ -20,7 +20,7 @@ const TransactionDetail = () => {
         async function fetchProducts() {
             const { data, error } = await supabase
                 .from('InventoryFull')
-                .select("product_name, price, quantity")
+                .select("product_name, price, quantity, product_id")
                 .eq('is_active', true)
 
             if (error) {
@@ -44,14 +44,25 @@ const TransactionDetail = () => {
                         <ArrowLeftIcon className="h-6 w-6 cursor-pointer" onClick={() => setLeaveModal(true)} />
                         <p className="text-2xl font-bold">Transaction Details</p>
                     </div>
-                    <TransactionInput
-                    firstTime={firstTime}
-                    setFirstTime={setFirstTime}
-                    currentItems={location.state?.currentItems}
-                    isDesktop={location.state?.isDesktop ?? true}
-                    transactionDate={location.state?.transactionDate}
-                    scannedProduct={location.state?.scannedProduct}
-                    productList={productList} />
+                    {(
+                        productList.length != 0 ?
+                        <TransactionInput
+                            firstTime={firstTime}
+                            setFirstTime={setFirstTime}
+                            currentItems={location.state?.currentItems}
+                            isDesktop={location.state?.isDesktop ?? true}
+                            transactionDate={location.state?.transactionDate}
+                            scannedProduct={location.state?.scannedProduct}
+                            productList={productList}
+                            supabase={supabase}
+                        />  :
+                        (
+                            <div className="place-self-center">
+                            <br/>
+                              <p className="text-xl">Loading the list of products...</p>
+                            </div>
+                        )
+                    )}
                 </form>
             </div>
             {leaveModal && <ConfirmationModal 

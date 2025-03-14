@@ -3,56 +3,53 @@ import Button from '../components/Button.jsx';
 import Transactiontable from '../components/TransactionsTable.jsx';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRightIcon, PlusIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
 const TransactionPage = () => {
   const navigate = useNavigate();
   const handleTransactionChoice = () => {
     navigate('/transaction_choice');
   }
-  const columns = ['Date', 'Products', 'Recorded By', 'Items', 'Total Price'];
-  const tableData = [
-      {
-          id: 1,
-          'Date': '25 Dec 2020',
-          'Products': 'Pat Black',
-          'Recorded By': 'John Doe',
-          'Items': '25',
-          'Total Price': 450
-      },
-      {
-          id: 2,
-          'Date': '26 Dec 2020',
-          'Products': 'Angel Jones',
-          'Recorded By': 'John Doe',
-          'Items': '66',
-          'Total Price': 325
-      },
-      {
-          id: 3,
-          'Date': '26 Dec 2020',
-          'Products': 'Max Edwards',
-          'Recorded By': 'Eimma H. Acker',
-          'Items': '3',
-          'Total Price': 25
-      },
-      {
-          id: 4,
-          'Date': '26 Dec 2020',
-          'Products': 'Bruce Fox',
-          'Recorded By': 'Beau Rica',
-          'Items': '120',
-          'Total Price': 1500
-      },
-      {
-          id: 5,
-          'Date': '27 Dec 2020',
-          'Products': 'Devon Fisher',
-          'Recorded By': 'John Doe',
-          'Items': '15',
-          'Total Price': 999
+  const columns = ['Date', 'Products', 'Items', 'Total Price'];
+
+  const [tableData, setTableData] = useState([])
+
+  useEffect(() => {
+    async function fetchTransactions() {
+      const { data, error } = await supabase
+        .from('SalesFull')
+        .select("sales_id, total, purchase_date, sales_details")
+      console.log("Full sales data:")
+      console.log(data)
+
+      let tableData = []
+      for (let i = 0; i < data.length; i++) {
+        let data_row = data[i]
+        let table_row = {}
+        let products = []
+        for (let j = 0; j < data_row["sales_details"].length; j++) {
+          let sale_detail = data_row["sales_details"][j]
+          console.log(sale_detail)
+          products += sale_detail["product_name"]
+          if (j < data_row["sales_details"].length - 1) {
+            products += ", "
+          }
+        }
+        table_row.id = data_row.sales_id
+        table_row['Date'] = data_row.purchase_date
+        table_row['Products'] = products
+        table_row['Items'] = data_row["sales_details"].length
+        table_row['Total Price'] = data_row["total"]
+        tableData.push(table_row)
       }
-  ];
+      setTableData(tableData)
+    }
+    fetchTransactions()
+  }, [])
 
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 9;
