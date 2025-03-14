@@ -7,7 +7,7 @@ import Switch from "./Switch";
 
 import { v4 as uuidv4 } from 'uuid';
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime }) => {
+const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime, productList }) => {
     let initialItems = []
     let [date, setDate] = useState(transactionDate || new Date().toISOString().substring(0, 10))
     let initialPrice = 0
@@ -63,9 +63,16 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
         items[index][part] = data;
         console.log("Item are now: ", items);
 
-        if (part === 'price' || part === 'quantity') {
-            updateTotalPrice()
+        if (part === "product") {
+            if (productList.hasOwnProperty(data)) {
+                items[index]["price"] = productList[data].price
+            } else {
+                items[index]["price"] = 0
+            }
+            setItems(items)
         }
+
+        updateTotalPrice()
 
     }
     function deleteItem(index) {
@@ -101,7 +108,32 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
     }
 
     const saveData = () =>{
-
+        if (items.length == 0) {
+            alert("Please input at least one product!")
+            return
+        }
+        console.log("Saving data to database: ")
+        console.log(items)
+        for (let i = 0; i < items.length; i++) {
+            if (items[i]["price"] <= 0) {
+                alert("Please type in a valid price.")
+                return
+            }
+            if (items[i]["quantity"] <= 0 || items[i]["quantity"] % 1 != 0) {
+                alert("Please type in a valid quantity.")
+                return
+            }
+            if (!items[i]["product"].trim()) {
+                alert("Please type in a valid product name.")
+                return
+            }
+            if (!productList.hasOwnProperty(items[i]["product"])) {
+                alert(`${items[i]["product"]} is not a valid product.`)
+                return
+            }
+        }
+        console.log(date)
+        console.log(totalPrice)
     }
 
     return (
