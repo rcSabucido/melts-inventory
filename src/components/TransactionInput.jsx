@@ -7,7 +7,7 @@ import Switch from "./Switch";
 
 import { v4 as uuidv4 } from 'uuid';
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime }) => {
+const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime, productList, supabase }) => {
     let initialItems = []
     let [date, setDate] = useState(transactionDate || new Date().toISOString().substring(0, 10))
     let initialPrice = 0
@@ -29,7 +29,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
             let newProduct = true;
             for (let i = 0; i < initialItems.length; i++) {
                 if (initialItems[i]["product"] === scannedProduct) {
-                    initialItems[i]["quantity"] += 1
+                    initialItems[i]["quantity"] = parseInt(initialItems[i]["quantity"], 10) + 1
                     newProduct = false
                     break
                 }
@@ -44,6 +44,11 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
                 console.log("Scanned a product!")
                 console.log(item)
                 initialItems.push(item)
+                let startLen = initialItems.length - 1
+                console.log(`startLen: ${startLen}`)
+                setTimeout(() => {
+                    updateItemData(startLen, "product", scannedProduct)
+                }, 50)
             }
         }
         initialPrice = initialItems.reduce((acc, item) => acc + (item["price"] * item["quantity"]), 0)
@@ -61,11 +66,29 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
 
     function updateItemData(index, part, data) {
         items[index][part] = data;
-        console.log("Item are now: ", items);
+        console.log("Items are now: ", items);
 
-        if (part === 'price' || part === 'quantity') {
-            updateTotalPrice()
+        if (part === "product") {
+            console.log(`Check if it has: ${data}`)
+            if (data in productList) {
+                console.log("It has the data")
+                items[index]["price"] = productList[data].price
+            } else {
+                items[index]["price"] = 0
+            }
+            setItems(items)
+        } else if (part === "quantity") {
+            let product = items[index]["product"]
+            if (data <= 0) {
+                items[index][part] = 1
+            }
+            if (productList[product]?.quantity < data) {
+                items[index]["quantity"] = productList[product].quantity
+                setItems(items)
+            }
         }
+
+        updateTotalPrice()
 
     }
     function deleteItem(index) {
@@ -100,8 +123,83 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
         setItems([])
     }
 
-    const saveData = () =>{
+    const deductQuantity = async (product_id, product_name, quantity) => {
+        await supabase
+            .from('InventoryItem')
+            .update({
+                quantity: productList[product_name].quantity - quantity,
+            })
+            .eq('product_id', product_id)
+    }
 
+    const addSalesDetails = async (inventory_id, sales_id, sales_price, quantity) => {
+        await supabase
+            .from('SalesDetail')
+            .insert({
+                sales_id: sales_id,
+                inventory_id: inventory_id,
+                sales_price: sales_price,
+                quantity: quantity
+            })
+    }
+
+    const saveData = async () =>{
+        if (items.length == 0) {
+            alert("Please input at least one product!")
+            return
+        }
+        console.log("Saving data to database: ")
+        console.log(items)
+        let productNames = []
+
+        // Validate input items
+        for (let i = 0; i < items.length; i++) {
+            let item = items[i]
+            if (productNames.includes(item["product"])) {
+                alert("You have input duplicate products.")
+                return
+            }
+            productNames.push(item["product"])
+            if (item["price"] <= 0) {
+                alert("Please type in a valid price.")
+                return
+            }
+            if (item["quantity"] <= 0 || item["quantity"] % 1 != 0) {
+                alert("Please type in a valid quantity.")
+                return
+            }
+            if (!item["product"].trim()) {
+                alert("Please type in a valid product that is in stock.")
+                return
+            }
+            if (!productList.hasOwnProperty(item["product"])) {
+                alert(`${item["product"]} is not a valid product.`)
+                return
+            }
+        }
+        console.log(date)
+        console.log(totalPrice)
+
+        const { data } = await supabase
+            .from('Sale')
+            .insert({
+                total: totalPrice,
+                purchase_date: date
+            })
+            .select()
+
+        let sales_id = data[0]["sales_id"]
+
+        console.log(data)
+
+        for (let i = 0; i < items.length; i++) {
+            let item = items[i]
+            let product = productList[item["product"]]
+            console.log(product.product_id)
+            deductQuantity(product.product_id, item["product"], item["quantity"])
+            addSalesDetails(product.product_id, sales_id, product.price, item["quantity"])
+        }
+        window.location.href = "/transaction"
     }
 
     return (

@@ -40,7 +40,7 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, deleteItem 
                         type='number'
                         name='quantity'
                         className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
-                        defaultValue={initialProduct ? initialProduct["quantity"] : ""}
+                        value={initialProduct ? initialProduct["quantity"] : "1"}
                         onChange={productValueChange}
                     />
                 </div>
@@ -49,8 +49,9 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, deleteItem 
                         type='number'
                         name='price'
                         className='mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md'
-                        defaultValue={initialProduct ? initialProduct["price"] : ""}
+                        value={initialProduct ? initialProduct["price"] : "0"}
                         onChange={productValueChange}
+                        readOnly
                     />
                 </div>
             </div>

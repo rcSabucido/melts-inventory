@@ -1,7 +1,42 @@
 import Logo from "../assets/logo.jpg";
+import { useState } from 'react';
 import { UserCircleIcon,LockClosedIcon } from "@heroicons/react/24/outline";
 
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
 const LoginPage = () => {
+  const [loginCredentials, setLoginCredentials] = useState({})
+
+  // Very insecure but it works as a proof of concept ;-;
+  const checkCredentials = async () => {
+    const { data, error } = await supabase
+      .from('Employee')
+      .select()
+      .eq('email', loginCredentials['email'])
+      .eq('password', loginCredentials['password'])
+
+    console.log(loginCredentials)
+    console.log(data)
+
+    if (error) {
+      alert("An error occured trying to login.")
+    } else if (data.length == 0) {
+      alert("Invalid credentials.")
+    } else {
+      window.location.href = "/home"
+    }
+  }
+
+  const changeCredentials = (e) => {
+    const { name, value } = e.target;
+    setLoginCredentials({
+      ...loginCredentials,
+      [name]: value
+    });
+  }
+
   return (
     <>
       <section>
@@ -19,7 +54,7 @@ const LoginPage = () => {
             <div className="max-w-xl px-5 py-16 md:px-10 md:py-24 lg:py-32">
               <h1 className="[text-shadow:_0_2px_4px_rgba(0,0,0,0.5)] mb-8 text-2xl font-bold md:mb-7 md:text-5xl text-white">Login</h1>
               <form className="mx-auto mb-4 w-auto pb-4" name="wf-form-password" method="get">
-                <h2 className="[text-shadow:_0_2px_4px_rgba(0,0,0,0.5)] text-2xl font-bold md:mb-3 md:text-white">Username</h2>
+                <h2 className="[text-shadow:_0_2px_4px_rgba(0,0,0,0.5)] text-2xl font-bold md:mb-3 md:text-white">Email</h2>
                 <div className="relative">
                   <UserCircleIcon
                    width="25"
@@ -36,7 +71,9 @@ const LoginPage = () => {
                     type="email"
                     className="mb-4 block h-9 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl"
                     maxLength="256"
-                    name="name"
+                    name="email"
+                    value={loginCredentials["email"]}
+                    onChange={changeCredentials}
                     placeholder=""
                     required
                   />
@@ -56,14 +93,17 @@ const LoginPage = () => {
                   className="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block"/>
                   <input
                     type="password"
+                    name="password"
                     className="mb-4 block h-11 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl"
                     placeholder=""
+                    value={loginCredentials["password"]}
+                    onChange={changeCredentials}
                     required
                   />
                 </div>
 
                 <a
-                  href="/home"
+                  onClick={checkCredentials}
                   className="flex items-center justify-center bg-[#f18c27] [box-shadow:rgb(251,191,36)_-8px_8px] hover:bg-amber-600 px-8 py-4 text-center font-semibold text-white transition rounded-xl"
                 >
                   <p className="[text-shadow:_0_2px_4px_rgba(0,0,0,0.5)] w-5xl mr-6 font-bold">Login</p>
