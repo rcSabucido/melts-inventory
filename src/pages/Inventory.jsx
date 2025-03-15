@@ -93,7 +93,7 @@ const InventoryPage = () => {
       </div>
       {showAddItemsModal && <AddItems onClose={() => setShowModal(false)} refreshData={refreshData} />}
       {showNearExpiryTable && <NearExpiryTableModal columns={products} data={nearExpiryData} onClose={() => setShowNearExpiryTable(false)} />}
-      {showInventoryDetails && <InventoryDetailsModal columns={columns} data={inventoryData} onClose={() => setShowInventoryDetails(false)} />}
+      {showInventoryDetails && <InventoryDetailsModal columns={columns} data={inventoryData} refreshData={refreshData} onClose={() => setShowInventoryDetails(false)} />}
     </>
   );
 }

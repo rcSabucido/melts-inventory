@@ -2,7 +2,7 @@ import InventoryTable from "./InventoryTable.jsx";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
-const InventoryDetailsModal = ({columns, data, onClose}) => {
+const InventoryDetailsModal = ({columns, data, onClose, refreshData}) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const rowsPerPage = 6;
@@ -31,7 +31,7 @@ const InventoryDetailsModal = ({columns, data, onClose}) => {
                     <h2 className="text-2xl font-bold">Inventory</h2>
                     <XMarkIcon className="h-6 w-6 cursor-pointer" onClick={onClose}/>
                 </div>
-                <InventoryTable columns={columns} data={currentRows} />
+                <InventoryTable columns={columns} data={currentRows} refreshData={refreshData}/>
             </div>
             <div className='flex justify-center gap-4 absolute bottom-25 left-12 right-15'>
             <button className='text-orange-500 hover:text-orange-700 font-medium' onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</button>
