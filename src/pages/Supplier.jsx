@@ -142,7 +142,7 @@ const SupplierPage = () => {
     <>
       <div className="flex">
         <Sidebar />
-        <main className="flex-col p-4 bg-amber-100 w-full">
+        <main className="flex-col p-4 bg-[#ffffdb] w-full">
           <div>
             <div className='w-auto mx-5 my-3 flex gap-2 justify-between'>
               <p className='px-4 pt-4 text-xl'>Suppliers</p>

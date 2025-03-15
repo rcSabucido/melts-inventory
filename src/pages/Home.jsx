@@ -74,7 +74,7 @@ const HomePage = () => {
     <>
       <div className="flex">
         <Sidebar />
-        <main className="bg-amber-100 w-full">
+        <main className="bg-[#ffffdb] w-full">
           <div className="m-8 p-2 bg-amber-200/30 rounded-xl shadow-[-4px_4px_4px_#888888]">
             <nav className="flex flex-row">
               <div className="p-4 text-gray-800">

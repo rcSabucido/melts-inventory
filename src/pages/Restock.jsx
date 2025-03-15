@@ -116,7 +116,7 @@ const RestockPage = () => {
     <>
       <div className="flex">
         <Sidebar />
-        <main className="flex-col p-4 bg-amber-100 w-full">
+        <main className="flex-col p-4 bg-[#ffffdb] w-full">
           <div className='relative mx-5 my-3 flex justify-end gap-2'>
             <Button onClick={() => setShowFilter(!showFilter)}>
               <FunnelIcon className='h-6 w-6' />

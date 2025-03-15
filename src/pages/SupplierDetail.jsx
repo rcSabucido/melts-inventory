@@ -149,7 +149,7 @@ const SupplierDetailPage = () => {
   <>
     <div className="flex">
     <Sidebar />
-    <form className="flex-col p-4 bg-amber-100 w-full" onSubmit={handleSubmit}>
+    <form className="flex-col p-4 bg-[#ffffdb] w-full" onSubmit={handleSubmit}>
       <span className="p-4 text-2xl font-bold text-gray-800 flex items-center">
           <ArrowLongLeftIcon className='h-6 w-6 mx-4' onClick={() => setLeaveModal(true)}/>
           {headerText}
