@@ -40,7 +40,8 @@ const AddStockModal = ({ onClose, refreshData }) => {
             
             const { data: supplierData, error: supplierError } = await supabase
                 .from('Supplier')
-                .select('supplier_id, company_name');
+                .select('supplier_id, company_name')
+                .eq('is_active', true);
                 
             if (supplierData) {
                 setSuppliers(supplierData);
