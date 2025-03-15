@@ -4,6 +4,8 @@
 
 M.I.S.S is a web application designed to manage inventory, suppliers, and transactions efficiently. This project is built using React, Vite, and Supabase.
 
+You can visit the live demo page on [melts-inventory.vercel.app](https://melts-inventory.vercel.app)
+
 ## Table of Contents
 
 - [Installation](#installation)
