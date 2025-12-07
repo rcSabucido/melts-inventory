@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Button = ({ children, className, onClick, type }) => {
+const Button = ({ children, className, onClick, overrideStyle, type }) => {
     const [ripple, setRipple] = useState(null);
 
     const clickEvent = async (e) => {
@@ -16,7 +16,7 @@ const Button = ({ children, className, onClick, type }) => {
     }
 
     return (
-        <button type={type} className={`${className} ripple-container flex justify-center items-center gap-2 text-white bg-orange-400/70 hover:bg-orange-400/90 font-bold rounded-lg text-sm px-5 py-2.5 me-2 mb-2 cursor-pointer`} onClick={clickEvent}>
+        <button type={type} className={`${className} ripple-container flex ${!overrideStyle && "justify-center items-center gap-2 text-white bg-orange-400/70 hover:bg-orange-400/90 font-bold rounded-lg text-sm px-5 py-2.5 me-2 mb-2 cursor-pointer"}`} onClick={clickEvent}>
             {children}
             {ripple && (
                 <span
