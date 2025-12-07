@@ -3,6 +3,7 @@ import { PencilIcon,TrashIcon } from "@heroicons/react/24/solid";
 import EditItems from "./EditModal"; 
 import DeleteModal from "./DeleteModal";
 import { createClient } from '@supabase/supabase-js';
+import AnimatedIconWrapper from "../components/AnimatedIconWrapper";
 
 const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
@@ -66,8 +67,12 @@ const InventoryTable = ({ columns, data, refreshData }) => {
               <tr key={rowIndex} className="bg-[#fff2bf] border-b border-gray-200 text-gray-900">
                 <td key="0" className="w-25 px-5">
                   <div className='flex gap-8 justify-center items-center'>
-                    <PencilIcon onClick={() => handleEdit(row)}  className='h-5 w-5 cursor-pointer'/>
-                    <TrashIcon onClick={() => handleDelete(row)}  className='h-5 w-5 cursor-pointer'/>
+                    <AnimatedIconWrapper size='12' onClick={() => handleEdit(row)}>
+                      <PencilIcon className='p-4 cursor-pointer'/>
+                    </AnimatedIconWrapper>
+                    <AnimatedIconWrapper size='12' onClick={() => handleDelete(row)}>
+                      <TrashIcon className='h-5 w-5 cursor-pointer' />
+                    </AnimatedIconWrapper>
                   </div>
                 </td>
                 {columns.map((column, colIndex) => (
