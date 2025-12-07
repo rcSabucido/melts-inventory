@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PencilIcon,TrashIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import EditItems from "./EditModal"; 
 import DeleteModal from "./DeleteModal";
 import { createClient } from '@supabase/supabase-js';
@@ -68,7 +68,7 @@ const InventoryTable = ({ columns, data, refreshData }) => {
                 <td key="0" className="w-25 px-5">
                   <div className='flex gap-8 justify-center items-center'>
                     <AnimatedIconWrapper size='12' onClick={() => handleEdit(row)}>
-                      <PencilIcon className='p-4 cursor-pointer'/>
+                      <PencilIcon className='h-5 w-5 cursor-pointer'/>
                     </AnimatedIconWrapper>
                     <AnimatedIconWrapper size='12' onClick={() => handleDelete(row)}>
                       <TrashIcon className='h-5 w-5 cursor-pointer' />

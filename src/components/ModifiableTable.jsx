@@ -28,7 +28,7 @@ const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick,
                   <div className='flex gap-8 justify-center items-center'>
                     <AnimatedIconWrapper size='12' onClick={() =>
                       returnIndex ? onEditClick({index: rowIndex, row: row}) : onEditClick(row)}>
-                      <PencilIcon className='p-4 cursor-pointer'/>
+                      <PencilIcon className='h-5 w-5 cursor-pointer'/>
                     </AnimatedIconWrapper>
                     <AnimatedIconWrapper size='12' onClick={() =>
                       returnIndex ? onDeleteClick({index: rowIndex, row: row}) : onEditClick(row)}>
