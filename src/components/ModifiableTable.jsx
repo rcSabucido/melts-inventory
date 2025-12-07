@@ -30,8 +30,10 @@ const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick,
                       returnIndex ? onEditClick({index: rowIndex, row: row}) : onEditClick(row)}>
                       <PencilIcon className='p-4 cursor-pointer'/>
                     </AnimatedIconWrapper>
-                    <TrashIcon className='h-5 w-5 cursor-pointer' onClick={() =>
-                      returnIndex ? onDeleteClick({index: rowIndex, row: row}) : onEditClick(row)} />
+                    <AnimatedIconWrapper size='12' onClick={() =>
+                      returnIndex ? onDeleteClick({index: rowIndex, row: row}) : onEditClick(row)}>
+                      <TrashIcon className='h-5 w-5 cursor-pointer' />
+                    </AnimatedIconWrapper>
                   </div>
                 </td>
                 {columns.map((column, colIndex) => (
