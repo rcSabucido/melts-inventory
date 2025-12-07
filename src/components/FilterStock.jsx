@@ -1,6 +1,8 @@
 import Accordion from "./Accordion";
 import { useState } from "react";
 
+import Button from '../components/Button.jsx';
+
 const FilterStock = ({ onApplyFilters }) => {
     const [addedDate, setAddedDate] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
@@ -23,8 +25,8 @@ const FilterStock = ({ onApplyFilters }) => {
                 <input type='date' className="w-full border border-black rounded p-2" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} />
             </Accordion>
             <div className="flex-col justify-center mt-6 space-y-2 w-full">
-                        <button type="button" onClick={handleApply} className="bg-orange-400/70 hover:bg-orange-400/90 text-white p-2 w-full font-bold rounded cursor-pointer">Apply</button>
-                        <button type="button" className="bg-[#CB3F3F] hover:bg-[#BA3030] text-white p-2 w-full font-bold rounded cursor-pointer" onClick={handleClearAll}>Clear All</button>
+                        <Button type="button" onClick={handleApply} className="bg-orange-400/70 hover:bg-orange-400/90 text-white p-2 w-full font-bold rounded cursor-pointer">Apply</Button>
+                        <Button type="button" className="bg-[#CB3F3F] hover:bg-[#BA3030] text-white p-2 w-full font-bold rounded cursor-pointer" onClick={handleClearAll}>Clear All</Button>
 
             </div>
         </div>
