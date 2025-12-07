@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-const Button = ({ children, onClick, type }) => {
+const AnimatedIconWrapper = ({ className, size, onClick, children }) => {
     const [ripple, setRipple] = useState(null);
+    const child = React.Children.only(children);
 
     const clickEvent = async (e) => {
         const rect = e.currentTarget.getBoundingClientRect();
@@ -13,11 +14,18 @@ const Button = ({ children, onClick, type }) => {
 
         setTimeout(() => setRipple(null), 600);
         setTimeout(() => onClick(e), 250);
+
+        console.log("Icon click!");
     }
 
+    const icon = React.cloneElement(child, {
+        ...child.props,
+        className: `${child.props.className ?? ""}`,
+    });
+
     return (
-        <button type={type} className="ripple-container flex justify-center items-center gap-2 text-white bg-orange-400/70 hover:bg-orange-400/90 font-bold rounded-lg text-sm px-5 py-2.5 me-2 mb-2 cursor-pointer" onClick={clickEvent}>
-            {children}
+        <>
+        <button className={`ripple-container w-${size} h-${size}`} onClick={clickEvent}>
             {ripple && (
                 <span
                     className="ripple-effect"
@@ -29,8 +37,10 @@ const Button = ({ children, onClick, type }) => {
                     }}
                 />
             )}
+            {icon}
         </button>
+        </>
     );
 }
 
-export default Button;
+export default AnimatedIconWrapper;
