@@ -30,11 +30,11 @@ const SidebarButton = ({ navigateUri, text, navigate, children }) => {
     });
 
     return (
-        <button className={`ripple-container flex cursor-pointer cursor-pointer py-2 pl-10 w-full rounded-lg`} onClick={clickEvent}>
+        <button className={`ripple-container flex cursor-pointer cursor-pointer pl-7 py-4 w-full rounded-lg`} onClick={clickEvent}>
             {icon} {text}
             {ripple && (
                 <span
-                    className="ripple-effect"
+                    className="ripple-effect ripple-effect-red"
                     style={{
                         width: ripple.size,
                         height: ripple.size,
@@ -53,7 +53,7 @@ const Sidebar = () => {
   const activePath = location.pathname;
 
   const Navbar = (path) =>
-    `py-2 rounded sidebar-link-shadow transition-all 
+    `rounded sidebar-link-shadow transition-all 
      ${activePath === path ? "bg-[rgba(207,1,27)] text-white" : "hover:shadow-lg"}`;
 
   const btnClasses =
@@ -67,15 +67,15 @@ const Sidebar = () => {
         <ol className="flex flex-col text-white w-full px-2 py-2 h-full">
 
           <li className={Navbar("/home")}>
-            <button onClick={() => navigate("/home")} className={btnClasses}>
-              <HomeIcon className="h-6 mr-2" /> Home
-            </button>
+            <SidebarButton navigateUri="/home" navigate={navigate} text="Home">
+              <HomeIcon/>
+            </SidebarButton>
           </li>
 
           <li className={Navbar("/inventory")}>
-            <button onClick={() => navigate("/inventory")} className={btnClasses}>
-              <ListBulletIcon className="h-6 mr-2" /> Inventory
-            </button>
+            <SidebarButton navigateUri="/inventory" navigate={navigate} text="Inventory">
+              <ListBulletIcon/>
+            </SidebarButton>
           </li>
           {/*
           <li className="py-2 sidebar-link-shadow">
@@ -85,21 +85,21 @@ const Sidebar = () => {
           </li>
           */}
           <li className={Navbar("/transaction")}>
-            <button onClick={() => navigate("/transaction")} className={btnClasses}>
-              <BanknotesIcon className="h-6 mr-2" /> Transactions
-            </button>
+            <SidebarButton navigateUri="/transaction" navigate={navigate} text="Transactions">
+              <BanknotesIcon/>
+            </SidebarButton>
           </li>
 
           <li className={Navbar("/restock")}>
-            <button onClick={() => navigate("/restock")} className={btnClasses}>
-              <ArchiveBoxIcon className="h-6 mr-2" /> Restock
-            </button>
+            <SidebarButton navigateUri="/restock" navigate={navigate} text="Restock">
+              <ArchiveBoxIcon/>
+            </SidebarButton>
           </li>
 
           <li className={`${Navbar("/supplier")} mb-auto`}>
-            <button onClick={() => navigate("/supplier")} className={btnClasses}>
-              <TruckIcon className="h-6 mr-2" /> Suppliers
-            </button>
+            <SidebarButton navigateUri="/supplier" navigate={navigate} text="Suppliers">
+              <TruckIcon/>
+            </SidebarButton>
           </li>
            {
           /*
@@ -109,9 +109,9 @@ const Sidebar = () => {
           */
           }
           <li className={Navbar("/")}>
-            <button onClick={() => navigate("/")} className={btnClasses}>
-              <ArrowRightStartOnRectangleIcon className="h-6 mr-2" /> Logout
-            </button>
+            <SidebarButton navigateUri="/" navigate={navigate} text="Logout">
+              <ArrowRightStartOnRectangleIcon/>
+            </SidebarButton>
           </li>
 
         </ol>
