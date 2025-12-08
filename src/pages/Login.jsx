@@ -1,6 +1,6 @@
 import Logo from "../assets/logo.jpg";
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { UserCircleIcon,LockClosedIcon } from "@heroicons/react/24/outline";
 
 import { createClient } from '@supabase/supabase-js';
@@ -10,6 +10,7 @@ const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env
 const LoginPage = () => {
   let navigate = useNavigate();
   const [loginCredentials, setLoginCredentials] = useState({})
+  const passwordFocusRef = useRef(0);
 
   // Very insecure but it works as a proof of concept ;-;
   const checkCredentials = async () => {
@@ -37,6 +38,52 @@ const LoginPage = () => {
       ...loginCredentials,
       [name]: value
     });
+  }
+
+  const emailInput = () => {
+    return <>
+      <input
+        type="email"
+        className="mb-4 block h-9 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl"
+        maxLength="256"
+        name="email"
+        value={loginCredentials["email"]}
+        onChange={changeCredentials}
+        onKeyPress={onEmailEnter}
+        placeholder=""
+        required
+      />
+    </>
+  };
+
+  const passwordInput = () => {
+    return <>
+      <input
+        ref={passwordFocusRef}
+        type="password"
+        name="password"
+        className="mb-4 block h-11 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl"
+        placeholder=""
+        value={loginCredentials["password"]}
+        onChange={changeCredentials}
+        onKeyPress={onPasswordEnter}
+        required
+      />
+    </>
+  }
+
+  const onEmailEnter = async (event) => {
+    if (event.key !== 'Enter') {
+      return
+    }
+    passwordFocusRef.current.focus()
+  }
+
+  const onPasswordEnter = async (event) => {
+    if (event.key !== 'Enter') {
+      return
+    }
+    checkCredentials()
   }
 
   return (
@@ -69,16 +116,7 @@ const LoginPage = () => {
                    stroke-linejoin="round"
                    className="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block" />
 
-                  <input
-                    type="email"
-                    className="mb-4 block h-9 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl"
-                    maxLength="256"
-                    name="email"
-                    value={loginCredentials["email"]}
-                    onChange={changeCredentials}
-                    placeholder=""
-                    required
-                  />
+                   {emailInput()}
                 </div>
 
                 <h3 className="[text-shadow:_0_2px_4px_rgba(0,0,0,0.5)] text-2xl font-bold md:mb-3 md:text-white">Password</h3>
@@ -93,15 +131,8 @@ const LoginPage = () => {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   className="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block"/>
-                  <input
-                    type="password"
-                    name="password"
-                    className="mb-4 block h-11 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl"
-                    placeholder=""
-                    value={loginCredentials["password"]}
-                    onChange={changeCredentials}
-                    required
-                  />
+                  
+                  {passwordInput()}
                 </div>
 
                 <a
