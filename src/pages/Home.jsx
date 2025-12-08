@@ -101,7 +101,7 @@ const HomePage = () => {
                 <ArrowsPointingOutIcon className='h-6 w-6 mr-6 mt-4 cursor-pointer' onClick={() => setShowStockDetails(true)}/>
                 )}
               </div>
-            <LowStockTable columns={columns} data={stockData}/>
+            <LowStockTable columns={columns} data={stockData.slice(0, 5)}/>
           </div>
         </main>
       </div>

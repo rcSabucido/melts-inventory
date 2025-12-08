@@ -30,7 +30,7 @@ const LowStockDetails= ({columns, data, onClose}) => {
         <div className="fixed inset-0 bg-gray-800/40 flex justify-center items-center z-50">
             <div className="bg-[#FDEFB2] p-6 rounded-lg w-3/4 h-9/11">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold ">Lowstock</h2>
+                    <h2 className="text-2xl font-bold ">Low Stock</h2>
                     <XMarkIcon className="h-6 w-6 cursor-pointer" onClick={onClose}/>
                 </div>
                 <LowStockTable columns={columns} data={currentRows} />
