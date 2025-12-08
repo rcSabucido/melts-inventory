@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { createClient } from "@supabase/supabase-js";
 
+import Button from '../components/Button.jsx';
+
 const EditItems = ({ onClose, refreshData, currentProduct }) => { 
     const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
@@ -110,8 +112,8 @@ const EditItems = ({ onClose, refreshData, currentProduct }) => {
                         />
                     </div>
                     <div className="flex justify-center mt-6 gap-2 w-full">
-                        <button type="button" onClick={onClose} className="bg-[#CB3F3F] hover:bg-[#BA3030] cursor-pointer text-white p-2 w-full rounded">Cancel</button>
-                        <button type="submit" className="bg-orange-400/70 hover:bg-orange-400/90 cursor-pointer text-white p-2 w-full rounded">Save</button>
+                        <Button type="button" onClick={onClose} className="bg-[#CB3F3F] hover:bg-[#BA3030] cursor-pointer text-white p-2 w-full rounded">Cancel</Button>
+                        <Button type="submit" className="bg-orange-400/70 hover:bg-orange-400/90 cursor-pointer text-white p-2 w-full rounded">Save</Button>
                     </div>
                 </form>
             </div>

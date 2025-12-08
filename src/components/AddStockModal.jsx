@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { createClient } from "@supabase/supabase-js";
 
+import Button from '../components/Button.jsx';
+
 const AddStockModal = ({ onClose, refreshData }) => { 
     const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
@@ -211,8 +213,8 @@ const AddStockModal = ({ onClose, refreshData }) => {
                         />
                     </div>
                     <div className="flex justify-center mt-6 gap-2 w-full">
-                        <button type="button" onClick={onClose} className="bg-[#CB3F3F] hover:bg-[#BA3030] text-white p-2 w-full rounded cursor-pointer">Cancel</button>
-                        <button type="submit" className="bg-orange-400/70 hover:bg-orange-400/90 text-white p-2 w-full rounded cursor-pointer">Save</button>
+                        <Button type="button" onClick={onClose} className="bg-[#CB3F3F] hover:bg-[#BA3030] text-white p-2 w-full rounded cursor-pointer">Cancel</Button>
+                        <Button type="submit" className="bg-orange-400/70 hover:bg-orange-400/90 text-white p-2 w-full rounded cursor-pointer">Save</Button>
                     </div>
                 </form>
             </div>

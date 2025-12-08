@@ -1,4 +1,5 @@
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
+import AnimatedIconWrapper from "../components/AnimatedIconWrapper";
 
 const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick, orderBy = null, returnIndex = false, descending = false }) => {
     if (orderBy !== null || orderBy !== undefined) {
@@ -25,10 +26,14 @@ const ModifiableTable = ({ columns, data, className, onEditClick, onDeleteClick,
               <tr key={rowIndex} className="bg-[#fff2bf] border-b border-gray-200 text-gray-900">
                 <td key="0" className="w-25 px-5">
                   <div className='flex gap-8 justify-center items-center'>
-                    <PencilIcon className='h-5 w-5 cursor-pointer' onClick={() =>
-                      returnIndex ? onEditClick({index: rowIndex, row: row}) : onEditClick(row)} />
-                    <TrashIcon className='h-5 w-5 cursor-pointer' onClick={() =>
-                      returnIndex ? onDeleteClick({index: rowIndex, row: row}) : onEditClick(row)} />
+                    <AnimatedIconWrapper size='12' onClick={() =>
+                      returnIndex ? onEditClick({index: rowIndex, row: row}) : onEditClick(row)}>
+                      <PencilIcon className='h-5 w-5 cursor-pointer'/>
+                    </AnimatedIconWrapper>
+                    <AnimatedIconWrapper size='12' onClick={() =>
+                      returnIndex ? onDeleteClick({index: rowIndex, row: row}) : onEditClick(row)}>
+                      <TrashIcon className='h-5 w-5 cursor-pointer' />
+                    </AnimatedIconWrapper>
                   </div>
                 </td>
                 {columns.map((column, colIndex) => (

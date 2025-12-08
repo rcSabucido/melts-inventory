@@ -2,6 +2,8 @@ import NearExpiryTable from "../components/NearExpiry.jsx";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
+import Button from '../components/Button.jsx';
+
 const NearExpiryTableModal = ({columns, data, onClose}) => {
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -34,10 +36,10 @@ const NearExpiryTableModal = ({columns, data, onClose}) => {
                 <NearExpiryTable columns={columns} data={currentRows} />
             </div>
             <div className='flex justify-center gap-4 absolute bottom-25 left-12 right-15'>
-            <button className='text-orange-500 hover:text-orange-700 font-medium' onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</button>
-            <button className='text-orange-500 hover:text-orange-700 font-medium' onClick={handleNextPage} disabled={currentPage === totalPages}>
+            <Button className='text-orange-500 hover:text-orange-700 font-medium' onClick={handlePreviousPage} disabled={currentPage === 1}>Previous</Button>
+            <Button className='text-orange-500 hover:text-orange-700 font-medium' onClick={handleNextPage} disabled={currentPage === totalPages}>
               Next {currentPage < totalPages && '→'}
-              </button>
+              </Button>
           </div>
         </div>
     )
