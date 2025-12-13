@@ -1,12 +1,12 @@
 import { createPortal } from "react-dom";
-import { CakeIcon } from '@heroicons/react/20/solid';
+import Cake from "../assets/dessert_icons/cake.png"
 
 import Button from "../components/Button";
 
 const InventoryQuickAccess = () => {
     const CategoryButton = ({text, children, onClick}) => {
         return <>
-            <Button className="flex flex-col" onClick={onClick}>{text} {children}</Button>
+            <Button className="flex flex-col" onClick={onClick}>{children} {text}</Button>
         </>;
     }
     const iconClassName = "fill-white w-10";
@@ -20,7 +20,7 @@ const InventoryQuickAccess = () => {
             <aside className="h-full sticky top-0 bg-[#FFB64F] min-w-3xs overflow-y-auto overflow-x-hidden rounded-r-xl">
                 <div className="flex flex-col h-full p-10 justify-between items-center w-full">
                     <CategoryButton text="ALL">
-                        <CakeIcon className={iconClassName}/>
+                        <img src={Cake} className={iconClassName}/>
                     </CategoryButton>
                     <Button>Cake</Button>
                     <Button>Drinks</Button>
