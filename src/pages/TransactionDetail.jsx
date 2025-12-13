@@ -1,9 +1,11 @@
 import { ArrowLeftIcon } from '@heroicons/react/20/solid';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+
 import ConfirmationModal from '../components/ConfirmationModal';
 import Sidebar from '../components/Sidebar';
 import TransactionInput from '../components/TransactionInput';
+import InventoryQuickAccessButton from '../components/InventoryQuickAccessButton';
 
 import { createClient } from '@supabase/supabase-js'
 
@@ -72,6 +74,7 @@ const TransactionDetail = () => {
                     onYes={() => navigate('/transaction')}
                     onNo={() => setLeaveModal(false)}
                 />}
+            <InventoryQuickAccessButton />
         </>
     );
 }
