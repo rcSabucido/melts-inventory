@@ -1,9 +1,13 @@
 import { useState } from 'react';
 
-const Button = ({ children, className, onClick, overrideStyle, disablePadding, type }) => {
+const Button = ({ children, className, onClick, overrideStyle, disablePadding, isInstant, type }) => {
     const [ripple, setRipple] = useState(null);
 
     const clickEvent = async (e) => {
+        if (isInstant) {
+            onClick(e);
+            return;
+        }
         const rect = e.currentTarget.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
         const x = e.clientX - rect.left - size / 2;

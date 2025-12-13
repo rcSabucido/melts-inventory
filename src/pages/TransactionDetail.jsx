@@ -12,16 +12,25 @@ import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
+function timeout(delay) {
+    return new Promise( res => setTimeout(res, delay) );
+}
+
 const TransactionDetail = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [leaveModal, setLeaveModal] = useState(false);
     const [firstTime, setFirstTime] = useState(true);
+    const [firstLoad, setFirstLoad] = useState(true);
     const [quickAccess, setQuickAccess] = useState(false);
     const [productList, setProductList] = useState([]);
 
     useEffect(() => {
         async function fetchProducts() {
+            if (!firstLoad) {
+                await timeout(500);
+            }
+
             const { data, error } = await supabase
                 .from('InventoryFull')
                 .select("product_name, price, quantity, product_id")
@@ -35,6 +44,7 @@ const TransactionDetail = () => {
                 acc[obj.product_name] = {price: obj.price, product_id: obj.product_id, quantity: obj.quantity};
                 return acc;
             }, {}));
+            setFirstLoad(false);
         }
         fetchProducts()
     }, [productList])
@@ -76,7 +86,9 @@ const TransactionDetail = () => {
                     onYes={() => navigate('/transaction')}
                     onNo={() => setLeaveModal(false)}
                 />}
-            {quickAccess ? <InventoryQuickAccess /> : <InventoryQuickAccessButton onClick={() => setQuickAccess(true)} />}
+            {quickAccess ?
+                <InventoryQuickAccess onBack={() => {setQuickAccess(false); console.log("Closing quick access.")}} /> :
+                <InventoryQuickAccessButton onClick={() => setQuickAccess(true)} />}
         </>
     );
 }

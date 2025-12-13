@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+
 import Cake from "../assets/dessert_icons/cake.png"
 import Jelly from "../assets/dessert_icons/jelly.png"
 import Juice from "../assets/dessert_icons/juice.png"
@@ -6,10 +7,10 @@ import Cookie from "../assets/dessert_icons/cookie.png"
 
 import Button from "../components/Button";
 
-const InventoryQuickAccess = () => {
+const InventoryQuickAccess = ({onBack}) => {
     const CategoryButton = ({text, children, onClick, className }) => {
         return <>
-            <Button className={`flex flex-col min-w-40 min-h-18 text-l ${className}`} onClick={onClick}>{children} {text}</Button>
+            <Button className={`flex flex-col min-w-40 min-h-18 text-l ${className}`} isInstant={true} onClick={onClick}>{children} {text}</Button>
         </>;
     }
     const iconClassName = "fill-white w-7.5";
@@ -22,7 +23,7 @@ const InventoryQuickAccess = () => {
 
             <aside className="h-full sticky top-0 bg-[#FFB64F] min-w-3xs overflow-y-auto overflow-x-hidden rounded-r-xl">
                 <div className="flex flex-col h-full p-10 justify-between items-center w-full">
-                    <CategoryButton text="Back" className="mb-8" />
+                    <CategoryButton onClick={onBack} text="Back" className="mb-8" />
                     <CategoryButton text="All" />
                     <CategoryButton text="Cake">
                         <img src={Cake} className={iconClassName}/>
