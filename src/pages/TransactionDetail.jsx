@@ -6,6 +6,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import Sidebar from '../components/Sidebar';
 import TransactionInput from '../components/TransactionInput';
 import InventoryQuickAccessButton from '../components/InventoryQuickAccessButton';
+import InventoryQuickAccess from '../components/InventoryQuickAccess';
 
 import { createClient } from '@supabase/supabase-js'
 
@@ -16,6 +17,7 @@ const TransactionDetail = () => {
     const location = useLocation();
     const [leaveModal, setLeaveModal] = useState(false);
     const [firstTime, setFirstTime] = useState(true);
+    const [quickAccess, setQuickAccess] = useState(false);
     const [productList, setProductList] = useState([]);
 
     useEffect(() => {
@@ -74,7 +76,7 @@ const TransactionDetail = () => {
                     onYes={() => navigate('/transaction')}
                     onNo={() => setLeaveModal(false)}
                 />}
-            <InventoryQuickAccessButton />
+            {quickAccess ? <InventoryQuickAccess /> : <InventoryQuickAccessButton onClick={() => setQuickAccess(true)} />}
         </>
     );
 }
