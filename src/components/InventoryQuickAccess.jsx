@@ -22,25 +22,54 @@ const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
 
     return createPortal(
         <div className="fixed inset-0 flex w-3/4 h-9/10 m-auto border border-gray-300 rounded-xl shadow-xl"> 
-            <main className="bg-[#ffffdb] w-full h-full rounded-l-xl overflow-y-auto overflow-x-hidden"> 
-                <div className={`bg-[#ffeedd] relative overflow-x-auto rounded-xl m-5`}>
-                    <div className="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <div className="text-xs text-gray-700 uppercase bg-orange-200/70 min-h-8 content-center">
-                        <tr>
-                          <th className="px-3">{`${categoryList[categoryId] || "All"} Products`}</th>
-                        </tr>
-                        </div>
-                        <div className="flex flex-row flex-wrap place-content-center pt-3">
-                        {
-                            Object.keys(productList).map((productName)=> (
-                                <Button className="">
-                                  <p className="text-l">{productName}</p>
-                                </Button>
-                            ))
-                        }
+            <main className="bg-[#ffffdb] w-full h-full rounded-l-xl overflow-y-auto overflow-x-hidden">
+                { categoryId == 0 ? (
+                    <div className={`bg-[#ffeedd] relative overflow-x-auto rounded-xl m-5`}>
+                        <div className="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <thead className="text-xs text-gray-700 uppercase bg-orange-200/70 min-h-8 content-center w-full">
+                            <tr>
+                              <th className="w-screen p-3" colspan="2">All Products</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                Object.keys(productList).map((productName)=> (
+                                    <tr>
+                                        <td className="px-3 pt-4">
+                                            <Button className="">
+                                              <p className="text-l">{productName}</p>
+                                            </Button>
+                                        </td>
+                                        <td className="px-3">
+                                              <p className="text-l">{productList[productName].category_name}</p>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                            </tbody>
                         </div>
                     </div>
-                </div>
+                )
+                 : (
+                    <div className={`bg-[#ffeedd] relative overflow-x-auto rounded-xl m-5`}>
+                        <div className="w-full text-sm text-left rtl:text-right text-gray-500">
+                            <div className="text-xs text-gray-700 uppercase bg-orange-200/70 min-h-8 content-center">
+                            <tr>
+                              <th className="px-3">{`${categoryList[categoryId] || "All"} Products`}</th>
+                            </tr>
+                            </div>
+                            <div className="flex flex-row flex-wrap place-content-center pt-3">
+                            {
+                                Object.keys(productList).map((productName)=> (
+                                    <Button className="">
+                                      <p className="text-l">{productName}</p>
+                                    </Button>
+                                ))
+                            }
+                            </div>
+                        </div>
+                    </div>
+                ) }
             </main>
 
             <aside className="h-full sticky top-0 bg-[#FFB64F] min-w-3xs overflow-y-auto overflow-x-hidden rounded-r-xl">

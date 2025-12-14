@@ -30,7 +30,7 @@ const TransactionDetail = () => {
 
             let result = await supabase
                 .from('InventoryFull')
-                .select("product_name, price, quantity, product_id")
+                .select("product_name, price, quantity, product_id, category_name")
                 .eq('is_active', true)
 
             if (result.error) {
@@ -39,7 +39,7 @@ const TransactionDetail = () => {
                return
             }
             setProductList(result.data.filter((item) => item.quantity > 0).reduce((acc, obj) => {
-                acc[obj.product_name] = {price: obj.price, product_id: obj.product_id, quantity: obj.quantity};
+                acc[obj.product_name] = {price: obj.price, product_id: obj.product_id, quantity: obj.quantity, category_name: obj.category_name};
                 return acc;
             }, {}));
 
