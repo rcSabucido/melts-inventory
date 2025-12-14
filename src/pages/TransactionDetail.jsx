@@ -38,10 +38,15 @@ const TransactionDetail = () => {
                 console.error(result.error)
                return
             }
-            setProductList(result.data.filter((item) => item.quantity > 0).reduce((acc, obj) => {
-                acc[obj.product_name] = {price: obj.price, product_id: obj.product_id, quantity: obj.quantity, category_name: obj.category_name};
-                return acc;
-            }, {}));
+            setProductList(
+                result.data
+                    .filter((item) => item.quantity > 0)
+                    .sort((a, b) => a.category_name.localeCompare(b.category_name))
+                    .reduce((acc, obj) => {
+                        acc[obj.product_name] = {price: obj.price, product_id: obj.product_id, quantity: obj.quantity, category_name: obj.category_name};
+                        return acc;
+                    }, {})
+            );
 
 
             result = await supabase

@@ -34,7 +34,7 @@ const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
                             </thead>
                             <tbody>
                             {
-                                Object.keys(productList).map((productName, index)=> (
+                                Object.keys(productList).map((productName, index) => (
                                     <tr>
                                         <td className={`px-3 pt-2 ${index && "border-t border-gray-300"}`}>
                                             <Button className="">
@@ -62,9 +62,17 @@ const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
                             <div className="flex flex-row place-content-center">
                                 <div className="flex flex-row flex-wrap pt-3 justify-around">
                                 {
-                                    Object.keys(productList)
+                                    Object.keys(
+                                        Object.keys(productList)
+                                            .reduce((filtered, key) => {
+                                                if (productList[key].category_name == categoryList[categoryId]) {
+                                                    filtered[key] = productList[key]
+                                                }
+                                                return filtered
+                                            }, {})
+                                    )
                                         .sort((a,b) => a.localeCompare(b))
-                                        .map((productName)=>
+                                        .map((productName) =>
                                     (
                                         <Button className="w-24">
                                           <p className="text-l">{productName}</p>
