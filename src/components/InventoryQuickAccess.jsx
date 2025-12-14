@@ -56,17 +56,22 @@ const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
                         <div className="w-full text-sm text-left rtl:text-right text-gray-500">
                             <div className="text-xs text-gray-700 uppercase bg-orange-200/70 min-h-8 content-center">
                             <tr>
-                              <th className="px-3">{`${categoryList[categoryId] || "All"} Products`}</th>
+                              <th className="px-3">All Products (A-Z)</th>
                             </tr>
                             </div>
-                            <div className="flex flex-row flex-wrap place-content-center pt-3">
-                            {
-                                Object.keys(productList).map((productName)=> (
-                                    <Button className="">
-                                      <p className="text-l">{productName}</p>
-                                    </Button>
-                                ))
-                            }
+                            <div className="flex flex-row place-content-center">
+                                <div className="flex flex-row flex-wrap pt-3 justify-around">
+                                {
+                                    Object.keys(productList)
+                                        .sort((a,b) => a.localeCompare(b))
+                                        .map((productName)=>
+                                    (
+                                        <Button className="w-24">
+                                          <p className="text-l">{productName}</p>
+                                        </Button>
+                                    ))
+                                }
+                                </div>
                             </div>
                         </div>
                     </div>
