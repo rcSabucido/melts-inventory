@@ -23,6 +23,12 @@ const TransactionDetail = () => {
     const [categoryList, setCategoryList] = useState([]);
     const [totalSales, setTotalSales] = useState([]);
 
+    const onAdd = (e) => {
+        console.log(e);
+
+        
+    };
+
     useEffect(() => {
         async function fetchProducts() {
             if (!firstLoad) {
@@ -123,7 +129,16 @@ const TransactionDetail = () => {
                     onNo={() => setLeaveModal(false)}
                 />}
             {quickAccess ?
-                <InventoryQuickAccess productList={productList} totalSales={totalSales} categoryList={categoryList} onBack={() => {setQuickAccess(false); console.log("Closing quick access.")}} /> :
+                <InventoryQuickAccess
+                    productList={productList}
+                    totalSales={totalSales}
+                    categoryList={categoryList}
+                    onBack={
+                        () => {
+                            setQuickAccess(false);
+                            console.log("Closing quick access.")}}
+                    onAdd={onAdd}
+                /> :
                 <InventoryQuickAccessButton onClick={() => setQuickAccess(true)} />}
         </>
     );

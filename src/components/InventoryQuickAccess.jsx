@@ -8,7 +8,7 @@ import Snack from "../assets/dessert_icons/cookie.png"
 
 import Button from "../components/Button";
 
-const InventoryQuickAccess = ({onBack, productList, totalSales, categoryList}) => {
+const InventoryQuickAccess = ({onBack, productList, onAdd, totalSales, categoryList}) => {
     const CategoryButton = ({text, children, onClick, className }) => {
         return <>
             <Button className={`flex flex-col min-w-40 min-h-13.5 text-l ${className}`} isInstant={true} onClick={onClick}>{children} {text}</Button>
@@ -50,7 +50,7 @@ const InventoryQuickAccess = ({onBack, productList, totalSales, categoryList}) =
                         {
                             Object.keys(visibleSales)
                                 .map((productId, index) => (
-                                    <Button className="w-24">
+                                    <Button className="w-24" onClick={() => onAdd(productId)}>
                                       <p className="text-l">{totalSales[productId].product_name}</p>
                                     </Button>
                                 ))
@@ -79,7 +79,7 @@ const InventoryQuickAccess = ({onBack, productList, totalSales, categoryList}) =
                                 Object.keys(productList).map((productName, index) => (
                                     <tr>
                                         <td className={`px-3 pt-2 ${index && "border-t border-gray-300"}`}>
-                                            <Button className="">
+                                            <Button onClick={() => onAdd(productList[productName].product_id)}>
                                               <p className="text-l">{productName}</p>
                                             </Button>
                                         </td>
@@ -118,7 +118,7 @@ const InventoryQuickAccess = ({onBack, productList, totalSales, categoryList}) =
                                         .sort((a,b) => a.localeCompare(b))
                                         .map((productName) =>
                                     (
-                                        <Button className="w-24">
+                                        <Button className="w-24" onClick={() => onAdd(productList[productName].product_id)}>
                                           <p className="text-l">{productName}</p>
                                         </Button>
                                     ))
