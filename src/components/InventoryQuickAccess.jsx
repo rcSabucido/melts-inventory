@@ -28,19 +28,20 @@ const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
                         <div className="w-full text-sm text-left rtl:text-right text-gray-500">
                             <thead className="text-xs text-gray-700 uppercase bg-orange-200/70 min-h-8 content-center w-full">
                             <tr>
-                              <th className="w-screen p-3" colspan="2">All Products</th>
+                              <th className="p-3 min-w-70">Products</th>
+                              <th className="p-3 w-full">Category</th>
                             </tr>
                             </thead>
                             <tbody>
                             {
-                                Object.keys(productList).map((productName)=> (
+                                Object.keys(productList).map((productName, index)=> (
                                     <tr>
-                                        <td className="px-3 pt-4">
+                                        <td className={`px-3 pt-2 ${index && "border-t border-gray-300"}`}>
                                             <Button className="">
                                               <p className="text-l">{productName}</p>
                                             </Button>
                                         </td>
-                                        <td className="px-3">
+                                        <td className={`px-3 ${index && "border-t border-gray-300"}`}>
                                               <p className="text-l">{productList[productName].category_name}</p>
                                         </td>
                                     </tr>
