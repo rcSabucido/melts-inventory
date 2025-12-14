@@ -12,10 +12,6 @@ import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
-function timeout(delay) {
-    return new Promise( res => setTimeout(res, delay) );
-}
-
 const TransactionDetail = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -24,30 +20,47 @@ const TransactionDetail = () => {
     const [firstLoad, setFirstLoad] = useState(true);
     const [quickAccess, setQuickAccess] = useState(false);
     const [productList, setProductList] = useState([]);
+    const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
         async function fetchProducts() {
             if (!firstLoad) {
-                await timeout(500);
+                return;
             }
 
-            const { data, error } = await supabase
+            let result = await supabase
                 .from('InventoryFull')
                 .select("product_name, price, quantity, product_id")
                 .eq('is_active', true)
 
-            if (error) {
+            if (result.error) {
                 console.error("Unable to get the list of products!")
-                return
+                console.error(result.error)
+               return
             }
-            setProductList(data.filter((item) => item.quantity > 0).reduce((acc, obj) => {
+            setProductList(result.data.filter((item) => item.quantity > 0).reduce((acc, obj) => {
                 acc[obj.product_name] = {price: obj.price, product_id: obj.product_id, quantity: obj.quantity};
                 return acc;
             }, {}));
+
+
+            result = await supabase
+                .from('ProductCategory')
+                .select("category_id, name");
+
+            if (result.error) {
+                console.error("Unable to get the list of product categories!")
+                console.error(result.error)
+                return
+            }
+            setCategoryList(Object.fromEntries(
+                result.data.map(({ category_id, name }) => [category_id, name])
+            ));
+
             setFirstLoad(false);
         }
         fetchProducts()
-    }, [productList])
+    }, [productList, categoryList])
 
     return (
         <>
@@ -87,7 +100,7 @@ const TransactionDetail = () => {
                     onNo={() => setLeaveModal(false)}
                 />}
             {quickAccess ?
-                <InventoryQuickAccess onBack={() => {setQuickAccess(false); console.log("Closing quick access.")}} /> :
+                <InventoryQuickAccess productList={productList} categoryList={categoryList} onBack={() => {setQuickAccess(false); console.log("Closing quick access.")}} /> :
                 <InventoryQuickAccessButton onClick={() => setQuickAccess(true)} />}
         </>
     );
