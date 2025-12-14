@@ -21,6 +21,7 @@ const TransactionDetail = () => {
     const [quickAccess, setQuickAccess] = useState(false);
     const [productList, setProductList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
+    const [totalSales, setTotalSales] = useState([]);
 
     useEffect(() => {
         async function fetchProducts() {
@@ -48,7 +49,6 @@ const TransactionDetail = () => {
                     }, {})
             );
 
-
             result = await supabase
                 .from('ProductCategory')
                 .select("category_id, name");
@@ -61,6 +61,24 @@ const TransactionDetail = () => {
             setCategoryList(Object.fromEntries(
                 result.data.map(({ category_id, name }) => [category_id, name])
             ));
+
+            result = await supabase
+                .from('TotalActiveProductSales')
+                .select("product_id, category_id, product_name, total_sales");
+
+            if (result.error) {
+                console.error("Unable to get the list of total sales!")
+                console.error(result.error)
+                return
+            }
+            setTotalSales(
+                result.data
+                    .sort((a, b) => a.total_sales - b.total_sales)
+                    .reduce((acc, obj) => {
+                        acc[obj.product_id] = {category_id: obj.category_id, product_name: obj.product_name, total_sales: obj.total_sales};
+                        return acc;
+                    }, {})
+            );
 
             setFirstLoad(false);
         }
@@ -105,7 +123,7 @@ const TransactionDetail = () => {
                     onNo={() => setLeaveModal(false)}
                 />}
             {quickAccess ?
-                <InventoryQuickAccess productList={productList} categoryList={categoryList} onBack={() => {setQuickAccess(false); console.log("Closing quick access.")}} /> :
+                <InventoryQuickAccess productList={productList} totalSales={totalSales} categoryList={categoryList} onBack={() => {setQuickAccess(false); console.log("Closing quick access.")}} /> :
                 <InventoryQuickAccessButton onClick={() => setQuickAccess(true)} />}
         </>
     );

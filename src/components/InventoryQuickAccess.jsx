@@ -8,7 +8,7 @@ import Snack from "../assets/dessert_icons/cookie.png"
 
 import Button from "../components/Button";
 
-const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
+const InventoryQuickAccess = ({onBack, productList, totalSales, categoryList}) => {
     const CategoryButton = ({text, children, onClick, className }) => {
         return <>
             <Button className={`flex flex-col min-w-40 min-h-13.5 text-l ${className}`} isInstant={true} onClick={onClick}>{children} {text}</Button>
@@ -19,6 +19,48 @@ const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
     const [categoryId, setCategoryId] = useState(0);
 
     const categoryIconUrls = [null, Cake, Drink, Sweets, Snack]
+
+    const getTopSelling = (categoryId) => {
+        if (categoryId == 0) {
+            return null;
+        }
+
+        let visibleSales = Object.keys(totalSales)
+                                .reduce((filtered, key) => {
+                                    if (totalSales[key].category_id == categoryId) {
+                                        filtered[key] = totalSales[key]
+                                    }
+                                    return filtered
+                                }, {});
+
+        if (Object.keys(visibleSales).length == 0) {
+            return null;
+        }
+
+        return <>
+            <div className={`bg-[#ffeedd] relative overflow-x-auto rounded-xl m-5`}>
+                <div className="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <div className="text-xs text-gray-700 uppercase bg-orange-200/70 min-h-8 content-center">
+                    <tr>
+                      <th className="px-3">Top Selling</th>
+                    </tr>
+                    </div>
+                    <div className="flex flex-row place-content-center">
+                        <div className="flex flex-row flex-wrap pt-3 justify-around">
+                        {
+                            Object.keys(visibleSales)
+                                .map((productId, index) => (
+                                    <Button className="w-24">
+                                      <p className="text-l">{totalSales[productId].product_name}</p>
+                                    </Button>
+                                ))
+                        }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>;
+    }
 
     return createPortal(
         <div className="fixed inset-0 flex w-3/4 h-9/10 m-auto border border-gray-300 rounded-xl shadow-xl"> 
@@ -52,6 +94,8 @@ const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
                     </div>
                 )
                  : (
+                    <>
+                    {getTopSelling(categoryId)}
                     <div className={`bg-[#ffeedd] relative overflow-x-auto rounded-xl m-5`}>
                         <div className="w-full text-sm text-left rtl:text-right text-gray-500">
                             <div className="text-xs text-gray-700 uppercase bg-orange-200/70 min-h-8 content-center">
@@ -83,6 +127,7 @@ const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
                             </div>
                         </div>
                     </div>
+                    </>
                 ) }
             </main>
 
