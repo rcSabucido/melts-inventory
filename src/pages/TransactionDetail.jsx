@@ -23,10 +23,23 @@ const TransactionDetail = () => {
     const [categoryList, setCategoryList] = useState([]);
     const [totalSales, setTotalSales] = useState([]);
 
-    const onAdd = (e) => {
-        console.log(e);
+    let [date, setDate] = useState(location.state?.transactionDate || new Date().toISOString().substring(0, 10))
+    let [items, setItems] = useState([]);
 
-        
+    const onAdd = (productName) => {
+        console.log(productName);
+
+        setQuickAccess(false);
+
+        navigate("/quick_access_redirect", {
+            state: {
+                ...location.state,
+                scannedProduct: productName,
+                currentItems: items,
+                addItem: true,
+                transactionDate: date
+            },
+        })
     };
 
     useEffect(() => {
@@ -110,6 +123,7 @@ const TransactionDetail = () => {
                             transactionDate={location.state?.transactionDate}
                             scannedProduct={location.state?.scannedProduct}
                             productList={productList}
+                            parentItemsUpdate={setItems}
                             supabase={supabase}
                         />  :
                         (

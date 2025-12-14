@@ -50,7 +50,7 @@ const InventoryQuickAccess = ({onBack, productList, onAdd, totalSales, categoryL
                         {
                             Object.keys(visibleSales)
                                 .map((productId, index) => (
-                                    <Button className="w-24" onClick={() => onAdd(productId)}>
+                                    <Button className="w-24" onClick={() => onAdd(totalSales[productId].product_name)}>
                                       <p className="text-l">{totalSales[productId].product_name}</p>
                                     </Button>
                                 ))
@@ -79,7 +79,7 @@ const InventoryQuickAccess = ({onBack, productList, onAdd, totalSales, categoryL
                                 Object.keys(productList).map((productName, index) => (
                                     <tr>
                                         <td className={`px-3 pt-2 ${index && "border-t border-gray-300"}`}>
-                                            <Button onClick={() => onAdd(productList[productName].product_id)}>
+                                            <Button onClick={() => onAdd(productName)}>
                                               <p className="text-l">{productName}</p>
                                             </Button>
                                         </td>
@@ -118,7 +118,7 @@ const InventoryQuickAccess = ({onBack, productList, onAdd, totalSales, categoryL
                                         .sort((a,b) => a.localeCompare(b))
                                         .map((productName) =>
                                     (
-                                        <Button className="w-24" onClick={() => onAdd(productList[productName].product_id)}>
+                                        <Button className="w-24" onClick={() => onAdd(productName)}>
                                           <p className="text-l">{productName}</p>
                                         </Button>
                                     ))
