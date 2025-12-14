@@ -11,10 +11,10 @@ import Button from "../components/Button";
 const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
     const CategoryButton = ({text, children, onClick, className }) => {
         return <>
-            <Button className={`flex flex-col min-w-40 min-h-18 text-l ${className}`} isInstant={true} onClick={onClick}>{children} {text}</Button>
+            <Button className={`flex flex-col min-w-40 min-h-13.5 text-l ${className}`} isInstant={true} onClick={onClick}>{children} {text}</Button>
         </>;
     }
-    const iconClassName = "fill-white w-7.5";
+    const iconClassName = "fill-white w-6 h-6";
 
     const [categoryId, setCategoryId] = useState(0);
 
@@ -23,19 +23,28 @@ const InventoryQuickAccess = ({onBack, productList, categoryList}) => {
     return createPortal(
         <div className="fixed inset-0 flex w-3/4 h-9/10 m-auto border border-gray-300 rounded-xl shadow-xl"> 
             <main className="bg-[#ffffdb] w-full h-full rounded-l-xl overflow-y-auto overflow-x-hidden"> 
-                <p>{`${categoryList[categoryId] || "All"} Products`}</p>
-                {
-                    Object.keys(productList).map((productName)=> (
-                        <div className="">
-                        <br/>
-                          <p className="text-l">{productName}</p>
+                <div className={`bg-[#ffeedd] relative overflow-x-auto rounded-xl m-5`}>
+                    <div className="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <div className="text-xs text-gray-700 uppercase bg-orange-200/70 min-h-8 content-center">
+                        <tr>
+                          <th className="px-3">{`${categoryList[categoryId] || "All"} Products`}</th>
+                        </tr>
                         </div>
-                    ))
-                }
+                        <div className="flex flex-row flex-wrap place-content-center pt-3">
+                        {
+                            Object.keys(productList).map((productName)=> (
+                                <Button className="">
+                                  <p className="text-l">{productName}</p>
+                                </Button>
+                            ))
+                        }
+                        </div>
+                    </div>
+                </div>
             </main>
 
             <aside className="h-full sticky top-0 bg-[#FFB64F] min-w-3xs overflow-y-auto overflow-x-hidden rounded-r-xl">
-                <div className="flex flex-col h-full p-10 justify-between items-center w-full">
+                <div className="flex flex-col h-full p-5 justify-between items-center w-full">
                     <CategoryButton onClick={onBack} text="Back" className="mb-8" />
 
                     {
