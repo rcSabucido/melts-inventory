@@ -1,9 +1,13 @@
 import { useState } from 'react';
 
-const Button = ({ children, className, onClick, overrideStyle, type }) => {
+const Button = ({ children, className, onClick, overrideStyle, disablePadding, isInstant, type }) => {
     const [ripple, setRipple] = useState(null);
 
     const clickEvent = async (e) => {
+        if (isInstant) {
+            onClick(e);
+            return;
+        }
         const rect = e.currentTarget.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
         const x = e.clientX - rect.left - size / 2;
@@ -16,7 +20,7 @@ const Button = ({ children, className, onClick, overrideStyle, type }) => {
     }
 
     return (
-        <button type={type} className={`${className} ripple-container flex ${!overrideStyle && "justify-center items-center gap-2 text-white bg-orange-400/70 hover:bg-orange-400/90 font-bold rounded-lg text-sm px-5 py-2.5 me-2 mb-2 cursor-pointer"}`} onClick={clickEvent}>
+        <button type={type} className={`${className} ripple-container flex ${!disablePadding && "px-5 py-2.5"} ${!overrideStyle && "justify-center items-center gap-2 text-white bg-orange-400/70 hover:bg-orange-400/90 font-bold rounded-lg text-sm me-2 mb-2 cursor-pointer"}`} onClick={clickEvent}>
             {children}
             {ripple && (
                 <span

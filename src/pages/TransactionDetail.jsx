@@ -1,9 +1,12 @@
 import { ArrowLeftIcon } from '@heroicons/react/20/solid';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+
 import ConfirmationModal from '../components/ConfirmationModal';
 import Sidebar from '../components/Sidebar';
 import TransactionInput from '../components/TransactionInput';
+import InventoryQuickAccessButton from '../components/InventoryQuickAccessButton';
+import InventoryQuickAccess from '../components/InventoryQuickAccess';
 
 import { createClient } from '@supabase/supabase-js'
 
@@ -14,26 +17,92 @@ const TransactionDetail = () => {
     const location = useLocation();
     const [leaveModal, setLeaveModal] = useState(false);
     const [firstTime, setFirstTime] = useState(true);
+    const [firstLoad, setFirstLoad] = useState(true);
+    const [quickAccess, setQuickAccess] = useState(false);
     const [productList, setProductList] = useState([]);
+    const [categoryList, setCategoryList] = useState([]);
+    const [totalSales, setTotalSales] = useState([]);
+
+    let [date, setDate] = useState(location.state?.transactionDate || new Date().toISOString().substring(0, 10))
+    let [items, setItems] = useState([]);
+
+    const onAdd = (productName) => {
+        console.log(productName);
+
+        setQuickAccess(false);
+
+        navigate("/quick_access_redirect", {
+            state: {
+                ...location.state,
+                scannedProduct: productName,
+                currentItems: items,
+                addItem: true,
+                transactionDate: date
+            },
+        })
+    };
 
     useEffect(() => {
         async function fetchProducts() {
-            const { data, error } = await supabase
+            if (!firstLoad) {
+                return;
+            }
+
+            let result = await supabase
                 .from('InventoryFull')
-                .select("product_name, price, quantity, product_id")
+                .select("product_name, price, quantity, product_id, category_name")
                 .eq('is_active', true)
 
-            if (error) {
+            if (result.error) {
                 console.error("Unable to get the list of products!")
+                console.error(result.error)
+               return
+            }
+            setProductList(
+                result.data
+                    .filter((item) => item.quantity > 0)
+                    .sort((a, b) => a.category_name.localeCompare(b.category_name))
+                    .reduce((acc, obj) => {
+                        acc[obj.product_name] = {price: obj.price, product_id: obj.product_id, quantity: obj.quantity, category_name: obj.category_name};
+                        return acc;
+                    }, {})
+            );
+
+            result = await supabase
+                .from('ProductCategory')
+                .select("category_id, name");
+
+            if (result.error) {
+                console.error("Unable to get the list of product categories!")
+                console.error(result.error)
                 return
             }
-            setProductList(data.filter((item) => item.quantity > 0).reduce((acc, obj) => {
-                acc[obj.product_name] = {price: obj.price, product_id: obj.product_id, quantity: obj.quantity};
-                return acc;
-            }, {}));
+            setCategoryList(Object.fromEntries(
+                result.data.map(({ category_id, name }) => [category_id, name])
+            ));
+
+            result = await supabase
+                .from('TotalActiveProductSales')
+                .select("product_id, category_id, product_name, total_sales");
+
+            if (result.error) {
+                console.error("Unable to get the list of total sales!")
+                console.error(result.error)
+                return
+            }
+            setTotalSales(
+                result.data
+                    .sort((a, b) => a.total_sales - b.total_sales)
+                    .reduce((acc, obj) => {
+                        acc[obj.product_id] = {category_id: obj.category_id, product_name: obj.product_name, total_sales: obj.total_sales};
+                        return acc;
+                    }, {})
+            );
+
+            setFirstLoad(false);
         }
         fetchProducts()
-    }, [productList])
+    }, [productList, categoryList])
 
     return (
         <>
@@ -54,6 +123,7 @@ const TransactionDetail = () => {
                             transactionDate={location.state?.transactionDate}
                             scannedProduct={location.state?.scannedProduct}
                             productList={productList}
+                            parentItemsUpdate={setItems}
                             supabase={supabase}
                         />  :
                         (
@@ -72,6 +142,18 @@ const TransactionDetail = () => {
                     onYes={() => navigate('/transaction')}
                     onNo={() => setLeaveModal(false)}
                 />}
+            {quickAccess ?
+                <InventoryQuickAccess
+                    productList={productList}
+                    totalSales={totalSales}
+                    categoryList={categoryList}
+                    onBack={
+                        () => {
+                            setQuickAccess(false);
+                            console.log("Closing quick access.")}}
+                    onAdd={onAdd}
+                /> :
+                <InventoryQuickAccessButton onClick={() => setQuickAccess(true)} />}
         </>
     );
 }

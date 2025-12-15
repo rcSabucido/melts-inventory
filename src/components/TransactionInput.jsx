@@ -7,10 +7,12 @@ import Switch from "./Switch";
 
 import { v4 as uuidv4 } from 'uuid';
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime, productList, supabase }) => {
+const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime, productList, parentItemsUpdate, supabase }) => {
     let initialItems = []
     let [date, setDate] = useState(transactionDate || new Date().toISOString().substring(0, 10))
     let initialPrice = 0
+
+    console.log("TransactionInput update!")
     
     if (firstTime) {
         console.log("I've come from a different page... Current items: ", currentItems);
@@ -56,9 +58,14 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
     }
     let [totalPrice, setTotalPrice] = useState(initialPrice)
 
-    const [items, setItems] = useState(initialItems);
+    const [items, setItems_] = useState(initialItems);
     const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
+
+    const setItems = (items) => {
+        setItems_(items);
+        parentItemsUpdate(items);
+    }
 
     function updateTotalPrice(newItems) {
         setTotalPrice((newItems ? newItems : items).reduce((acc, item) => acc + (item["price"] * item["quantity"]), 0))
