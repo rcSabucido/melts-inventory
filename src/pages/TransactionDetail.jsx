@@ -24,7 +24,7 @@ const TransactionDetail = () => {
     const [totalSales, setTotalSales] = useState([]);
 
     let [date, setDate] = useState(location.state?.transactionDate || new Date().toISOString().substring(0, 10))
-    let [items, setItems] = useState([]);
+    let [items, setItems] = useState(location.state?.currentItems || []);
 
     const onAdd = (productName) => {
         console.log(productName);
