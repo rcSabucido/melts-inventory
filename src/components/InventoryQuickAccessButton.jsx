@@ -9,7 +9,7 @@ const InventoryQuickAccessButton = ({onClick}) => {
             <Button disablePadding={true} className="bg-amber-500 py-6 px-0 m-px rounded-lg" onClick={onClick} >
             	<ChevronLeftIcon className="my-7 w-10 h-10 text-black" />
             </Button>
-        </div>,
+        </div>
     </>;
 }
 
