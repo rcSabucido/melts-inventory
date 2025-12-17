@@ -81,8 +81,10 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
             if (data in productList) {
                 console.log("It has the data")
                 items[index]["price"] = productList[data].price
+                items[index]["has_price"] = true
             } else {
                 items[index]["price"] = 0
+                items[index]["has_price"] = false
             }
             setItems(items)
         } else if (part === "quantity") {

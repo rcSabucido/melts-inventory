@@ -20,6 +20,8 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, deleteItem 
         //}
     };
 
+    let bg_color = initialProduct["has_price"] ? "bg-white" : "bg-red-400"
+
     return (
         <div className='flex flex-wrap justify-between'>
             <div className="m-4 grow-[3] flex items-center gap-2">
@@ -29,7 +31,7 @@ const TransactionItemInput = ({ initialProduct, index, updateParent, deleteItem 
                 <input 
                     type='text'
                     name='product'
-                    className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md"
+                    className={`mt-1 block w-full p-2 border border-gray-300 ${bg_color} rounded-md`}
                     defaultValue={initialProduct ? initialProduct["product"] : ""}
                     onChange={productValueChange}
                 />
