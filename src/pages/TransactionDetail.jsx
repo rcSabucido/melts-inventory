@@ -25,6 +25,7 @@ const TransactionDetail = () => {
 
     let [date, setDate] = useState(location.state?.transactionDate || new Date().toISOString().substring(0, 10))
     let [items, setItems] = useState(location.state?.currentItems || []);
+    let [isDesktop, setIsDesktop] = useState(location.state?.isDesktop ?? true);
 
     const onAdd = (productName) => {
         console.log(productName);
@@ -36,6 +37,7 @@ const TransactionDetail = () => {
                 ...location.state,
                 scannedProduct: productName,
                 currentItems: items,
+                isDesktop: isDesktop,
                 addItem: true,
                 transactionDate: date
             },
@@ -119,7 +121,8 @@ const TransactionDetail = () => {
                             firstTime={firstTime}
                             setFirstTime={setFirstTime}
                             currentItems={location.state?.currentItems}
-                            isDesktop={location.state?.isDesktop ?? true}
+                            isDesktop={isDesktop}
+                            setIsDesktop={setIsDesktop}
                             transactionDate={location.state?.transactionDate}
                             scannedProduct={location.state?.scannedProduct}
                             productList={productList}

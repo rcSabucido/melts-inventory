@@ -7,7 +7,7 @@ import Switch from "./Switch";
 
 import { v4 as uuidv4 } from 'uuid';
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime, productList, parentItemsUpdate, supabase }) => {
+const TransactionInput = ({ isDesktop, setIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime, productList, parentItemsUpdate, supabase }) => {
     let initialItems = []
     let [date, setDate] = useState(transactionDate || new Date().toISOString().substring(0, 10))
     let initialPrice = 0
@@ -60,7 +60,6 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
     let [totalPrice, setTotalPrice] = useState(initialPrice)
 
     const [items, setItemsLocal] = useState(initialItems);
-    const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
     const navigate = useNavigate();
 
     const setItems = (items) => {
