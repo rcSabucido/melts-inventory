@@ -9,7 +9,14 @@ const TransactionQR = () => {
     const location = useLocation();
     const [scanResult, setScanResult] = useState(null);
     const handleBack = () => {
-        navigate('/transaction');
+        navigate('/transaction_details', {
+            state: {
+                isDesktop: false,
+                returnToTransaction: location.state?.addItem || false,
+                currentItems: location.state?.currentItems || [],
+                transactionDate: location.state?.transactionDate
+            }
+        });
     }
 
     useEffect(() => {

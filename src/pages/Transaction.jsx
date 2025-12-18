@@ -17,9 +17,20 @@ const TransactionPage = () => {
   const columns = ['Date', 'Products', 'Items', 'Total Price'];
 
   const [tableData, setTableData] = useState([])
+  const [firstLoad, setFirstLoad] = useState(true)
+
+  const pad = (num, size) => {
+    num = num.toString();
+    while (num.length < size) num = "0" + num;
+    return num;
+  }
 
   useEffect(() => {
     async function fetchTransactions() {
+      if (!firstLoad) {
+        return;
+      }
+
       const { data, error } = await supabase
         .from('SalesFull')
         .select("sales_id, total, purchase_date, sales_details")
@@ -40,13 +51,16 @@ const TransactionPage = () => {
           }
         }
         table_row.id = data_row.sales_id
-        table_row['Date'] = data_row.purchase_date
+        let date = new Date(data_row.purchase_date);
+        table_row['Date'] = `${pad(date.getMonth() + 1, 2)}-${date.getDate()}-${date.getFullYear()}`
         table_row['Products'] = products
         table_row['Items'] = data_row["sales_details"].length
         table_row['Total Price'] = data_row["total"]
         tableData.push(table_row)
       }
       setTableData(tableData)
+
+      setFirstLoad(false)
     }
     fetchTransactions()
   }, [tableData])

@@ -7,7 +7,7 @@ import Switch from "./Switch";
 
 import { v4 as uuidv4 } from 'uuid';
 
-const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime, productList, parentItemsUpdate, supabase }) => {
+const TransactionInput = ({ isDesktop, setIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime, productList, parentItemsUpdate, supabase }) => {
     let initialItems = []
     let [date, setDate] = useState(transactionDate || new Date().toISOString().substring(0, 10))
     let initialPrice = 0
@@ -30,6 +30,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
         if (scannedProduct) {
             let newProduct = true;
             for (let i = 0; i < initialItems.length; i++) {
+                console.log("Scanned an existing product!")
                 if (initialItems[i]["product"] === scannedProduct) {
                     initialItems[i]["quantity"] = parseInt(initialItems[i]["quantity"], 10) + 1
                     newProduct = false
@@ -43,7 +44,7 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
                     "price": 0,
                     "uuid": uuidv4()
                 }
-                console.log("Scanned a product!")
+                console.log("Scanned a new product!")
                 console.log(item)
                 initialItems.push(item)
                 let startLen = initialItems.length - 1
@@ -58,12 +59,11 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
     }
     let [totalPrice, setTotalPrice] = useState(initialPrice)
 
-    const [items, setItems_] = useState(initialItems);
-    const [isDesktop, setIsDesktop] = useState(initialIsDesktop);
+    const [items, setItemsLocal] = useState(initialItems);
     const navigate = useNavigate();
 
     const setItems = (items) => {
-        setItems_(items);
+        setItemsLocal(items);
         parentItemsUpdate(items);
     }
 
@@ -80,8 +80,10 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
             if (data in productList) {
                 console.log("It has the data")
                 items[index]["price"] = productList[data].price
+                items[index]["has_price"] = true
             } else {
                 items[index]["price"] = 0
+                items[index]["has_price"] = false
             }
             setItems(items)
         } else if (part === "quantity") {
@@ -107,14 +109,13 @@ const TransactionInput = ({ isDesktop: initialIsDesktop, transactionDate, curren
 
     const handleAddItem = () => {
         if (isDesktop) {
-            console.log(deleteItem)
             let item = {
                 product: '',
                 quantity: 1,
                 price: 0,
                 uuid: uuidv4()
             }
-            setItems(prevItems => [...prevItems, item])
+            setItemsLocal(prevItems => [...prevItems, item])
         } else {
             navigate('/qr_transaction', { 
                 state: { 
