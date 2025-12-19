@@ -30,7 +30,6 @@ const TransactionPage = () => {
     let hours = date.getHours();
     let minutes = date.getMinutes();
     let seconds = date.getSeconds();
-    console.log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
     let ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
     hours = hours ? hours : 12;
@@ -75,6 +74,8 @@ const TransactionPage = () => {
       tableData.sort((a, b) => {
         return new Date(b["Date"]) - new Date(a["Date"])
       })
+      console.log("New table data:")
+      console.log(tableData)
       setTableData(tableData)
 
       setFirstLoad(false)
