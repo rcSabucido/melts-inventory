@@ -58,6 +58,9 @@ const TransactionPage = () => {
         table_row['Total Price'] = data_row["total"]
         tableData.push(table_row)
       }
+      tableData.sort((a, b) => {
+        return new Date(b["Date"]) - new Date(a["Date"])
+      })
       setTableData(tableData)
 
       setFirstLoad(false)
