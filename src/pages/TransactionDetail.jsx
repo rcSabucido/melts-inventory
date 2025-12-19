@@ -23,7 +23,7 @@ const TransactionDetail = () => {
     const [categoryList, setCategoryList] = useState([]);
     const [totalSales, setTotalSales] = useState([]);
 
-    let [date, setDate] = useState(location.state?.transactionDate || new Date().toISOString().substring(0, 10))
+    let [date, setDate] = useState(location.state?.transactionDate || new Date().toISOString())
     let [items, setItems] = useState(location.state?.currentItems || []);
     let [isDesktop, setIsDesktop] = useState(location.state?.isDesktop ?? true);
 

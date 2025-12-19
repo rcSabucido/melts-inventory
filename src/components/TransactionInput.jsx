@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const TransactionInput = ({ isDesktop, setIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime, productList, parentItemsUpdate, supabase }) => {
     let initialItems = []
-    let [date, setDate] = useState(transactionDate || new Date().toISOString().substring(0, 10))
+    let [date, setDate] = useState(transactionDate || new Date().toISOString())
     let initialPrice = 0
 
     console.log("TransactionInput update!")
@@ -207,7 +207,11 @@ const TransactionInput = ({ isDesktop, setIsDesktop, transactionDate, currentIte
             deductQuantity(product.product_id, item["product"], item["quantity"])
             addSalesDetails(product.product_id, sales_id, product.price, item["quantity"])
         }
-        navigate("/transaction")
+        navigate("/transaction", {
+            state: { 
+                reload: true
+            }
+        })
     }
 
     return (
