@@ -167,21 +167,21 @@ const TransactionInput = ({ isDesktop, setIsDesktop, transactionDate, currentIte
                 alert("You have input duplicate products.")
                 return
             }
-            productNames.push(item["product"])
-            if (item["price"] <= 0) {
-                alert("Please type in a valid price.")
+            if (!productList.hasOwnProperty(item["product"])) {
+                alert(`"${item["product"]}" is not a valid product.`)
                 return
             }
             if (item["quantity"] <= 0 || item["quantity"] % 1 != 0) {
                 alert("Please type in a valid quantity.")
                 return
             }
-            if (!item["product"].trim()) {
-                alert("Please type in a valid product that is in stock.")
+            productNames.push(item["product"])
+            if (item["price"] <= 0) {
+                alert("Please type in a valid price.")
                 return
             }
-            if (!productList.hasOwnProperty(item["product"])) {
-                alert(`${item["product"]} is not a valid product.`)
+            if (!item["product"].trim()) {
+                alert("Please type in a valid product that is in stock.")
                 return
             }
         }
