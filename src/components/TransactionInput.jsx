@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const TransactionInput = ({ isDesktop, setIsDesktop, transactionDate, currentItems, scannedProduct, firstTime, setFirstTime, productList, parentItemsUpdate, supabase }) => {
     let initialItems = []
-    let [date, setDate] = useState(transactionDate || new Date().toISOString().substring(0, 10))
+    let [date, setDate] = useState(transactionDate || new Date().toISOString())
     let initialPrice = 0
 
     console.log("TransactionInput update!")
@@ -167,21 +167,21 @@ const TransactionInput = ({ isDesktop, setIsDesktop, transactionDate, currentIte
                 alert("You have input duplicate products.")
                 return
             }
-            productNames.push(item["product"])
-            if (item["price"] <= 0) {
-                alert("Please type in a valid price.")
+            if (!productList.hasOwnProperty(item["product"])) {
+                alert(`"${item["product"]}" is not a valid product.`)
                 return
             }
             if (item["quantity"] <= 0 || item["quantity"] % 1 != 0) {
                 alert("Please type in a valid quantity.")
                 return
             }
-            if (!item["product"].trim()) {
-                alert("Please type in a valid product that is in stock.")
+            productNames.push(item["product"])
+            if (item["price"] <= 0) {
+                alert("Please type in a valid price.")
                 return
             }
-            if (!productList.hasOwnProperty(item["product"])) {
-                alert(`${item["product"]} is not a valid product.`)
+            if (!item["product"].trim()) {
+                alert("Please type in a valid product that is in stock.")
                 return
             }
         }
@@ -207,7 +207,11 @@ const TransactionInput = ({ isDesktop, setIsDesktop, transactionDate, currentIte
             deductQuantity(product.product_id, item["product"], item["quantity"])
             addSalesDetails(product.product_id, sales_id, product.price, item["quantity"])
         }
-        navigate("/transaction")
+        navigate("/transaction", {
+            state: { 
+                reload: true
+            }
+        })
     }
 
     return (
