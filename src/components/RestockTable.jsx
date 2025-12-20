@@ -1,18 +1,6 @@
+import { formatDate } from "../Utils"
+
 const RestockTable = ({ columns, data }) => {
-    const formatDate = (datestr) => {
-      if (datestr === null || datestr === undefined || datestr == "") {
-        return ""
-      }
-      const pad = (num, size) => {
-        num = num.toString();
-        while (num.length < size) num = "0" + num;
-        return num;
-      }
-
-      let date = new Date(datestr)
-      return `${pad(date.getMonth() + 1, 2)}-${pad(date.getDate(), 2)}-${date.getFullYear()}`
-    }
-
     return (
       <div className="relative overflow-x-auto rounded-xl m-5">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">

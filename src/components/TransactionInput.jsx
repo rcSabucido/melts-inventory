@@ -204,8 +204,9 @@ const TransactionInput = ({ isDesktop, setIsDesktop, transactionDate, currentIte
             let item = items[i]
             let product = productList[item["product"]]
             console.log(product.product_id)
-            deductQuantity(product.product_id, item["product"], item["quantity"])
-            addSalesDetails(product.product_id, sales_id, product.price, item["quantity"])
+            // Wait until transactions are finished to prevent blank product in transaction history.
+            await deductQuantity(product.product_id, item["product"], item["quantity"])
+            await addSalesDetails(product.product_id, sales_id, product.price, item["quantity"])
         }
         navigate("/transaction", {
             state: { 
