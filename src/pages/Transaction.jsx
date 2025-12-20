@@ -6,6 +6,7 @@ import { ArrowRightIcon, PlusIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect } from 'react';
 
 import { createClient } from '@supabase/supabase-js'
+import { formatDate } from "../Utils"
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
@@ -20,24 +21,6 @@ const TransactionPage = () => {
   const [tableData, setTableData] = useState([])
   const [firstLoad, setFirstLoad] = useState(location.state?.reload || true)
 
-  const pad = (num, size) => {
-    num = num.toString();
-    while (num.length < size) num = "0" + num;
-    return num;
-  }
-
-  const formatTime = (date) => {
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    let seconds = date.getSeconds();
-    let ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    let strTime = hours + ':' + pad(minutes, 2) + ":" + pad(seconds, 2) + ' ' + ampm;
-    return strTime;
-  }
-
   useEffect(() => {
     async function fetchTransactions() {
       if (!firstLoad) {
@@ -49,6 +32,10 @@ const TransactionPage = () => {
         .select("sales_id, total, purchase_date, sales_details")
       console.log("Full sales data:")
       console.log(data)
+
+      data.sort((a, b) => {
+        return new Date(b.purchase_date) - new Date(a.purchase_date)
+      })
 
       let tableData = []
       for (let i = 0; i < data.length; i++) {
@@ -64,8 +51,7 @@ const TransactionPage = () => {
           }
         }
         table_row.id = data_row.sales_id
-        let date = new Date(data_row.purchase_date);
-        table_row['Date'] = `${pad(date.getMonth() + 1, 2)}-${pad(date.getDate(), 2)}-${date.getFullYear()} ${formatTime(date)}`
+        table_row['Date'] = formatDate(data_row.purchase_date)
         table_row['Products'] = products
         table_row['Items'] = data_row["sales_details"].length
         table_row['Total Price'] = data_row["total"]
