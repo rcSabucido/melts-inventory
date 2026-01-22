@@ -28,12 +28,12 @@ const TransactionChoice = () => {
                         <ArrowLeftIcon className="h-6 w-6 cursor-pointer" onClick={handleBack} />
                         <p className="text-2xl font-bold">Transaction Details</p>
                     </div>
-                    <div className="flex gap-15 p-5 mt-15 justify-center items-center">
-                        <button className="flex-col justify-center align-center bg-amber-200/30  p-20 rounded-2xl shadow-xl hover:bg-amber-200/60" onClick={handleQRCode}>
+                    <div className="flex justify-center items-center">
+                        <button className="flex-col m-6 w-[24vw] justify-center align-center bg-amber-200/30  p-20 rounded-2xl shadow-xl hover:bg-amber-200/60" onClick={handleQRCode}>
                             <p className="text-3xl font-bold">QR Code</p>
                             <QrCodeIcon className="w-full" />
                         </button>
-                        <button className="flex flex-col justify-center align-center p-20 bg-amber-200/30 rounded-2xl shadow-xl hover:bg-amber-200/60" onClick={handleTransactionDetails}>
+                        <button className="flex flex-col m-6 w-[24vw] justify-center align-center p-20 bg-amber-200/30 rounded-2xl shadow-xl hover:bg-amber-200/60" onClick={handleTransactionDetails}>
                             <p className="text-3xl font-bold">Manual Input</p>
                             <ComputerDesktopIcon className="w-full" />
                         </button>
