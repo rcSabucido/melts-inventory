@@ -8,6 +8,7 @@ import ConfirmationModal from '../components/ConfirmationModal.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
 import { createClient } from '@supabase/supabase-js'
+import LoadingModal from '../components/LoadingModal.jsx';
 
 import { getAddressFromId, padDigits } from '../helpers/PsgcLocationLookup.js';
 
@@ -191,6 +192,7 @@ const SupplierPage = () => {
             {
               (displayData.length > 0) ? (paginationSection()) : null
             }
+            <LoadingModal show={displayData.length == 0} />
         </div>
         </main>
       </div>

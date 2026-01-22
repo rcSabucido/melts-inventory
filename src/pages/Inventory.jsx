@@ -19,7 +19,7 @@ const InventoryPage = () => {
   const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
   const [firstLoad, setFirstLoad] = useState(true);
-  console.log("firstLoad: " + firstLoad)
+  console.log("firstLoad: " + firstLoad);
 
   const refreshData = async () => {
     const { data, error } = await supabase
@@ -100,8 +100,8 @@ const InventoryPage = () => {
       {showAddItemsModal && <AddItems onClose={() => setShowModal(false)} refreshData={refreshData} />}
       {showNearExpiryTable && <NearExpiryTableModal columns={products} data={nearExpiryData} onClose={() => setShowNearExpiryTable(false)} />}
       {showInventoryDetails && <InventoryDetailsModal columns={columns} data={inventoryData} refreshData={refreshData} onClose={() => setShowInventoryDetails(false)} />}
-        
-        <LoadingModal show={firstLoad}/>
+
+      <LoadingModal show={firstLoad}/>
     </>
   );
 }

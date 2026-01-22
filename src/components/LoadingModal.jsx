@@ -21,7 +21,7 @@ const LoadingModal = ({show}) => {
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center
-        bg-gray-800 bg-opacity-60
+        bg-gray-800/30 bg-opacity-60
         transition-opacity duration-150 ease-in-out
         ${show ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
       <div className="flex flex-col items-center space-y-4 py-8 px-16 bg-white rounded-xl">
