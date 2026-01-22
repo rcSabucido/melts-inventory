@@ -7,6 +7,7 @@ import InventoryDetailsModal from '../components/InventoryDetailsModal.jsx';
 import NearExpiryTable from "../components/NearExpiry.jsx";
 import NearExpiryTableModal from '../components/NearExpiryTableModal.jsx';
 import AddItems from '../components/AddItemsModal.jsx';
+import LoadingModal from '../components/LoadingModal.jsx';
 import { createClient } from '@supabase/supabase-js';
 
 const InventoryPage = () => {
@@ -16,6 +17,9 @@ const InventoryPage = () => {
   const [inventoryData, setInventoryData] = useState([]);
   const [nearExpiryData, setNearExpiryData] = useState([]); 
   const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+  const [firstLoad, setFirstLoad] = useState(true);
+  console.log("firstLoad: " + firstLoad);
 
   const refreshData = async () => {
     const { data, error } = await supabase
@@ -50,10 +54,14 @@ const InventoryPage = () => {
       }));
       setNearExpiryData(displayData);
     }
+
+    setFirstLoad(false);
   }
   
   useEffect(() => {
     refreshData();
+
+    document.title = "Inventory";
   }, [])
 
   const columns = ['Products', 'Items', 'Category', 'Price'];
@@ -94,6 +102,8 @@ const InventoryPage = () => {
       {showAddItemsModal && <AddItems onClose={() => setShowModal(false)} refreshData={refreshData} />}
       {showNearExpiryTable && <NearExpiryTableModal columns={products} data={nearExpiryData} onClose={() => setShowNearExpiryTable(false)} />}
       {showInventoryDetails && <InventoryDetailsModal columns={columns} data={inventoryData} refreshData={refreshData} onClose={() => setShowInventoryDetails(false)} />}
+
+      <LoadingModal show={firstLoad}/>
     </>
   );
 }

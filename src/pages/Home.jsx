@@ -6,6 +6,8 @@ import LowStockTable from "../components/LowStockTable.jsx";
 import LowStockDetails from '../components/LowStockDetailsModal.jsx';
 import { createClient } from '@supabase/supabase-js';
 
+import LoadingModal from '../components/LoadingModal.jsx';
+
 const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 const HomePage = () => {
@@ -66,6 +68,8 @@ const HomePage = () => {
 
   useEffect(() => {
     refreshData();
+
+    document.title = "Home";    
   }, [])
 
   const columns = ['Products','Items'];
@@ -106,6 +110,7 @@ const HomePage = () => {
         </main>
       </div>
       {showStockDetails && <LowStockDetails columns={columns} data={stockData} onClose={() => setShowStockDetails(false)} />}
+        <LoadingModal show={!salesLoaded} />
     </>
   );
 }

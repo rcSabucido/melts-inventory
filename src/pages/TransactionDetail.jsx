@@ -106,6 +106,10 @@ const TransactionDetail = () => {
         fetchProducts()
     }, [productList, categoryList])
 
+    useEffect(() => {
+        document.title = "Transaction Details";
+    }, []);
+
     return (
         <>
             <div className="flex">

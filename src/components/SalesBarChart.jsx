@@ -37,7 +37,7 @@ const SalesBarChart = ({data}) => {
           options={state.options}
           series={state.series}
           type="bar"
-          height="240"
+          height="200"
           className="w-auto"
         />
       </div>

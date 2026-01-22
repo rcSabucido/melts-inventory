@@ -53,6 +53,10 @@ const AddEmployee = () => {
         }
     }, [location.state]);
 
+    useEffect(() => {
+        document.title = "Add Employee";
+    }, []);
+
     return (
         <>
             <div className="flex">

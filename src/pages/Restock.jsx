@@ -8,6 +8,7 @@ import FullTableModal from '../components/FullTableModal.jsx';
 import { FunnelIcon, PlusIcon } from '@heroicons/react/24/solid';
 import { createClient } from '@supabase/supabase-js';
 
+import LoadingModal from '../components/LoadingModal.jsx';
 
 const RestockPage = () => {
     const [showModal, setShowModal] = useState(false);
@@ -22,6 +23,8 @@ const RestockPage = () => {
     const groupsPerPage = 2;
     const supabase =  createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
+    const [firstLoad, setFirstLoad] = useState(true);
+    console.log("firstLoad: " + firstLoad);
 
     const refreshData = async () => {
       const { data, error } = await supabase
@@ -44,6 +47,8 @@ const RestockPage = () => {
           }));
           setRestockGroups(groupedData);
           setFilteredGroups(groupedData);
+
+          setFirstLoad(false);
         }
     }
 
@@ -74,6 +79,8 @@ const RestockPage = () => {
 
     useEffect(() => {
       refreshData();
+
+      document.title = "Restock";
     }, []);
 
     useEffect(() => {
@@ -160,6 +167,7 @@ const RestockPage = () => {
           }} 
         />
       )}  
+      <LoadingModal show={firstLoad}/>
     </>
   );
 }

@@ -1,6 +1,8 @@
 import Sidebar from '../components/Sidebar.jsx';
 import Button from '../components/Button.jsx';
 import Transactiontable from '../components/TransactionsTable.jsx';
+import LoadingModal from '../components/LoadingModal.jsx';
+
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRightIcon, PlusIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect } from 'react';
@@ -20,6 +22,8 @@ const TransactionPage = () => {
 
   const [tableData, setTableData] = useState([])
   const [firstLoad, setFirstLoad] = useState(location.state?.reload || true)
+
+  console.log("firstLoad: " + firstLoad)
 
   useEffect(() => {
     async function fetchTransactions() {
@@ -69,6 +73,10 @@ const TransactionPage = () => {
     fetchTransactions()
   }, [tableData])
 
+  useEffect(() => {
+    document.title = "Transactions";
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 9;
 
@@ -111,6 +119,7 @@ const TransactionPage = () => {
               </button>
           </div>
         </main>
+        <LoadingModal show={firstLoad}/>
       </div>
     </>
   );

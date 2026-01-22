@@ -1,6 +1,6 @@
 import Logo from "../assets/logo.jpg";
 import { useNavigate } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { UserCircleIcon,LockClosedIcon } from "@heroicons/react/24/outline";
 
 import { createClient } from '@supabase/supabase-js';
@@ -39,6 +39,10 @@ const LoginPage = () => {
       [name]: value
     });
   }
+
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
 
   const emailInput = () => {
     return <>
@@ -90,17 +94,17 @@ const LoginPage = () => {
     <>
       <section>
         <div className="grid md:h-screen md:grid-cols-2">
-          <div className="absolute inset-y-0 right-0 h-full w-9 bg-[#FFB64F]" />
           <div className="flex items-center justify-center bg-[#FFFFB8]">
             <div className="max-w-lg px-5 py-16 md:px-10 md:py-24 lg:py-32">
-              <div className="mb-6 ml-2 flex h-auto w-auto items-center justify-center">
+              <div className="mb-6 ml-2 flex h-auto w-[30vw] items-center justify-center">
                 <img src={Logo} alt="" className="inline-block" />
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-center rounded-l-lg bg-[#FFE167]">
-            <div className="max-w-xl px-5 py-16 md:px-10 md:py-24 lg:py-32">
+
+          <div className="flex flex-col items-center justify-center rounded-l-lg bg-[#FFE167] border-r-[2vw] border-[#FFB64F]">
+            <div className="max-w-[47vw] px-5 py-16 md:px-10 md:py-24 lg:py-32">
               <h1 className="[text-shadow:_0_2px_4px_rgba(0,0,0,0.5)] mb-8 text-2xl font-bold md:mb-7 md:text-5xl text-white">Login</h1>
               <form className="mx-auto mb-4 w-auto pb-4" name="wf-form-password" method="get">
                 <h2 className="[text-shadow:_0_2px_4px_rgba(0,0,0,0.5)] text-2xl font-bold md:mb-3 md:text-white">Email</h2>

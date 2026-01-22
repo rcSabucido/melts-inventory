@@ -8,6 +8,7 @@ import ConfirmationModal from '../components/ConfirmationModal.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
 
 import { createClient } from '@supabase/supabase-js'
+import LoadingModal from '../components/LoadingModal.jsx';
 
 import { getAddressFromId, padDigits } from '../helpers/PsgcLocationLookup.js';
 
@@ -22,6 +23,8 @@ const SupplierPage = () => {
   const pageLength = 10;
 
   const fetchSuppliers = (start) => {
+    document.title = "Suppliers";
+
     if (start === undefined) { start = 0 }
     supabase
       .from('Supplier')
@@ -191,6 +194,7 @@ const SupplierPage = () => {
             {
               (displayData.length > 0) ? (paginationSection()) : null
             }
+            <LoadingModal show={displayData.length == 0} />
         </div>
         </main>
       </div>

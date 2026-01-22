@@ -33,6 +33,11 @@ const TransactionQR = () => {
         } 
     }, [scanResult])
 
+
+    useEffect(() => {
+        document.title = "Transaction QR Scan";
+    }, []);
+
     return (
         <>
             <div className="flex">

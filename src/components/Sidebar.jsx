@@ -30,7 +30,7 @@ const SidebarButton = ({ navigateUri, text, navigate, children }) => {
     });
 
     return (
-        <button className={`ripple-container flex cursor-pointer cursor-pointer pl-7 py-4 w-full rounded-lg`} onClick={clickEvent}>
+        <button className={`ripple-container flex cursor-pointer cursor-pointer pl-7 py-[2.4vh] w-full rounded-lg`} onClick={clickEvent}>
             {icon} {text}
             {ripple && (
                 <span
@@ -62,7 +62,7 @@ const Sidebar = () => {
   return (
     <aside className="h-screen sticky top-0 bg-orange-400/70 min-w-3xs overflow-y-auto overflow-x-hidden">
       <div className="flex flex-col h-full justify-between items-center w-full p-3">
-        <img src={Logo} alt="MELTS Logo" className="w-40 place-self-center p-2" />
+        <img src={Logo} alt="MELTS Logo" className="w-[10vw] place-self-center p-2" />
 
         <ol className="flex flex-col text-white w-full px-2 py-2 h-full">
 
