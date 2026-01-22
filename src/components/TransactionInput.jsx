@@ -129,6 +129,7 @@ const TransactionInput = ({ isDesktop, setIsDesktop, transactionDate, currentIte
 
     const clearItems = () => {
         setItems([])
+        setTotalPrice(0)
     }
 
     const deductQuantity = async (product_id, product_name, quantity) => {
