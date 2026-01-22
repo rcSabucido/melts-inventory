@@ -48,7 +48,7 @@ const LoginPage = () => {
     return <>
       <input
         type="email"
-        className="mb-4 block h-9 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl"
+        className="mb-4 block h-9 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-[4vw] text-sm text-[#333333] rounded-xl"
         maxLength="256"
         name="email"
         value={loginCredentials["email"]}
@@ -66,7 +66,7 @@ const LoginPage = () => {
         ref={passwordFocusRef}
         type="password"
         name="password"
-        className="mb-4 block h-11 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-14 text-sm text-[#333333] rounded-xl"
+        className="mb-4 block h-11 w-full border border-black bg-[#f2f2f7] px-3 py-6 pl-[4vw] text-sm text-[#333333] rounded-xl"
         placeholder=""
         value={loginCredentials["password"]}
         onChange={changeCredentials}
@@ -118,7 +118,7 @@ const LoginPage = () => {
                    stroke-width="2"
                    stroke-linecap="round"
                    stroke-linejoin="round"
-                   className="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block" />
+                   className="absolute bottom-0 left-[1.5vw] right-auto top-[26%] inline-block" />
 
                    {emailInput()}
                 </div>
@@ -134,7 +134,7 @@ const LoginPage = () => {
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  className="absolute bottom-0 left-[5%] right-auto top-[26%] inline-block"/>
+                  className="absolute bottom-0 left-[1.5vw] right-auto top-[26%] inline-block"/>
                   
                   {passwordInput()}
                 </div>
