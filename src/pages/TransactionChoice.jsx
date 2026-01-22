@@ -1,4 +1,5 @@
 import Sidebar from "../components/Sidebar";
+import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon, QrCodeIcon, ComputerDesktopIcon } from "@heroicons/react/24/solid";
 
@@ -13,6 +14,11 @@ const TransactionChoice = () => {
     const handleBack = () => {
         navigate('/transaction');
     }
+
+    useEffect(() => {
+        document.title = "Transaction Details";
+    }, []);
+
     return (
         <>
             <div className='flex'>

@@ -68,6 +68,8 @@ const HomePage = () => {
 
   useEffect(() => {
     refreshData();
+
+    document.title = "Home";    
   }, [])
 
   const columns = ['Products','Items'];

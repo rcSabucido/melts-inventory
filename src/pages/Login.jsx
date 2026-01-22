@@ -1,6 +1,6 @@
 import Logo from "../assets/logo.jpg";
 import { useNavigate } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { UserCircleIcon,LockClosedIcon } from "@heroicons/react/24/outline";
 
 import { createClient } from '@supabase/supabase-js';
@@ -39,6 +39,10 @@ const LoginPage = () => {
       [name]: value
     });
   }
+
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
 
   const emailInput = () => {
     return <>

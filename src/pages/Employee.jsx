@@ -4,7 +4,7 @@ import ModifiableTable from '../components/ModifiableTable.jsx';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../components/ConfirmationModal.jsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const EmployeePage = () => {
   const navigate = useNavigate();
@@ -49,6 +49,10 @@ const EmployeePage = () => {
         'Age': 20
       }
   ];
+
+  useEffect(() => {
+    document.title = "Employees";
+  }, []);
 
   return (
     <>

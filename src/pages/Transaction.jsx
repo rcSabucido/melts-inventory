@@ -73,6 +73,10 @@ const TransactionPage = () => {
     fetchTransactions()
   }, [tableData])
 
+  useEffect(() => {
+    document.title = "Transactions";
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 9;
 

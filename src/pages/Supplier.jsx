@@ -23,6 +23,8 @@ const SupplierPage = () => {
   const pageLength = 10;
 
   const fetchSuppliers = (start) => {
+    document.title = "Suppliers";
+
     if (start === undefined) { start = 0 }
     supabase
       .from('Supplier')

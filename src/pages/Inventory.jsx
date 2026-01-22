@@ -60,6 +60,8 @@ const InventoryPage = () => {
   
   useEffect(() => {
     refreshData();
+
+    document.title = "Inventory";
   }, [])
 
   const columns = ['Products', 'Items', 'Category', 'Price'];

@@ -79,6 +79,8 @@ const RestockPage = () => {
 
     useEffect(() => {
       refreshData();
+
+      document.title = "Restock";
     }, []);
 
     useEffect(() => {
